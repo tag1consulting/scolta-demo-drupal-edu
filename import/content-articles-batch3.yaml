@@ -116,9 +116,9 @@
     <h2>Results at Meridian AI</h2>
     <p>The Threshold Robotics Lab's work on indoor navigation (Project: Indoor Navigation with World Models) has achieved 87% success on novel layouts in sim-to-real transfer using this approach. For manipulation tasks, the lab's diffusion policy implementation achieves sub-centimeter grasping accuracy on objects seen only in simulation during training. These results indicate that the sim-to-real gap has narrowed to the point where many practical tasks can be solved entirely in simulation.</p>
 
-# ============================================================
-# SCHOOL OF FOUNDATIONS & MATHEMATICS
-# ============================================================
+    # ============================================================
+    # SCHOOL OF FOUNDATIONS & MATHEMATICS
+    # ============================================================
 
 - title: "The Linear Algebra Every ML Engineer Actually Needs"
   type: resource_article
@@ -173,16 +173,16 @@
     <h2>Momentum</h2>
     <p>SGD oscillates in directions of high curvature. Momentum smooths this by accumulating a velocity vector that decays over time:</p>
     <pre><code>v ← μv - η∇L
-θ ← θ + v</code></pre>
+    θ ← θ + v</code></pre>
     <p>With momentum μ = 0.9, the optimizer accumulates gradients from the past ~10 steps, dampening oscillations and enabling larger effective learning rates. Nesterov momentum computes the gradient slightly ahead of the current position for better theoretical convergence.</p>
 
     <h2>Adam and AdamW</h2>
     <p>Adam adapts the learning rate per parameter based on estimates of first and second moments of the gradient:</p>
     <pre><code>m ← β₁m + (1-β₁)g      # first moment (mean)
-v ← β₂v + (1-β₂)g²     # second moment (variance)
-m̂ = m/(1-β₁ᵗ)          # bias correction
-v̂ = v/(1-β₂ᵗ)          # bias correction
-θ ← θ - η m̂/(√v̂ + ε)</code></pre>
+    v ← β₂v + (1-β₂)g²     # second moment (variance)
+    m̂ = m/(1-β₁ᵗ)          # bias correction
+    v̂ = v/(1-β₂ᵗ)          # bias correction
+    θ ← θ - η m̂/(√v̂ + ε)</code></pre>
     <p>Parameters with consistently large gradients get smaller effective learning rates (v̂ grows large). Parameters with small or noisy gradients get larger effective learning rates. This automatic adaptation is why Adam usually works better than SGD without careful tuning.</p>
     <p>AdamW (Loshchilov &amp; Hutter, 2019) fixes a subtle bug in L2 regularization with Adam: instead of adding the regularization term to the gradient (which Adam downscales), AdamW applies weight decay directly to the parameters. This produces better regularization and is the default optimizer for most large model training.</p>
 
@@ -248,9 +248,9 @@ v̂ = v/(1-β₂ᵗ)          # bias correction
     <h2>Monte Carlo Methods</h2>
     <p>Many integrals and expectations in ML can't be computed analytically. Monte Carlo methods approximate them by sampling: E[f(X)] ≈ (1/N) Σ f(xᵢ) where xᵢ ~ p(X). The law of large numbers guarantees convergence. Applications: SGD (Monte Carlo estimate of gradient), REINFORCE (Monte Carlo estimate of policy gradient), variational inference (Monte Carlo estimation of the ELBO).</p>
 
-# ============================================================
-# SCHOOL OF SOCIETY & GOVERNANCE
-# ============================================================
+    # ============================================================
+    # SCHOOL OF SOCIETY & GOVERNANCE
+    # ============================================================
 
 - title: "The EU AI Act Explained: What Developers Need to Know"
   type: resource_article

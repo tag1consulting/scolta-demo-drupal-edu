@@ -90,9 +90,9 @@
     <h2>Dr. Okafor's Automated Red-Teaming Framework</h2>
     <p>Meridian AI's Associate Professor James Okafor developed an automated red-teaming framework that uses one LLM to systematically generate attack prompts against another. The "attacker" model is trained to find prompts that the "target" model refuses, then iteratively refines attacks based on refusal feedback. The framework has been adopted by several major AI labs and is available as open-source software. SAF-220 covers the technical details and hands-on implementation.</p>
 
-# ============================================================
-# SCHOOL OF APPLIED INTELLIGENCE
-# ============================================================
+    # ============================================================
+    # SCHOOL OF APPLIED INTELLIGENCE
+    # ============================================================
 
 - title: "Scolta: A Case Study in Practical AI Search"
   type: resource_article
@@ -366,9 +366,9 @@
     <h2>Hybrid Retrieval in Practice</h2>
     <p>The practical recommendation: use BM25 + dense retrieval in parallel, combine with reciprocal rank fusion:</p>
     <pre><code>bm25_results = bm25.search(query, k=50)
-dense_results = vector_db.search(embed(query), k=50)
-combined = rrf_merge(bm25_results, dense_results)
-top_k = combined[:20]</code></pre>
+    dense_results = vector_db.search(embed(query), k=50)
+    combined = rrf_merge(bm25_results, dense_results)
+    top_k = combined[:20]</code></pre>
     <p>RRF (Reciprocal Rank Fusion) is surprisingly effective: a simple weighted combination of rankings that outperforms most learned fusion approaches on standard benchmarks. The intuition: a document ranked highly by both systems is very likely to be relevant.</p>
 
     <h2>The Generation Problem: Hallucination and Attribution</h2>

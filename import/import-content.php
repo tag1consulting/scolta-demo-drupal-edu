@@ -113,6 +113,11 @@ function import_node(array $data): ?Node {
     'uid'      => 1,
   ];
 
+  // URL alias for page nodes.
+  if (!empty($data['path'])) {
+    $values['path'] = [['alias' => $data['path']]];
+  }
+
   // Body
   if (!empty($data['body'])) {
     $values['body'] = ['value' => $data['body'], 'format' => 'full_html'];
@@ -235,7 +240,31 @@ foreach ($files as $file) {
     continue;
   }
 
+  // Unwrap top-level key if file uses {key: [...]} instead of bare sequence.
+  if (count($items) === 1 && is_array(reset($items))) {
+    $first = reset($items);
+    if (isset($first[0]) && is_array($first[0])) {
+      $items = $first;
+    }
+  }
+
+  // Infer default type from filename if items don't declare one.
+  $basename = basename($file, '.yaml');
+  $type_defaults = [
+    'content-news'  => 'news',
+    'content-pages' => 'page',
+  ];
+  $default_type = $type_defaults[$basename] ?? NULL;
+
   foreach ($items as $item) {
+    // Apply file-level type default.
+    if ($default_type && empty($item['type'])) {
+      $item['type'] = $default_type;
+    }
+    // Normalize date field name for news items.
+    if (!empty($item['date']) && empty($item['news_date'])) {
+      $item['news_date'] = $item['date'];
+    }
     $total++;
     $before = \Drupal::entityTypeManager()->getStorage('node')
       ->getQuery()->accessCheck(FALSE)

@@ -14,8 +14,8 @@ composer.lock
 .ddev/.homeadditions/
 .ddev/config.local.yaml
 
-# Database dump (generated locally via bootstrap procedure)
-db/dump.sql.gz
+# Database dumps (committed; generate via bootstrap procedure in README)
+# db/dump.sql.gz
 
 # Drupal files directory
 web/sites/default/files/
@@ -33,3 +33,5 @@ Thumbs.db
 
 # Node (if needed for theme build)
 node_modules/
+/.editorconfig
+/.gitattributes

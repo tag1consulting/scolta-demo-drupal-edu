@@ -64,7 +64,7 @@ $vocabularies = [
   ],
   'news_category' => [
     'label' => 'News Category',
-    'terms' => ['Research', 'Campus', 'Admissions', 'Events', 'Industry Partnerships'],
+    'terms' => ['Research', 'Faculty News', 'Student News', 'Partnerships', 'Institutional', 'Academics', 'Campus', 'Admissions', 'Events'],
   ],
   'difficulty' => [
     'label' => 'Difficulty',
@@ -184,6 +184,24 @@ function create_node_ref_field(string $entity_type, string $bundle, string $fiel
   }
 }
 
+function add_body_field(string $bundle, string $label = 'Body'): void {
+  if (\Drupal\field\Entity\FieldConfig::loadByName('node', $bundle, 'body')) {
+    return;
+  }
+  \Drupal\field\Entity\FieldConfig::create([
+    'field_name'  => 'body',
+    'entity_type' => 'node',
+    'bundle'      => $bundle,
+    'label'       => $label,
+    'settings'    => ['display_summary' => FALSE],
+    'required'    => FALSE,
+  ])->save();
+  \Drupal\Core\Entity\Entity\EntityFormDisplay::load("node.$bundle.default")
+    ?->setComponent('body', ['type' => 'text_textarea_with_summary'])->save();
+  \Drupal\Core\Entity\Entity\EntityViewDisplay::load("node.$bundle.default")
+    ?->setComponent('body', ['type' => 'text_default', 'label' => 'hidden'])->save();
+}
+
 // ============================================================
 // CONTENT TYPE: program
 // ============================================================
@@ -195,6 +213,7 @@ if (!NodeType::load('program')) {
   ])->save();
   echo "Created content type: program\n";
 }
+add_body_field('program', 'Program Description');
 
 create_taxonomy_field('node', 'program', 'field_school', 'School', 'school');
 create_taxonomy_field('node', 'program', 'field_degree_level', 'Degree Level', 'degree_level');
@@ -214,6 +233,7 @@ if (!NodeType::load('course')) {
   ])->save();
   echo "Created content type: course\n";
 }
+add_body_field('course', 'Course Description');
 
 create_taxonomy_field('node', 'course', 'field_school', 'School', 'school');
 create_taxonomy_field('node', 'course', 'field_course_level', 'Course Level', 'course_level');
@@ -235,6 +255,7 @@ if (!NodeType::load('faculty')) {
   ])->save();
   echo "Created content type: faculty\n";
 }
+add_body_field('faculty', 'Biography');
 
 create_taxonomy_field('node', 'faculty', 'field_school', 'School', 'school');
 create_text_field('node', 'faculty', 'field_title_role', 'Title / Role', 'string', FALSE);
@@ -253,6 +274,7 @@ if (!NodeType::load('research_project')) {
   ])->save();
   echo "Created content type: research_project\n";
 }
+add_body_field('research_project', 'Project Description');
 
 create_taxonomy_field('node', 'research_project', 'field_school', 'School', 'school');
 create_node_ref_field('node', 'research_project', 'field_principal_investigator', 'Principal Investigator', ['faculty'], 1);
@@ -270,6 +292,7 @@ if (!NodeType::load('resource_article')) {
   ])->save();
   echo "Created content type: resource_article\n";
 }
+add_body_field('resource_article', 'Article Body');
 
 create_taxonomy_field('node', 'resource_article', 'field_topic', 'Topic', 'topic', -1);
 create_taxonomy_field('node', 'resource_article', 'field_difficulty', 'Difficulty', 'difficulty');
@@ -288,6 +311,7 @@ if (!NodeType::load('lecture_page')) {
   ])->save();
   echo "Created content type: lecture_page\n";
 }
+add_body_field('lecture_page', 'Lecture Content');
 
 create_taxonomy_field('node', 'lecture_page', 'field_topic', 'Topic', 'topic', -1);
 create_taxonomy_field('node', 'lecture_page', 'field_difficulty', 'Difficulty', 'difficulty');
@@ -306,6 +330,7 @@ if (!NodeType::load('news')) {
   ])->save();
   echo "Created content type: news\n";
 }
+add_body_field('news', 'News Body');
 
 create_taxonomy_field('node', 'news', 'field_news_category', 'Category', 'news_category');
 create_text_field('node', 'news', 'field_news_date', 'Date', 'string', FALSE);

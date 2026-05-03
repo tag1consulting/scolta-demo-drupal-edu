@@ -88,13 +88,13 @@
     <h2>Multi-Head Attention</h2>
     <p>A single attention operation captures one "type" of relationship between tokens. Multi-head attention runs h independent attention operations in parallel (the "heads"), each with different learned projection matrices W_Q, W_K, W_V. The outputs are concatenated and projected:</p>
     <pre><code>MultiHead(Q,K,V) = Concat(head_1, ..., head_h) W_O
-where head_i = Attention(Q W_Qi, K W_Ki, V W_Vi)</code></pre>
+    where head_i = Attention(Q W_Qi, K W_Ki, V W_Vi)</code></pre>
     <p>Different heads learn to attend to different relationships: syntax, coreference, positional proximity, semantic similarity. A transformer with 12 heads can simultaneously track 12 different types of token relationships.</p>
 
     <h2>Positional Encoding</h2>
     <p>Attention is permutation-invariant: if you shuffle the tokens, the attention scores change but nothing in the mechanism itself knows positions. To give the model positional information, the original transformer adds sinusoidal position encodings to the input embeddings:</p>
     <pre><code>PE(pos, 2i)   = sin(pos / 10000^(2i/d_model))
-PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</code></pre>
+    PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</code></pre>
     <p>Modern LLMs use learned positional encodings (GPT-2), relative position encodings (T5, Transformer-XL), or rotary position embeddings (RoPE, used in Llama, GPT-NeoX, and most modern LLMs). RoPE has the advantage of generalizing to longer contexts than seen during training.</p>
 
     <h2>Feed-Forward Networks and Layer Normalization</h2>
@@ -285,9 +285,9 @@ PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</code></pre>
     <h2>Retrieval Augmentation: Giving the Model Facts</h2>
     <p>LLMs have training data cutoffs and no access to your proprietary information. RAG (Retrieval-Augmented Generation) solves this by retrieving relevant documents and including them in the prompt context. The pattern:</p>
     <pre><code>system: You are a helpful assistant. Use the provided documents to answer questions.
-user: [retrieved documents]
----
-Question: {user_question}</code></pre>
+    user: [retrieved documents]
+    ---
+    Question: {user_question}</code></pre>
     <p>Key prompt engineering considerations for RAG: tell the model explicitly to only use the provided context; instruct it to say "I don't know" when the context doesn't answer the question; include citation instructions if attribution is important.</p>
 
     <h2>Few-Shot Examples: The Most Underused Technique</h2>
@@ -545,17 +545,17 @@ Question: {user_question}</code></pre>
     <h2>Function Calling: The Foundation</h2>
     <p>OpenAI introduced "function calling" in June 2023, and it quickly became an industry standard (now also called "tool use" in Anthropic's API). The mechanism is straightforward: the developer provides a list of functions the model can call, each with a JSON schema describing parameters. The model outputs a structured JSON call instead of natural language when it determines a tool is needed. The developer executes the tool, returns the result, and the model continues.</p>
     <pre><code>tools = [{
-  "name": "search_web",
-  "description": "Search the web for current information",
-  "input_schema": {
+    "name": "search_web",
+    "description": "Search the web for current information",
+    "input_schema": {
     "type": "object",
     "properties": {
       "query": {"type": "string", "description": "Search query"},
       "n_results": {"type": "integer", "default": 5}
     },
     "required": ["query"]
-  }
-}]</code></pre>
+    }
+    }]</code></pre>
     <p>Function calling enables models to ground their responses in real-time information, perform computations, access databases, and interact with external services.</p>
 
     <h2>Parallel Tool Use</h2>
