@@ -193,9 +193,18 @@ foreach ($menu_items as $item) {
 echo "Configured Scolta settings\n";
 
 // ============================================================
-// PATHAUTO BULK GENERATE
+// SCOLTA PERMISSIONS
 // ============================================================
-\Drupal::service('pathauto.generator');
+$role_storage = \Drupal::entityTypeManager()->getStorage('user_role');
+foreach (['anonymous', 'authenticated'] as $rid) {
+  $role = $role_storage->load($rid);
+  if ($role && !$role->hasPermission('use scolta ai')) {
+    $role->grantPermission('use scolta ai');
+    $role->save();
+    echo "Granted 'use scolta ai' to: $rid\n";
+  }
+}
+
 echo "\nBlocks, navigation, and settings configured!\n";
-echo "Run: ddev drush pathauto:aliases-generate all\n";
-echo "Then: ddev drush scolta:build\n";
+echo "Run: ddev exec drush php:script import/fix-pathauto.php\n";
+echo "Then: ddev exec drush scolta:build\n";
