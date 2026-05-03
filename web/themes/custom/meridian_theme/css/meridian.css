@@ -1293,6 +1293,12 @@ body.toolbar-fixed.toolbar-tray-open .site-header { top: 79px; }
   line-height: 0;
 }
 
+.home-photo-strip__item a {
+  display: block;
+  position: relative;
+  text-decoration: none;
+}
+
 .home-photo-strip__item img {
   width: 100%;
   height: 220px;

@@ -78,19 +78,25 @@ $body = <<<'HTML'
 
 <div class="home-photo-strip">
   <figure class="home-photo-strip__item">
-    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=640&h=400&fit=crop&q=80"
-         alt="Lecture hall" loading="lazy">
-    <figcaption>Graduate Lectures</figcaption>
+    <a href="/learn">
+      <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=640&h=400&fit=crop&q=80"
+           alt="Lecture hall" loading="lazy">
+      <figcaption>Graduate Lectures</figcaption>
+    </a>
   </figure>
   <figure class="home-photo-strip__item">
-    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=640&h=400&fit=crop&q=80"
-         alt="Students collaborating" loading="lazy">
-    <figcaption>Collaborative Research</figcaption>
+    <a href="/research">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=640&h=400&fit=crop&q=80"
+           alt="Students collaborating" loading="lazy">
+      <figcaption>Collaborative Research</figcaption>
+    </a>
   </figure>
   <figure class="home-photo-strip__item">
-    <img src="https://images.unsplash.com/photo-1532094349884-543559c43671?w=640&h=400&fit=crop&q=80"
-         alt="Research laboratory" loading="lazy">
-    <figcaption>Research Labs</figcaption>
+    <a href="/research">
+      <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=640&h=400&fit=crop&q=80"
+           alt="Research laboratory" loading="lazy">
+      <figcaption>Research Labs</figcaption>
+    </a>
   </figure>
 </div>
 
