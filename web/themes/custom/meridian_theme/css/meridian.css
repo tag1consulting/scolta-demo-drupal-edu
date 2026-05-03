@@ -473,7 +473,6 @@ p { margin: 0 0 1.1em; }
   font-size: 1.0625rem;
   line-height: 1.75;
   color: var(--text);
-  max-width: 76ch;
 }
 
 .node__content p,
