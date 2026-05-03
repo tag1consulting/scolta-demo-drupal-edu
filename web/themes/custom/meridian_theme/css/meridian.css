@@ -490,6 +490,61 @@ p { margin: 0 0 1.1em; }
 .node--view-mode-teaser .node__content { max-width: none; font-size: 0.95rem; line-height: 1.6; }
 
 /* ----------------------------------------------------------------
+   NODE FEATURED IMAGE
+   Prepended to body HTML as <div class="node-featured-image"><img></div>
+   Bleeds to card edges in teaser, full-width hero in article view.
+   ---------------------------------------------------------------- */
+
+/* Teaser: bleed out of teaser__content padding to fill card width */
+.node--view-mode-teaser .node-featured-image {
+  margin: -0.75rem -1.5rem 1.25rem;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.node--view-mode-teaser .node-featured-image img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.node--view-mode-teaser:hover .node-featured-image img {
+  transform: scale(1.04);
+}
+
+/* Full article view: wide hero banner */
+.node--view-mode-full .node-featured-image {
+  margin: 0 0 2.25rem;
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.node--view-mode-full .node-featured-image img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Inline editorial image (used in About page between sections) */
+.node-inline-image {
+  margin: 2rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.node-inline-image img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ----------------------------------------------------------------
    NODE TEASER / CARD GRID
    Olivero wraps teasers in .view-content > .views-row > article.teaser
    We make .view-content a grid and each .views-row a card.
