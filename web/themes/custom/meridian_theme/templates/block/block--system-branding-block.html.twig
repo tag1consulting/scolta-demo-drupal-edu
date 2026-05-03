@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * Meridian AI institutional branding block.
+ */
+#}
+<div class="site-branding">
+  <a href="{{ path('<front>') }}" rel="home" class="site-branding__link" title="{{ 'Home'|t }}">
+    <span class="site-branding__crest" aria-hidden="true">M</span>
+    <span class="site-branding__text">
+      {% if site_name %}
+        <span class="site-branding__name">{{ site_name }}</span>
+      {% endif %}
+    </span>
+  </a>
+</div>

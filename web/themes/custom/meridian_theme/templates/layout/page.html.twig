@@ -1,0 +1,171 @@
+{#
+/**
+ * @file
+ * Meridian AI theme page template.
+ */
+#}
+
+<div id="page-wrapper" class="page-wrapper">
+  <div id="page">
+
+    <header id="header" class="site-header" data-drupal-selector="site-header" role="banner">
+
+      {# Utility bar — visible on desktop #}
+      <div class="util-bar">
+        <div class="layout-container util-bar__inner">
+          <ul class="util-nav">
+            <li><a href="/programs">Programs &amp; Degrees</a></li>
+            <li><a href="/research">Research</a></li>
+            <li><a href="/about">About</a></li>
+          </ul>
+          <ul class="util-nav util-nav--actions">
+            <li><a href="/about/admissions" class="util-nav__apply">Apply</a></li>
+            <li><a href="/news">News</a></li>
+          </ul>
+        </div>
+      </div>
+
+      {# Main header band #}
+      <div class="site-header__fixable" data-drupal-selector="site-header-fixable">
+        <div class="site-header__initial">
+          <button class="sticky-header-toggle" data-drupal-selector="sticky-header-toggle" role="switch" aria-controls="site-header__inner" aria-label="{{ 'Sticky header'|t }}" aria-checked="false">
+            <span class="sticky-header-toggle__icon">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+        </div>
+
+        <div id="site-header__inner" class="site-header__inner" data-drupal-selector="site-header-inner">
+          <div class="layout-container site-header__band">
+
+            {% if page.header %}
+              <div class="site-header__branding">
+                {{ page.header }}
+              </div>
+            {% endif %}
+
+            {% if page.primary_menu %}
+              <div class="mobile-buttons" data-drupal-selector="mobile-buttons">
+                <button class="mobile-nav-button" data-drupal-selector="mobile-nav-button" aria-label="{{ 'Main Menu'|t }}" aria-controls="header-nav" aria-expanded="false">
+                  <span class="mobile-nav-button__label">{{ 'Menu'|t }}</span>
+                  <span class="mobile-nav-button__icon"></span>
+                </button>
+              </div>
+
+              <div id="header-nav" class="header-nav" data-drupal-selector="header-nav">
+                {{ page.primary_menu }}
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+
+    </header>
+
+    <div id="main-wrapper" class="layout-main-wrapper">
+      <div id="main" class="layout-main">
+        <div class="main-content">
+          <a id="main-content" tabindex="-1"></a>
+
+          {% if page.highlighted %}
+            <div class="region-highlighted">
+              {{ page.highlighted }}
+            </div>
+          {% endif %}
+
+          {% if page.hero %}
+            <div class="region-hero">
+              {{ page.hero }}
+            </div>
+          {% endif %}
+
+          <div class="main-content__container layout-container">
+
+            {% if page.breadcrumb %}
+              <div class="region-breadcrumb">
+                {{ page.breadcrumb }}
+              </div>
+            {% endif %}
+
+            {% if page.content_above %}
+              <div class="region-content-above">
+                {{ page.content_above }}
+              </div>
+            {% endif %}
+
+            <main role="main" class="site-main">
+              {{ page.content }}
+            </main>
+
+            {% if page.content_below %}
+              <div class="region-content-below">
+                {{ page.content_below }}
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="site-footer__inner layout-container">
+
+        <div class="site-footer__columns">
+          <div class="site-footer__col site-footer__col--brand">
+            <a href="/" class="site-footer__wordmark">Meridian<span>AI</span></a>
+            <p class="site-footer__institution">Meridian Institute of<br>Artificial Intelligence</p>
+            <p class="site-footer__location">The Crossing, Aethermoor Campus<br>Fictional City, XX 00000</p>
+          </div>
+
+          <div class="site-footer__col">
+            <h4 class="site-footer__heading">Academics</h4>
+            <ul class="site-footer__links">
+              <li><a href="/programs">Programs &amp; Degrees</a></li>
+              <li><a href="/courses">Course Catalog</a></li>
+              <li><a href="/faculty">Faculty</a></li>
+              <li><a href="/learn">Learning Center</a></li>
+            </ul>
+          </div>
+
+          <div class="site-footer__col">
+            <h4 class="site-footer__heading">Research</h4>
+            <ul class="site-footer__links">
+              <li><a href="/research">Research Projects</a></li>
+              <li><a href="/resources">Resources &amp; Articles</a></li>
+              <li><a href="/faculty">Research Faculty</a></li>
+            </ul>
+          </div>
+
+          <div class="site-footer__col">
+            <h4 class="site-footer__heading">About</h4>
+            <ul class="site-footer__links">
+              <li><a href="/about">About Meridian AI</a></li>
+              <li><a href="/about/admissions">Admissions</a></li>
+              <li><a href="/news">News &amp; Events</a></li>
+              <li><a href="/about/demo">About This Demo</a></li>
+            </ul>
+          </div>
+        </div>
+
+        {% if page.footer_top %}
+          <div class="region-footer-top">
+            {{ page.footer_top }}
+          </div>
+        {% endif %}
+
+        <div class="site-footer__bottom">
+          {% if page.footer_bottom %}
+            {{ page.footer_bottom }}
+          {% endif %}
+          <p class="site-footer__copy">&copy; {{ "now"|date("Y") }} Meridian Institute of Artificial Intelligence. This is a fictional institution.</p>
+        </div>
+
+      </div>
+    </footer>
+
+    <div class="overlay" data-drupal-selector="overlay"></div>
+
+  </div>
+</div>

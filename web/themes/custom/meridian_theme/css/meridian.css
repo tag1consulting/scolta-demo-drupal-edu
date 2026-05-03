@@ -1,230 +1,614 @@
-/* Meridian AI Theme — Olivero sub-theme
- * Color palette: Navy primary, slate secondary, amber/gold accent
- */
-
 /* ================================================================
-   VARIABLES
+   MERIDIAN AI — Complete institutional theme
+   Palette: Navy #1a2744 | Amber #d4a843 | Slate #475569
    ================================================================ */
+
+/* ----------------------------------------------------------------
+   RESET OLIVERO VARIABLES
+   ---------------------------------------------------------------- */
 :root {
-  --color-navy:         #1a2744;
-  --color-navy-dark:    #111b33;
-  --color-navy-light:   #243256;
-  --color-slate:        #475569;
-  --color-slate-light:  #64748b;
-  --color-amber:        #d4a843;
-  --color-amber-dark:   #b8922e;
-  --color-amber-muted:  rgba(212, 168, 67, 0.15);
-  --color-amber-rgb:    212, 168, 67;
-
-  --color-bg:           #ffffff;
-  --color-bg-subtle:    #f8fafc;
-  --color-bg-accent:    #f0f4ff;
-  --color-text:         #111827;
-  --color-text-muted:   #6b7280;
-  --color-border:       #e2e8f0;
-  --color-border-light: #f1f5f9;
-
+  /* Override Olivero's typefaces */
   --font-sans:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-serif:  'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --font-mono:   'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 
-  /* Olivero overrides */
-  --color-focus:         var(--color-amber);
-  --color-link:          var(--color-navy);
-  --color-link--hover:   var(--color-amber-dark);
+  /* Meridian palette */
+  --navy:         #1a2744;
+  --navy-dark:    #111b33;
+  --navy-mid:     #1e2f52;
+  --navy-light:   #243256;
+  --amber:        #c9973a;
+  --amber-light:  #d4a843;
+  --amber-muted:  rgba(201,151,58,0.12);
+  --amber-rgb:    201, 151, 58;
+  --slate:        #475569;
+  --slate-light:  #64748b;
+
+  --white:        #ffffff;
+  --off-white:    #f8f9fb;
+  --bg-subtle:    #f2f4f8;
+  --border:       #dde1ec;
+  --border-light: #eaedf4;
+  --text:         #0f1a2e;
+  --text-muted:   #6b7280;
+
+  /* Olivero compat */
+  --color-focus:         var(--amber);
+  --color-link:          var(--navy);
+  --color-link--hover:   var(--amber);
   --color-link--visited: #2d4080;
 }
 
-/* ================================================================
-   BASE
-   ================================================================ */
-html {
-  scroll-behavior: smooth;
-}
+/* ----------------------------------------------------------------
+   GLOBAL BASE
+   ---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-sans);
-  color: var(--color-text);
-  background: var(--color-bg);
+  color: var(--text);
+  background: var(--white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
+  line-height: 1.65;
+  font-size: 16px;
+  margin: 0;
 }
 
-/* ================================================================
+/* ----------------------------------------------------------------
+   OLIVERO STRUCTURAL OVERRIDES
+   Kill the Drupal look at the root level
+   ---------------------------------------------------------------- */
+
+/* Remove Olivero's side stripe / content-left */
+.layout-container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 2rem;
+  padding-left: 2rem !important; /* Override Olivero's content-left offset */
+}
+
+.layout-main-wrapper { padding: 0; }
+.layout-main { padding: 0; }
+
+/* Reset Olivero's body background patterns */
+body::before,
+.page-wrapper::before { display: none !important; }
+
+/* ----------------------------------------------------------------
    LINKS
-   ================================================================ */
-a,
-a:link {
-  color: var(--color-navy);
+   ---------------------------------------------------------------- */
+a, a:link {
+  color: var(--navy);
   text-decoration: underline;
-  text-decoration-color: rgba(26, 39, 68, 0.3);
+  text-decoration-color: rgba(26,39,68,0.25);
   text-underline-offset: 0.2em;
   transition: color 0.15s, text-decoration-color 0.15s;
 }
+a:hover { color: var(--amber); text-decoration-color: var(--amber); }
+a:visited { color: #2d4080; }
 
-a:hover {
-  color: var(--color-amber-dark);
-  text-decoration-color: var(--color-amber-dark);
+/* ----------------------------------------------------------------
+   UTILITY BAR
+   ---------------------------------------------------------------- */
+.util-bar {
+  background: var(--navy-dark);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: none; /* mobile hidden */
 }
 
-a:visited {
-  color: var(--color-link--visited);
+@media (min-width: 900px) {
+  .util-bar { display: block; }
 }
 
-/* ================================================================
-   HEADER — dark navy with amber underline
-   ================================================================ */
-.site-header,
-.site-header__inner {
-  background: var(--color-navy);
-  border-bottom: 3px solid var(--color-amber);
+.util-bar__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
 }
 
-.header-nav {
-  background: var(--color-navy);
-  border-block-start-color: var(--color-navy);
+.util-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0;
+  align-items: center;
 }
 
-#site-header__inner .mobile-nav-button {
-  color: #fff;
-}
+.util-nav li { margin: 0; }
 
-#site-header__inner .mobile-nav-button__label {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-/* Hamburger icon lines */
-#site-header__inner .mobile-nav-button .mobile-nav-button__icon span,
-#site-header__inner .mobile-nav-button .mobile-nav-button__icon::before,
-#site-header__inner .mobile-nav-button .mobile-nav-button__icon::after {
-  background: rgba(255, 255, 255, 0.85);
-}
-
-/* Site name in header */
-.site-branding__name a,
-.site-branding__name a:link,
-.site-branding__name a:visited {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1.25rem;
-  letter-spacing: -0.01em;
-}
-
-.site-branding__name a:hover {
-  color: var(--color-amber);
-  text-decoration: none;
-}
-
-.site-branding__slogan {
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-/* ================================================================
-   PRIMARY NAV
-   ================================================================ */
-.header-nav .menu--main > .menu__item > .menu__link {
-  color: rgba(255, 255, 255, 0.85);
+.util-nav a,
+.util-nav a:link,
+.util-nav a:visited {
+  color: rgba(255,255,255,0.65);
+  font-size: 0.76rem;
   font-weight: 500;
-  font-size: 0.9rem;
   letter-spacing: 0.01em;
-  padding-block: 0.5rem;
-  transition: color 0.15s;
+  text-decoration: none;
+  padding: 0 0.9rem;
+  line-height: 36px;
+  display: block;
+  transition: color 0.15s, background 0.15s;
 }
 
-.header-nav .menu--main > .menu__item > .menu__link:hover,
-.header-nav .menu--main > .menu__item > .menu__link:focus,
-.header-nav .menu--main > .menu__item--active-trail > .menu__link {
-  color: var(--color-amber);
+.util-nav a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
+.util-nav--actions { gap: 0; }
+
+.util-nav__apply,
+.util-nav__apply:link,
+.util-nav__apply:visited {
+  background: var(--amber) !important;
+  color: var(--navy-dark) !important;
+  font-weight: 700 !important;
+  padding: 0 1.1rem !important;
+  font-size: 0.76rem !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+.util-nav__apply:hover { background: var(--amber-light) !important; color: var(--navy) !important; }
+
+/* ----------------------------------------------------------------
+   HEADER — institutional band
+   ---------------------------------------------------------------- */
+.site-header {
+  background: var(--navy);
+  position: relative;
+  z-index: 100;
 }
 
-/* ================================================================
-   HERO REGION
-   ================================================================ */
-.region-hero {
-  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
-  color: #fff;
-  padding: 4rem 2rem;
-  text-align: center;
+.site-header__fixable,
+.site-header__inner,
+.site-header__inner.is-fixed {
+  background: var(--navy) !important;
+  box-shadow: none !important;
+  border-bottom: 2px solid var(--amber) !important;
 }
 
-.region-hero h1 {
+/* Hide the sticky toggle button — too Drupal */
+.sticky-header-toggle { display: none !important; }
+
+.site-header__band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+/* ----------------------------------------------------------------
+   SITE BRANDING
+   Kill Olivero's gradient, negative-margin, and min-width tricks
+   ---------------------------------------------------------------- */
+.site-branding,
+.block-system-branding-block,
+.block--plugin-id--system-branding-block {
+  background: transparent !important;
+  background-image: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  position: static !important;
+  /* Reset the negative margin Olivero uses to break out of container */
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+  padding-block: 0 !important;
+  align-items: center !important;
+}
+
+.site-branding__link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none !important;
+  color: #fff !important;
+}
+
+.site-branding__crest {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: var(--amber);
+  color: var(--navy-dark);
   font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-size: 1.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.02em;
+}
+
+.site-branding__text { display: flex; flex-direction: column; }
+
+.site-branding__name {
+  font-size: 1.25rem;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
   line-height: 1.2;
 }
 
-.region-hero p {
-  font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 640px;
-  margin: 0 auto 2rem;
+.site-branding__link:hover .site-branding__name { color: var(--amber-light); }
+
+/* ----------------------------------------------------------------
+   PRIMARY NAVIGATION
+   Olivero's primary menu uses primary-nav__* classes (not menu__*)
+   ---------------------------------------------------------------- */
+.header-nav {
+  background: transparent !important;
+  border: none !important;
 }
 
-/* ================================================================
+/* Hide Olivero's narrow search block in header nav */
+.search-block-form.block-search-narrow,
+#block-meridian-theme-search-form-narrow,
+.block-search-narrow { display: none !important; }
+
+/* Top-level nav list */
+.header-nav .primary-nav__menu--level-1 {
+  display: flex !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  align-items: stretch !important;
+}
+
+.header-nav .primary-nav__menu-item--level-1 { margin: 0; }
+
+/* Nav links */
+.header-nav .primary-nav__menu-link--level-1,
+.header-nav .primary-nav__menu-link--level-1:link,
+.header-nav .primary-nav__menu-link--level-1:visited {
+  color: rgba(255,255,255,0.82) !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  text-decoration: none !important;
+  padding: 0 !important;
+  line-height: 72px !important;
+  display: flex !important;
+  align-items: center !important;
+  border-bottom: 2px solid transparent !important;
+  margin-bottom: -2px !important;
+  transition: color 0.15s, border-color 0.15s, background 0.15s !important;
+}
+
+/* The inner span */
+.header-nav .primary-nav__menu-link-inner--level-1 {
+  padding: 0 0.9rem !important;
+  line-height: inherit !important;
+}
+
+.header-nav .primary-nav__menu-link--level-1:hover,
+.header-nav .primary-nav__menu-link--level-1:focus,
+.header-nav .primary-nav__menu-item--active-trail > .primary-nav__menu-link--level-1 {
+  color: #fff !important;
+  border-bottom-color: var(--amber) !important;
+  background: rgba(255,255,255,0.04) !important;
+}
+
+/* Hide submenu toggle buttons (we don't use dropdowns) */
+.primary-nav__button-toggle { display: none !important; }
+
+/* Legacy fallback for any menu__link class */
+.header-nav .menu__link,
+.header-nav .menu__link:link {
+  color: rgba(255,255,255,0.82) !important;
+  text-decoration: none !important;
+  padding: 0 1rem !important;
+  line-height: 72px !important;
+  display: block !important;
+  border-bottom: 2px solid transparent !important;
+  margin-bottom: -2px !important;
+}
+.header-nav .menu__link:hover { color: #fff !important; border-bottom-color: var(--amber) !important; }
+
+/* ----------------------------------------------------------------
+   MOBILE NAV BUTTON
+   ---------------------------------------------------------------- */
+.mobile-buttons { display: none; }
+
+@media (max-width: 900px) {
+  .mobile-buttons { display: block; }
+  .header-nav { display: none; }
+  .header-nav.is-active { display: block; }
+  .site-header__band { height: 60px; }
+  .header-nav .primary-nav__menu--level-1 { flex-direction: column !important; align-items: stretch !important; }
+  .header-nav .primary-nav__menu-link--level-1 { line-height: 48px !important; border-bottom: 1px solid rgba(255,255,255,0.08) !important; }
+  .header-nav .primary-nav__menu-link-inner--level-1 { padding: 0 1.5rem !important; }
+}
+
+.mobile-nav-button {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.4rem 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.mobile-nav-button__label { color: rgba(255,255,255,0.85); }
+
+.mobile-nav-button__icon,
+.mobile-nav-button__icon::before,
+.mobile-nav-button__icon::after {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: rgba(255,255,255,0.85);
+  position: relative;
+}
+.mobile-nav-button__icon { margin: 4px 0; }
+.mobile-nav-button__icon::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+}
+.mobile-nav-button__icon::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+}
+
+/* ----------------------------------------------------------------
+   HIGHLIGHTED REGION
+   ---------------------------------------------------------------- */
+.region-highlighted {
+  background: #fffbeb;
+  border-bottom: 2px solid #f59e0b;
+  padding: 0.75rem 2rem;
+  font-size: 0.9rem;
+  color: #78350f;
+  font-weight: 500;
+}
+
+/* ----------------------------------------------------------------
+   CONTENT AREA
+   ---------------------------------------------------------------- */
+.main-content__container {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+/* Override Olivero main content background/sidebar */
+.main-content { background: none !important; }
+.site-main { margin: 0; }
+
+/* ----------------------------------------------------------------
+   BREADCRUMB
+   ---------------------------------------------------------------- */
+.region-breadcrumb {
+  padding: 0.6rem 0;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.breadcrumb,
+.breadcrumb__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.breadcrumb__item { display: flex; align-items: center; }
+
+.breadcrumb__item + .breadcrumb__item::before {
+  content: '/';
+  color: var(--border);
+  padding: 0 0.4rem;
+}
+
+.breadcrumb a,
+.breadcrumb a:link,
+.breadcrumb a:visited {
+  color: var(--slate-light);
+  text-decoration: none;
+}
+.breadcrumb a:hover { color: var(--navy); text-decoration: underline; }
+
+/* ----------------------------------------------------------------
    PAGE TITLE
-   ================================================================ */
-.page-title {
+   ---------------------------------------------------------------- */
+.page-title,
+h1.page-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
   font-weight: 700;
-  color: var(--color-navy);
-  line-height: 1.2;
+  color: var(--navy);
+  line-height: 1.15;
+  margin: 0 0 0.6em;
+  letter-spacing: -0.02em;
+}
+
+/* Olivero wraps page title in block */
+.block-page-title-block {
+  margin-bottom: 1.5rem;
+}
+
+/* ----------------------------------------------------------------
+   TYPOGRAPHY
+   ---------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--navy);
+  line-height: 1.25;
+  margin-top: 1.75em;
   margin-bottom: 0.5em;
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  color: var(--color-navy);
-  line-height: 1.25;
-}
+h1 { font-size: clamp(1.6rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; margin-top: 0; }
+h2 { font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 600; }
+h4 { font-size: 1.1rem; font-weight: 600; }
+h5 { font-size: 1rem; font-weight: 600; font-family: var(--font-sans); }
+h6 { font-size: 0.9rem; font-weight: 700; font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate); }
 
-h2 { font-size: 1.6rem; margin-top: 2rem; }
-h3 { font-size: 1.3rem; margin-top: 1.5rem; }
-h4 { font-size: 1.1rem; margin-top: 1.25rem; }
+p { margin: 0 0 1.1em; }
 
-/* ================================================================
-   CONTENT BODY
-   ================================================================ */
+/* ----------------------------------------------------------------
+   NODE CONTENT
+   ---------------------------------------------------------------- */
 .node__content,
-.field--name-body {
+.field--name-body,
+.node--view-mode-full .node__content {
   font-size: 1.0625rem;
   line-height: 1.75;
-  color: var(--color-text);
-  max-width: 72ch;
+  color: var(--text);
+  max-width: 76ch;
 }
 
 .node__content p,
-.field--name-body p {
-  margin-bottom: 1.25em;
-}
+.field--name-body p { margin-bottom: 1.2em; }
 
 .node__content ul,
 .node__content ol,
 .field--name-body ul,
-.field--name-body ol {
-  padding-left: 1.5rem;
-  margin-bottom: 1.25em;
-}
+.field--name-body ol { padding-left: 1.5rem; margin-bottom: 1.2em; }
 
 .node__content li,
-.field--name-body li {
-  margin-bottom: 0.4em;
+.field--name-body li { margin-bottom: 0.4em; }
+
+/* Teaser excerpt */
+.node--view-mode-teaser .node__content { max-width: none; font-size: 0.95rem; line-height: 1.6; }
+
+/* ----------------------------------------------------------------
+   NODE TEASER / CARD GRID
+   Olivero wraps teasers in .view-content > .views-row > article.teaser
+   We make .view-content a grid and each .views-row a card.
+   ---------------------------------------------------------------- */
+.view-content,
+.node-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.75rem;
+  margin: 2rem 0;
 }
 
-/* ================================================================
+/* Each row is a card container */
+.views-row {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The article/teaser element fills the card */
+.node--view-mode-teaser,
+article.node--view-mode-teaser,
+.teaser.node--view-mode-teaser {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 !important;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.15s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Amber top accent */
+.node--view-mode-teaser::before,
+.teaser.node--view-mode-teaser::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--amber);
+}
+
+/* Remove Olivero's bottom ::after line */
+.node--view-mode-teaser::after,
+.teaser.node--view-mode-teaser::after {
+  display: none !important;
+}
+
+.node--view-mode-teaser:hover,
+.teaser.node--view-mode-teaser:hover {
+  box-shadow: 0 8px 28px rgba(26,39,68,0.1);
+  transform: translateY(-2px);
+}
+
+/* Inner structure from Olivero teaser component */
+.node--view-mode-teaser header {
+  padding: 1.25rem 1.5rem 0 !important;
+}
+
+.teaser__content {
+  padding: 0.75rem 1.5rem 1.5rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  flex: 1;
+}
+
+/* Hide the image area and the meta (author/date) */
+.teaser__image,
+.node--view-mode-teaser .field--name-field-image { display: none !important; }
+
+.node__meta,
+.teaser__meta { display: none !important; }
+
+/* Title */
+.teaser__title,
+.node--view-mode-teaser .node__title {
+  font-family: var(--font-serif) !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: var(--navy) !important;
+  margin: 0 0 0 !important;
+  line-height: 1.3 !important;
+}
+
+.teaser__title a,
+.node--view-mode-teaser .node__title a {
+  color: var(--navy) !important;
+  text-decoration: none !important;
+}
+.teaser__title a:hover,
+.node--view-mode-teaser .node__title a:hover {
+  color: var(--amber) !important;
+}
+
+/* Teaser top — remove the flex side-by-side Olivero layout */
+.teaser__top {
+  display: block !important;
+  margin-top: 0 !important;
+}
+
+/* Excerpt text in teaser content */
+.teaser__content .field--name-body,
+.teaser__content p {
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+  color: var(--slate) !important;
+  margin-top: 0.6rem !important;
+  max-width: none !important;
+}
+
+/* ----------------------------------------------------------------
    CODE BLOCKS
-   ================================================================ */
-pre,
-code {
-  font-family: var(--font-mono);
+   ---------------------------------------------------------------- */
+pre, code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   font-size: 0.875em;
 }
 
@@ -232,19 +616,19 @@ pre {
   background: #0f172a;
   color: #e2e8f0;
   padding: 1.25rem 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 6px;
   overflow-x: auto;
   margin: 1.5em 0;
-  border-left: 3px solid var(--color-amber);
+  border-left: 3px solid var(--amber);
   line-height: 1.6;
 }
 
 code {
-  background: var(--color-bg-accent);
-  color: var(--color-navy);
+  background: var(--bg-subtle);
+  color: var(--navy);
   padding: 0.15em 0.4em;
-  border-radius: 0.25rem;
-  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  border: 1px solid var(--border);
 }
 
 pre code {
@@ -255,292 +639,110 @@ pre code {
   border-radius: 0;
 }
 
-/* ================================================================
-   BADGES / TAXONOMY LABELS
-   ================================================================ */
-.badge {
-  display: inline-block;
-  padding: 0.2em 0.65em;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
+/* ----------------------------------------------------------------
+   TABLES
+   ---------------------------------------------------------------- */
+table { width: 100%; border-collapse: collapse; margin: 1.5em 0; font-size: 0.9rem; }
+th { background: var(--navy); color: #fff; padding: 0.6rem 0.85rem; text-align: left; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+td { padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border-light); color: var(--text); }
+tr:nth-child(even) td { background: var(--off-white); }
+tr:hover td { background: var(--amber-muted); }
 
-.badge--school {
-  background: var(--color-navy);
-  color: #fff;
-}
-
-.badge--difficulty {
-  background: var(--color-amber-muted);
-  color: var(--color-amber-dark);
-  border: 1px solid var(--color-amber);
-}
-
-.badge--level {
-  background: var(--color-bg-accent);
-  color: var(--color-navy);
-  border: 1px solid var(--color-border);
-}
-
-.badge--status-active {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.badge--status-completed {
-  background: #f3f4f6;
-  color: #374151;
-}
-
-.badge--status-recruiting {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-/* ================================================================
-   CARDS (programs, courses, faculty)
-   ================================================================ */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.card {
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  transition: box-shadow 0.2s, transform 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--color-amber);
-}
-
-.card:hover {
-  box-shadow: 0 8px 24px rgba(26, 39, 68, 0.12);
-  transform: translateY(-2px);
-}
-
-.card__school {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-amber-dark);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.5rem;
-}
-
-.card__title {
-  font-family: var(--font-serif);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--color-navy);
-  margin-bottom: 0.75rem;
-  line-height: 1.3;
-}
-
-.card__meta {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  margin-bottom: 1rem;
-}
-
-.card__body {
-  font-size: 0.9rem;
-  color: var(--color-slate);
-  line-height: 1.6;
-}
-
-/* ================================================================
-   FACULTY PROFILE CARDS
-   ================================================================ */
-.faculty-card {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-}
-
-.faculty-card__avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: var(--color-bg-accent);
-  border: 2px solid var(--color-border);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: var(--color-navy);
-  font-weight: 700;
-}
-
-.faculty-card__info h3 {
-  font-size: 1rem;
-  margin: 0 0 0.25rem;
-}
-
-.faculty-card__role {
-  font-size: 0.85rem;
-  color: var(--color-amber-dark);
-  font-weight: 500;
-}
-
-.faculty-card__school {
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-}
-
-/* ================================================================
-   CALLOUT / EXERCISE BOX (lectures)
-   ================================================================ */
+/* ----------------------------------------------------------------
+   CALLOUT BOXES
+   ---------------------------------------------------------------- */
 .callout {
-  background: var(--color-bg-accent);
-  border-left: 4px solid var(--color-navy);
+  background: var(--bg-subtle);
+  border-left: 4px solid var(--navy);
   padding: 1.25rem 1.5rem;
-  border-radius: 0 0.5rem 0.5rem 0;
+  border-radius: 0 6px 6px 0;
   margin: 2rem 0;
 }
+.callout--exercise { border-left-color: var(--amber); background: var(--amber-muted); }
+.callout--warning { border-left-color: #dc2626; background: #fef2f2; }
+.callout__title { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy); margin-bottom: 0.5rem; }
+.callout--exercise .callout__title { color: #92400e; }
 
-.callout--exercise {
-  border-left-color: var(--color-amber);
-  background: var(--color-amber-muted);
+/* ----------------------------------------------------------------
+   SCOLTA SEARCH BLOCK
+   ---------------------------------------------------------------- */
+.region-content-above {
+  margin-bottom: 2rem;
 }
 
-.callout--warning {
-  border-left-color: #dc2626;
-  background: #fef2f2;
+.block-scolta-search,
+.block--id--meridian-theme-scolta-search {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  border-radius: 10px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 2.5rem;
 }
 
-.callout__title {
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-navy);
-  margin-bottom: 0.5rem;
-}
-
-.callout--exercise .callout__title {
-  color: var(--color-amber-dark);
-}
-
-/* ================================================================
-   DIFFICULTY INDICATOR
-   ================================================================ */
-.difficulty-bar {
+.scolta-search-form {
   display: flex;
-  gap: 3px;
+  gap: 0.75rem;
   align-items: center;
-  margin: 0.5rem 0;
 }
 
-.difficulty-bar__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-border);
-}
-
-.difficulty-bar__dot--filled {
-  background: var(--color-amber);
-}
-
-/* ================================================================
-   BREADCRUMB
-   ================================================================ */
-.breadcrumb {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-.breadcrumb a {
-  color: var(--color-slate-light);
-  text-decoration: none;
-}
-
-.breadcrumb a:hover {
-  color: var(--color-navy);
-  text-decoration: underline;
-}
-
-/* ================================================================
-   SEARCH BAR (Scolta)
-   ================================================================ */
 .scolta-search-form input[type="search"],
 .scolta-search-form input[type="text"] {
-  border: 2px solid var(--color-border);
-  border-radius: 0.5rem;
-  padding: 0.65rem 1rem;
+  flex: 1;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
   font-size: 1rem;
-  width: 100%;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: var(--font-sans);
+  background: rgba(255,255,255,0.95);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  transition: box-shadow 0.15s;
 }
 
 .scolta-search-form input:focus {
   outline: none;
-  border-color: var(--color-amber);
-  box-shadow: 0 0 0 3px var(--color-amber-muted);
+  box-shadow: 0 0 0 3px var(--amber-light), 0 1px 4px rgba(0,0,0,0.1);
 }
 
 .scolta-search-form button[type="submit"] {
-  background: var(--color-navy);
-  color: #fff;
+  background: var(--amber);
+  color: var(--navy-dark);
   border: none;
-  border-radius: 0.5rem;
-  padding: 0.65rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
   cursor: pointer;
   transition: background 0.15s;
+  white-space: nowrap;
 }
+.scolta-search-form button[type="submit"]:hover { background: var(--amber-light); }
 
-.scolta-search-form button[type="submit"]:hover {
-  background: var(--color-amber-dark);
-}
-
-/* ================================================================
-   SCOLTA AI OVERVIEW
-   ================================================================ */
+/* ----------------------------------------------------------------
+   SCOLTA RESULTS
+   ---------------------------------------------------------------- */
 .scolta-ai-overview {
-  background: var(--color-bg-accent);
-  border: 1px solid rgba(26, 39, 68, 0.15);
-  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #eff4ff 0%, #f7f9ff 100%);
+  border: 1px solid rgba(26,39,68,0.12);
+  border-left: 4px solid var(--amber);
+  border-radius: 0 8px 8px 0;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  position: relative;
 }
 
 .scolta-ai-overview::before {
   content: '✦ AI Overview';
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-amber-dark);
+  letter-spacing: 0.1em;
+  color: var(--amber);
   margin-bottom: 0.75rem;
 }
 
-/* ================================================================
-   RESULTS
-   ================================================================ */
 .scolta-result {
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--border-light);
   padding-bottom: 1.5rem;
   margin-bottom: 1.5rem;
 }
@@ -549,178 +751,550 @@ pre code {
   font-family: var(--font-serif);
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--color-navy);
+  color: var(--navy);
   text-decoration: none;
 }
+.scolta-result__title a:hover { color: var(--amber); text-decoration: underline; }
+.scolta-result__url { font-size: 0.8rem; color: var(--text-muted); margin: 0.2rem 0; }
+.scolta-result__excerpt { font-size: 0.9rem; color: var(--slate); line-height: 1.65; margin-top: 0.4rem; }
 
-.scolta-result__title a:hover {
-  color: var(--color-amber-dark);
-  text-decoration: underline;
+/* ----------------------------------------------------------------
+   HERO REGION (used on front page)
+   ---------------------------------------------------------------- */
+.region-hero {
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 55%, #2a3d6e 100%);
+  color: #fff;
+  padding: 5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.scolta-result__url {
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-  margin: 0.2rem 0;
+.region-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
 }
 
-.scolta-result__excerpt {
-  font-size: 0.9rem;
-  color: var(--color-slate);
-  line-height: 1.6;
-  margin-top: 0.4rem;
+.region-hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 auto 1rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 800px;
 }
 
-/* ================================================================
-   FOOTER
-   ================================================================ */
-.site-footer {
-  background: var(--color-navy);
-  color: rgba(255, 255, 255, 0.75);
-  padding: 3rem 2rem 2rem;
-  margin-top: 4rem;
-  font-size: 0.875rem;
+.region-hero p {
+  font-size: 1.15rem;
+  color: rgba(255,255,255,0.8);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.65;
 }
 
-.site-footer a {
-  color: var(--color-amber);
-  text-decoration: none;
+/* ----------------------------------------------------------------
+   FRONT PAGE — sections below the fold
+   ---------------------------------------------------------------- */
+.front-section {
+  padding: 4rem 0;
 }
 
-.site-footer a:hover {
-  text-decoration: underline;
+.front-section--alt { background: var(--off-white); }
+
+.section-heading {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
 }
 
-.site-footer__disclaimer {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(212, 168, 67, 0.3);
-  border-radius: 0.5rem;
-  padding: 1rem 1.25rem;
-  margin-top: 2rem;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
+.section-lead {
+  color: var(--slate);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
 }
 
-.site-footer__disclaimer strong {
-  color: var(--color-amber);
+/* ----------------------------------------------------------------
+   CARDS (custom card HTML from body content)
+   ---------------------------------------------------------------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
 }
 
-.scolta-powered-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: rgba(212, 168, 67, 0.15);
-  border: 1px solid rgba(212, 168, 67, 0.4);
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--amber);
+}
+
+.card:hover {
+  box-shadow: 0 8px 28px rgba(26,39,68,0.1);
+  transform: translateY(-2px);
+}
+
+.card__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+}
+
+.card__title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 0.6rem;
+  line-height: 1.3;
+}
+
+.card__body { font-size: 0.9rem; color: var(--slate); line-height: 1.6; }
+.card__meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem; }
+
+/* ----------------------------------------------------------------
+   BADGES / TAXONOMY LABELS
+   ---------------------------------------------------------------- */
+.badge {
+  display: inline-block;
+  padding: 0.2em 0.65em;
   border-radius: 9999px;
-  padding: 0.3rem 0.8rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-amber);
-  text-decoration: none;
-  margin-top: 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-/* ================================================================
-   RESPONSIVE
-   ================================================================ */
-@media (max-width: 900px) {
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
+.badge--school { background: var(--navy); color: #fff; }
+.badge--difficulty { background: var(--amber-muted); color: #78350f; border: 1px solid rgba(201,151,58,0.5); }
+.badge--level { background: var(--bg-subtle); color: var(--navy); border: 1px solid var(--border); }
+.badge--status-active { background: #dcfce7; color: #166534; }
+.badge--status-completed { background: #f3f4f6; color: #374151; }
+.badge--status-recruiting { background: #fef3c7; color: #92400e; }
 
-  .region-hero {
-    padding: 2.5rem 1.25rem;
-  }
-
-  .node__content,
-  .field--name-body {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 640px) {
-  h2 { font-size: 1.3rem; }
-  h3 { font-size: 1.1rem; }
-  pre { padding: 1rem; font-size: 0.8rem; }
-}
-
-/* ================================================================
+/* ----------------------------------------------------------------
    PROGRAM / COURSE META TABLE
-   ================================================================ */
+   ---------------------------------------------------------------- */
 .program-meta,
 .course-meta {
-  background: var(--color-bg-subtle);
-  border: 1px solid var(--color-border);
-  border-radius: 0.5rem;
+  background: var(--off-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 1.25rem;
   margin-bottom: 2rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1rem;
 }
 
 .program-meta__item label,
 .course-meta__item label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--color-text-muted);
+  color: var(--text-muted);
   display: block;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.25rem;
 }
 
 .program-meta__item span,
 .course-meta__item span {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--color-navy);
+  color: var(--navy);
 }
 
-/* ================================================================
-   HIGHLIGHTED REGION (alerts, notices)
-   ================================================================ */
-.region-highlighted {
-  background: var(--color-amber-muted);
-  border-bottom: 2px solid var(--color-amber);
-  padding: 0.75rem 2rem;
-  font-size: 0.9rem;
-  color: var(--color-navy);
-  font-weight: 500;
+/* ----------------------------------------------------------------
+   FACULTY PROFILE
+   ---------------------------------------------------------------- */
+.faculty-card {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
 }
 
-/* ================================================================
-   TABLE STYLES
-   ================================================================ */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5em 0;
-  font-size: 0.9rem;
+.faculty-card__avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--navy);
+  font-weight: 700;
+  font-family: var(--font-serif);
 }
 
-th {
-  background: var(--color-navy);
-  color: #fff;
-  padding: 0.6rem 0.85rem;
-  text-align: left;
-  font-weight: 600;
+.faculty-card__info h3 { font-size: 1rem; margin: 0 0 0.25rem; }
+.faculty-card__role { font-size: 0.85rem; color: var(--amber); font-weight: 600; }
+.faculty-card__school { font-size: 0.8rem; color: var(--text-muted); }
+
+/* ----------------------------------------------------------------
+   FOOTER
+   ---------------------------------------------------------------- */
+.site-footer {
+  background: var(--navy-dark);
+  color: rgba(255,255,255,0.72);
+  padding: 4rem 0 0;
+  margin-top: 5rem;
+  font-size: 0.875rem;
+}
+
+.site-footer__inner { padding-bottom: 0; }
+
+.site-footer__columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+@media (max-width: 900px) {
+  .site-footer__columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-footer__columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.site-footer__wordmark {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff !important;
+  text-decoration: none !important;
+  letter-spacing: -0.02em;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+.site-footer__wordmark span { color: var(--amber); }
+
+.site-footer__institution {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.55);
+  margin: 0 0 1rem;
+}
+
+.site-footer__location {
   font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.site-footer__heading {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.4);
+  margin: 0 0 1rem;
 }
 
-td {
-  padding: 0.6rem 0.85rem;
-  border-bottom: 1px solid var(--color-border-light);
-  color: var(--color-text);
+.site-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-tr:nth-child(even) td {
-  background: var(--color-bg-subtle);
+.site-footer__links li { margin-bottom: 0.5rem; }
+
+.site-footer__links a,
+.site-footer__links a:link,
+.site-footer__links a:visited {
+  color: rgba(255,255,255,0.68);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.15s;
+}
+.site-footer__links a:hover { color: var(--amber-light); }
+
+/* Footer bottom bar */
+.site-footer__bottom {
+  padding: 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
-tr:hover td {
-  background: var(--color-amber-muted);
+.site-footer__copy {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
 }
+
+/* Disclaimer block */
+.site-footer__disclaimer {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(201,151,58,0.25);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+.site-footer__disclaimer strong { color: var(--amber-light); }
+
+/* Scolta powered badge */
+.scolta-powered-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(201,151,58,0.12);
+  border: 1px solid rgba(201,151,58,0.35);
+  border-radius: 9999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--amber-light);
+  text-decoration: none !important;
+}
+
+/* Hide Powered by Drupal block */
+.block-system-powered-by-block { display: none !important; }
+
+/* Hide Olivero's region footer blocks that we replaced */
+.region-footer-top .block-system-powered-by-block,
+footer .block-system-powered-by-block { display: none !important; }
+
+/* ----------------------------------------------------------------
+   RESPONSIVE
+   ---------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .layout-container { padding-inline: 1.25rem; }
+  .main-content__container { padding-top: 1.5rem; padding-bottom: 3rem; }
+  .view-content { grid-template-columns: 1fr 1fr; }
+  .site-footer__columns { grid-template-columns: 1fr 1fr; gap: 2rem; }
+}
+
+@media (max-width: 640px) {
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.15rem; }
+  pre { padding: 1rem; font-size: 0.8rem; }
+  .view-content { grid-template-columns: 1fr; }
+  .region-hero { padding: 3rem 1.25rem; }
+  .scolta-search-form { flex-direction: column; }
+  .scolta-search-form input,
+  .scolta-search-form button { width: 100%; }
+  .site-footer__columns { grid-template-columns: 1fr; }
+}
+
+/* ----------------------------------------------------------------
+   ADMIN / TOOLBAR OFFSET
+   ---------------------------------------------------------------- */
+body.toolbar-fixed .site-header { top: 39px; }
+body.toolbar-fixed.toolbar-tray-open .site-header { top: 79px; }
+
+/* ----------------------------------------------------------------
+   FOCUS STYLES (accessibility)
+   ---------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ----------------------------------------------------------------
+   DIFFICULTY INDICATOR
+   ---------------------------------------------------------------- */
+.difficulty-bar { display: flex; gap: 3px; align-items: center; margin: 0.5rem 0; }
+.difficulty-bar__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+.difficulty-bar__dot--filled { background: var(--amber); }
+
+/* ----------------------------------------------------------------
+   HOME PAGE COMPONENTS
+   ---------------------------------------------------------------- */
+
+/* Lead paragraph */
+.home-intro .lead {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.65;
+  color: var(--slate);
+  max-width: 80ch;
+  margin-bottom: 2.5rem;
+  border-left: 4px solid var(--amber);
+  padding-left: 1.5rem;
+}
+
+/* Stats row */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 640px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-item {
+  background: var(--off-white);
+  padding: 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-number {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+}
+
+/* Olivero region class override — kill the side offset on full-width content */
+.region.region--content {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* Fix the Olivero grid that offsets content to the right */
+.layout--pass--content-medium,
+.layout--pass--content-narrow {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* ----------------------------------------------------------------
+   OLIVERO GRID KILL SWITCH
+   Olivero uses a 14-column CSS grid that offsets content with
+   content-left padding. We flatten this completely.
+   ---------------------------------------------------------------- */
+
+/* Zero out the content-left indent */
+:root {
+  --content-left: 0px !important;
+}
+
+/* The grid-full wrapper: just display as block, not grid */
+.grid-full {
+  display: block !important;
+}
+
+/* layout--pass children: no column positioning */
+.layout--pass--content-medium > *,
+.layout--pass--content-narrow > *,
+.layout--content-medium,
+.layout--content-narrow {
+  grid-column: unset !important;
+  width: 100% !important;
+}
+
+/* Override Olivero's wide-screen padding-left that uses --content-left */
+@media (min-width: 75rem) {
+  .layout-container {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+}
+
+/* Olivero background stripe: dark left border on main wrapper */
+.layout-main-wrapper::before,
+.layout-main-wrapper::after { display: none !important; }
+
+/* Kill Olivero's social sidebar flex layout */
+.layout-main {
+  display: block !important;
+}
+
+.main-content {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Kill Olivero's white side bar / left offset on nodes */
+.node--view-mode-full {
+  padding-left: 0 !important;
+}
+
+/* Remove Olivero block inner padding */
+.region--content .block__content { padding: 0 !important; }
+
+/* Override Olivero footer background stripe */
+.site-footer::before { display: none !important; }
+
+/* Override Olivero's header internal background colors */
+.site-header__initial {
+  background: var(--navy) !important;
+  display: none !important; /* We don't use sticky toggle */
+}
+
+.site-header__fixable {
+  display: block !important;
+  background: var(--navy) !important;
+}
+
+/* Remove Olivero's primary-50 color from header elements */
+.site-header__inner { background: var(--navy) !important; }
+
+/* Olivero adds a box-shadow in is-fixed state */
+.site-header__inner.is-fixed { box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important; }
+
+/* Olivero main-content top padding override */
+.main-content__container {
+  padding-block-start: 2rem !important;
+}
+
+/* Remove Olivero text-content styles from interfering */
+.text-content { font-family: var(--font-sans) !important; }
+
+/* Olivero adds its own link color to .text-content */
+.text-content a { color: var(--navy); }
+.text-content a:hover { color: var(--amber); }
