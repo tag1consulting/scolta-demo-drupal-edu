@@ -1514,3 +1514,31 @@ body.toolbar-fixed.toolbar-tray-open .site-header { top: 79px; }
 /* Olivero adds its own link color to .text-content */
 .text-content a { color: var(--navy); }
 .text-content a:hover { color: var(--amber); }
+
+/* ----------------------------------------------------------------
+   DEMO PAGE LOGOS (About This Demo page)
+   ---------------------------------------------------------------- */
+.demo-logo-block {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1.25rem 0;
+  margin: 0.5rem 0 1.75rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.demo-logo {
+  display: block;
+  width: auto;
+  max-height: 44px;
+  object-fit: contain;
+}
+
+.demo-logo--drupal {
+  max-height: 52px;
+}
+
+.demo-logo--tag1 {
+  max-height: 38px;
+}
