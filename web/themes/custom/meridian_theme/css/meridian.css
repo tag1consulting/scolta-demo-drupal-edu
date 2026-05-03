@@ -529,6 +529,37 @@ p { margin: 0 0 1.1em; }
   display: block;
 }
 
+/* Faculty portrait variant: floats right in full view, stacks normally in teaser */
+.node--view-mode-full .node-featured-image--portrait {
+  float: right;
+  width: 240px;
+  margin: 0 0 1.5rem 2.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 0;
+  shape-outside: border-box;
+}
+
+.node--view-mode-full .node-featured-image--portrait img {
+  width: 240px;
+  height: 300px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* In teaser the portrait still bleeds full-width like any other card image */
+.node--view-mode-teaser .node-featured-image--portrait img {
+  object-position: top center;
+}
+
+/* Clearfix so card footer clears the float */
+.node--view-mode-full .node__content::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
 /* Inline editorial image (used in About page between sections) */
 .node-inline-image {
   margin: 2rem 0;
