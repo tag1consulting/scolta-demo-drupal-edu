@@ -1,0 +1,378 @@
+# Meridian AI — Resource Articles Batch 2
+# SLR Articles 14-25, SPS Articles 1-12
+
+- title: "Mixture of Experts: How Sparse Models Scale"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Advanced"
+  topics:
+    - "Large Language Models"
+    - "Transformers"
+  body: |
+    <h2>The Scaling Dilemma</h2>
+    <p>Making LLMs better by making them bigger works — up to a point. Doubling the number of parameters roughly doubles the compute required for every forward pass. At some point, you want a bigger model but can't afford the inference cost. Mixture of Experts (MoE) architecture offers a way out: a model with many more parameters than a dense model, but with only a fraction of those parameters active during any given computation.</p>
+
+    <h2>The MoE Architecture</h2>
+    <p>In a standard (dense) transformer, every token passes through every layer, activating all parameters. In an MoE transformer, each feed-forward layer is replaced with multiple "expert" networks plus a learned "router" that selects which experts to activate for each token:</p>
+    <pre><code>MoE(x) = Σ_i gate(x)_i · Expert_i(x)</code></pre>
+    <p>Typically only 2 of K experts are activated per token (top-2 routing). So a model with 8 experts activates 2 for each token: 25% of the expert capacity. The total parameters include all experts, but the FLOPs per token are roughly equivalent to a model with one expert.</p>
+
+    <h2>Why This Helps</h2>
+    <p>MoE separates two things that dense models conflate: the total knowledge stored in parameters (which scales with total parameters) and the compute required per forward pass (which scales with active parameters). An MoE model can store as much knowledge as a model 8× its size while having inference costs similar to a model 1/4 that size.</p>
+    <p>Mixtral 8×7B (Mistral AI, December 2023) demonstrated this concretely: with 46.7B total parameters but only ~12.9B active per forward pass, it matched or exceeded LLaMA-2 70B on most benchmarks at roughly the same inference cost as a 13B dense model.</p>
+
+    <h2>Training MoE Models</h2>
+    <p>MoE training requires careful engineering. The most important challenge is load balancing: the router tends to favor a small number of experts and ignore others ("expert collapse"), resulting in wasted capacity. Solutions include auxiliary load balancing losses that penalize uneven expert utilization, and random expert perturbation during early training. Expert buffer overflow (more tokens routed to an expert than its capacity allows) requires additional handling.</p>
+    <p>DeepSeek's MoE design innovations in V2 and V3 — shared experts, fine-grained routing, auxiliary loss design — represent the current state of the art in MoE training stability and efficiency.</p>
+
+    <h2>When MoE Makes Sense</h2>
+    <p>MoE is compelling for large models that need to be deployed at scale. For smaller models or low-throughput applications, the engineering complexity may not be worth the efficiency gains. The architecture also requires specialized serving infrastructure: load balancing across experts, careful batching to amortize the overhead of expert selection. For high-throughput applications with large models, MoE is increasingly the architecture of choice.</p>
+
+- title: "Positional Encoding: RoPE, ALiBi, and How Models Handle Position"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Advanced"
+  topics:
+    - "Transformers"
+    - "Large Language Models"
+  body: |
+    <h2>Position in Transformers</h2>
+    <p>Self-attention is inherently position-agnostic: if you shuffle the tokens, the attention patterns change but the architecture itself doesn't "know" positions. For tasks where order matters — which is basically all of language — you need to inject positional information. The choice of positional encoding determines how well the model handles long sequences and generalizes to sequence lengths beyond those seen during training.</p>
+
+    <h2>Sinusoidal Encoding (Original Transformer)</h2>
+    <p>The original transformer used fixed sinusoidal encodings added to token embeddings. The frequency pattern allows the model to compute relative positions through dot products, and the sinusoidal structure theoretically supports extrapolation to longer sequences. In practice, the original sinusoidal encoding doesn't generalize well to sequences longer than those seen during training.</p>
+
+    <h2>Learned Absolute Positions</h2>
+    <p>GPT-2 and early BERT models used learned absolute position embeddings: each position 1, 2, ..., N gets a trainable embedding vector that is added to the token embedding. Simple and effective within the training context length, but hard limit: position N+1 has no embedding. Long-context generalization requires either extrapolation (poor results) or further training on longer sequences.</p>
+
+    <h2>Relative Positional Encodings</h2>
+    <p>Rather than encoding absolute positions, relative encodings represent the distance between pairs of tokens. T5 uses learned relative bias terms added to attention logits; the model learns different attention biases for tokens that are 1 apart, 2 apart, 4 apart, etc. (with bucketing for large distances). This generalizes better to longer sequences because the model only needs to understand relative positions, not absolute ones.</p>
+
+    <h2>RoPE: Rotary Position Embedding</h2>
+    <p>RoPE (Su et al., 2021) applies a rotation to query and key vectors based on their absolute position. The mathematical insight: the dot product between rotated query and rotated key naturally captures relative position — the rotation angle difference equals the relative position. This makes RoPE a clean, computationally efficient way to inject position information.</p>
+    <p>RoPE has become the dominant positional encoding for modern LLMs: Llama 2/3, GPT-NeoX, Falcon, Mistral, and most frontier models use it. Key advantages: works within the standard attention mechanism without modifying its structure; scales well to long sequences; supports "YaRN" and "RoPE scaling" for context length extension.</p>
+
+    <h2>ALiBi: Attention with Linear Biases</h2>
+    <p>ALiBi (Press et al., 2022) adds a fixed, non-learned negative bias to attention logits, proportional to the distance between tokens. No positional vectors are added to embeddings; the position information is entirely in the attention bias. Key property: tokens that are far apart receive stronger negative attention bias, naturally discouraging attention across very long distances. This makes ALiBi particularly suited to long-context applications and enables training on shorter sequences then generalizing to longer ones — a major advantage over absolute encoding schemes. Used in BLOOM and several MPT models.</p>
+
+    <h2>Context Length Extension with RoPE Scaling</h2>
+    <p>A model trained with RoPE up to 4K tokens can be extended to 128K+ tokens by scaling the RoPE base frequency. Methods include NTK-aware scaling (preserving high-frequency components), YaRN (Yet another RoPE extensioN), and LongRoPE. In practice, some additional fine-tuning on long sequences is required for reliable long-context performance, but the RoPE scaling provides a much better initialization than starting from scratch.</p>
+
+- title: "Benchmarking LLMs: What Leaderboards Actually Measure"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  topics:
+    - "Large Language Models"
+  body: |
+    <h2>The Benchmark Game</h2>
+    <p>Every major LLM release comes with a table of benchmark scores. The model beats the previous state-of-the-art on MMLU, HumanEval, and GSM8K. The next model's announcement features the same charts. Benchmark scores have become the primary language of LLM comparison, but understanding what these scores actually measure — and where they systematically mislead — is essential for making good model selection decisions.</p>
+
+    <h2>The Major Benchmarks</h2>
+    <ul>
+      <li><strong>MMLU (Massive Multitask Language Understanding):</strong> 57 subjects, 14,000+ multiple-choice questions. Tests general knowledge across academic and professional domains. Widely reported; widely criticized for being saturated (most frontier models score 85%+) and for having noisy labels.</li>
+      <li><strong>HumanEval / MBPP:</strong> Code generation benchmarks. HumanEval asks models to write Python functions; MBPP tests broader programming knowledge. More reliable than MMLU for code-specific use cases, but still relatively saturated.</li>
+      <li><strong>GSM8K:</strong> Grade-school math word problems. Tests multi-step arithmetic reasoning. Performance here differentiates models well at the 7B scale but is saturated for frontier models.</li>
+      <li><strong>MATH:</strong> Hard competition math problems. Still differentiates frontier models; currently scores range from 40% to 90%+ depending on model size and specialization.</li>
+      <li><strong>Chatbot Arena (LMSYS):</strong> Human preference evaluation via side-by-side comparisons. Considered the most reliable indicator of real-world chat quality because it uses actual users with real questions.</li>
+    </ul>
+
+    <h2>The Contamination Problem</h2>
+    <p>Benchmark contamination — when training data includes benchmark test questions — is a persistent problem. Models that have seen benchmark questions during training will score higher without being more capable. Several studies have demonstrated this: model performance drops significantly when evaluated on "held-out" versions of MMLU and GSM8K that weren't in training data. The extent of contamination in closed models is unknown; in open models, analysis of pretraining data is possible but still tedious.</p>
+
+    <h2>What Benchmarks Don't Measure</h2>
+    <p>Benchmark scores are poor predictors of performance on:</p>
+    <ul>
+      <li>Your specific task and domain (if it's different from the benchmark's distribution)</li>
+      <li>Long-form generation quality (most benchmarks use short-form outputs)</li>
+      <li>Instruction following and format compliance</li>
+      <li>Factual accuracy on niche topics</li>
+      <li>Latency and throughput at scale</li>
+      <li>Alignment and safety properties</li>
+      <li>Consistency across many calls with the same input</li>
+    </ul>
+
+    <h2>What You Should Actually Do</h2>
+    <p>The right approach to model selection:</p>
+    <ol>
+      <li>Start with Chatbot Arena rankings for general quality signal</li>
+      <li>Look at task-specific leaderboards if your use case has one (code, math, languages)</li>
+      <li>Build a representative eval set from your own data and measure what matters to you</li>
+      <li>Test your top 3-4 candidates on your eval set</li>
+      <li>Factor in latency, cost, and reliability requirements</li>
+    </ol>
+    <p>Benchmark scores are a starting point for narrowing the candidate list, not a final answer.</p>
+
+- title: "Chain-of-Thought Prompting: Theory and Practice"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  topics:
+    - "Large Language Models"
+  body: |
+    <h2>Why Scratchpads Help</h2>
+    <p>When you ask an LLM a math problem, it produces a token sequence. Each token is predicted based on the preceding context. If the answer requires multiple computation steps, but the model must output the final answer immediately, it has no way to compute intermediate steps — it simply predicts the most likely token to follow the question.</p>
+    <p>Chain-of-thought (CoT) prompting changes this by instructing the model to show its reasoning before giving its final answer. The reasoning steps become part of the context that the final answer is conditioned on, giving the model the computational intermediate steps it needs.</p>
+
+    <h2>Zero-Shot Chain-of-Thought</h2>
+    <p>The simplest form, introduced by Kojima et al. (2022): simply append "Let's think step by step." to any prompt. This single phrase consistently improves performance on arithmetic, logical reasoning, and multi-step inference tasks. The improvement is often dramatic — accuracy on GSM8K math problems went from ~18% to ~48% for early GPT-3 with this simple addition.</p>
+
+    <h2>Few-Shot Chain-of-Thought</h2>
+    <p>Few-shot CoT (Wei et al., 2022) provides complete reasoning examples in the prompt. Each example shows the full step-by-step reasoning process, teaching the model the desired format and level of detail. This typically outperforms zero-shot CoT by 5-15% on challenging benchmarks but requires more prompt engineering effort.</p>
+
+    <h2>Self-Consistency CoT</h2>
+    <p>Rather than taking a single reasoning chain, self-consistency (Wang et al., 2023) generates multiple diverse reasoning paths (by sampling at temperature &gt; 0) and takes a majority vote on the final answer. This works because different valid reasoning paths through a problem often arrive at the same correct answer, while incorrect reasoning paths diverge. Self-consistency typically improves CoT accuracy by 5-10% at the cost of 10-20× more compute.</p>
+
+    <h2>Tree of Thoughts</h2>
+    <p>Tree of Thoughts (Yao et al., 2023) extends CoT from linear chains to tree-structured exploration. The model generates multiple partial reasoning paths, evaluates their promise (using another LLM call), and expands the most promising paths. This enables backtracking and exploration that linear CoT cannot do. Particularly effective for problems where intermediate states can be evaluated (puzzles, planning, code debugging).</p>
+
+    <h2>When to Use CoT</h2>
+    <p>CoT helps when: the task requires multiple sequential reasoning steps, computation is involved (arithmetic, logic), or the answer depends on synthesis of multiple pieces of information. CoT doesn't help much for: simple factual questions, classification tasks, or short text generation. And CoT can hurt for: tasks where the correct answer is to be brief and direct, where CoT overhead isn't justified.</p>
+    <p>Modern frontier models (Claude 3.5 Sonnet, GPT-4o, Gemini 1.5 Pro) largely do CoT automatically when the task requires it — the "think step by step" instruction is less necessary than it was with GPT-3. But for smaller models and specific complex reasoning tasks, explicit CoT prompting remains valuable.</p>
+
+- title: "When to Fine-Tune vs. When to Prompt"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  topics:
+    - "Large Language Models"
+  body: |
+    <h2>The Central Question</h2>
+    <p>You have a task: classify support tickets, write in your brand voice, extract structured data from medical records. Should you fine-tune a model for it, or should you write a good prompt and use a general-purpose model? This question comes up constantly in production AI development, and the wrong answer is expensive either way.</p>
+
+    <h2>Arguments for Prompting (Start Here)</h2>
+    <p>Prompting should be your default. The reasons:</p>
+    <ul>
+      <li><strong>No training cost:</strong> A good prompt costs API calls to develop. Fine-tuning costs GPU hours plus your engineering time.</li>
+      <li><strong>No deployment overhead:</strong> You use the same API endpoint. Fine-tuned models require separate serving infrastructure.</li>
+      <li><strong>Updatable:</strong> Changing a prompt takes minutes. Updating a fine-tuned model requires a new training run.</li>
+      <li><strong>Composable:</strong> A well-prompted model can handle multiple tasks; a fine-tuned model is optimized for one.</li>
+    </ul>
+    <p>A surprising number of tasks that seem to require fine-tuning can be handled with thorough prompting: clear instructions, few-shot examples, schema definition, and output validation. Before fine-tuning, spend a week on prompt engineering.</p>
+
+    <h2>When Fine-Tuning Makes Sense</h2>
+    <p>Fine-tuning is worth the investment when:</p>
+    <ul>
+      <li><strong>Quality ceiling:</strong> You've exhausted prompt engineering and can't reach acceptable quality. Fine-tuning often closes the remaining gap.</li>
+      <li><strong>Latency:</strong> Prompts that include many few-shot examples use many tokens. Fine-tuning "burns in" examples, reducing prompt length and latency.</li>
+      <li><strong>Cost at scale:</strong> If you're making millions of API calls, a smaller fine-tuned model may be dramatically cheaper than a large prompted model.</li>
+      <li><strong>Proprietary format:</strong> Teaching a model your specific data format (an unusual citation style, a proprietary schema) is much more reliable via fine-tuning than prompting.</li>
+      <li><strong>Sensitive data:</strong> If sending data to an external API is unacceptable, you must use a self-hosted fine-tuned model.</li>
+      <li><strong>Style/voice:</strong> Adapting to a specific writing style (a brand voice, a person's communication style) works better with fine-tuning than prompting for subtle differences.</li>
+    </ul>
+
+    <h2>The Decision Framework</h2>
+    <p>Simple decision tree:</p>
+    <ol>
+      <li>Have you tried a thorough prompt with 5+ examples? If not, do that first.</li>
+      <li>What's the quality gap? If prompting gets you to 85% of your target quality, fine-tuning may close the remaining 15%. If prompting gets you to 40%, re-examine your task definition.</li>
+      <li>What's your volume? Under 100K calls/month, prompting is almost always cheaper. Over 1M calls/month, calculate the cost crossover.</li>
+      <li>Can you tolerate 2-4 week iteration cycles? Fine-tuning experiments take time. If you need to iterate fast, stick with prompting.</li>
+    </ol>
+
+    <h2>Prompt + Fine-Tune Hybrid</h2>
+    <p>The dichotomy is false. Many production systems fine-tune a model for the task's domain and format, then use prompting to handle task-specific instructions that change across requests. The fine-tune handles stable, high-value adaptations; the prompt handles dynamic, request-specific customization.</p>
+
+- title: "Diffusion Models Explained: From Noise to Art"
+  type: resource_article
+  school: "School of Perception & Synthesis"
+  difficulty: "Intermediate"
+  related_program_title: "MS in Computer Vision & Visual AI"
+  topics:
+    - "Generative AI"
+    - "Computer Vision"
+  body: |
+    <h2>The Counterintuitive Process</h2>
+    <p>Diffusion models generate images by learning to reverse a process of gradual noise addition. The insight seems backwards: to learn to create clean images, you first learn to destroy them. But this counterintuitive approach has produced the most capable image generation systems in history, from Stable Diffusion to DALL-E 3 to FLUX.</p>
+
+    <h2>The Forward Process: Adding Noise</h2>
+    <p>Training starts with real images. A diffusion model's forward process takes a clean image x₀ and adds Gaussian noise in T steps, producing increasingly noisy images x₁, x₂, ..., xₜ, until at step T the image is pure noise. The process is mathematically defined as a Markov chain:</p>
+    <pre><code>q(xₜ|xₜ₋₁) = N(xₜ; √(1-βₜ)xₜ₋₁, βₜI)</code></pre>
+    <p>Where βₜ is a noise schedule that controls how much noise is added at each step. After T steps (typically T=1000), the original image is completely unrecognizable. The key property of this process: for any t, we can directly sample xₜ from x₀ without running all t steps:</p>
+    <pre><code>q(xₜ|x₀) = N(xₜ; √ᾱₜ x₀, (1-ᾱₜ)I)</code></pre>
+
+    <h2>The Reverse Process: Denoising</h2>
+    <p>The reverse process learns to undo the noise addition step by step, starting from pure noise xₜ and progressively cleaning it toward a coherent image x₀. A neural network (typically a UNet for DDPM, or a transformer-based architecture for newer models) is trained to predict the noise that was added at each step, given the noisy image and the timestep.</p>
+    <p>During inference, we start with random Gaussian noise and repeatedly apply the learned denoising step, iteratively refining the image. After T denoising steps, we have a sample from the distribution of real images — but a novel image, not a copy of anything in the training data.</p>
+
+    <h2>DDIM: Faster Sampling</h2>
+    <p>DDPM's 1000-step denoising is slow. DDIM (Denoising Diffusion Implicit Models) reformulates the sampling process as a non-Markovian chain, enabling sampling in 10-50 steps with minimal quality loss. Most practical diffusion systems use DDIM or its variants rather than the original DDPM sampling schedule.</p>
+
+    <h2>Latent Diffusion: The Key to Scalability</h2>
+    <p>Applying diffusion directly in pixel space is expensive: a 512×512 image has 786,432 pixels. Latent Diffusion Models (LDM), the basis of Stable Diffusion, first encode the image into a lower-dimensional latent representation using a trained variational autoencoder (VAE), then apply diffusion in this latent space. The VAE encodes images to latents ~64× smaller than the original; diffusion in this space is dramatically faster.</p>
+
+    <h2>Text Conditioning</h2>
+    <p>Text-to-image generation requires conditioning the denoising process on a text description. Most systems use CLIP or a T5-family text encoder to convert the text prompt into a sequence of embeddings, which are then injected into the denoising UNet via cross-attention layers. The UNet attends to text features at each denoising step, guiding the image toward the described content.</p>
+    <p>Classifier-free guidance (CFG) scales the influence of the text condition: with CFG scale 7, the image strongly adheres to the prompt; with CFG scale 1, it follows the prompt loosely. Higher CFG scale produces more "prompt-accurate" but sometimes less photorealistic images.</p>
+
+    <h2>FLUX and Flow Matching</h2>
+    <p>FLUX (Black Forest Labs, 2024) uses flow matching rather than diffusion. Instead of learning to denoise Gaussian noise, the model learns to transport samples along straight-line trajectories between the noise distribution and the data distribution. Flow matching is mathematically cleaner and enables better sample quality with fewer function evaluations. FLUX's architecture also uses a "multimodal diffusion transformer" (MMDiT) that processes text and image tokens jointly, producing superior text rendering in generated images compared to earlier architectures.</p>
+
+- title: "Vision Transformers vs CNNs: The Architecture Shift"
+  type: resource_article
+  school: "School of Perception & Synthesis"
+  difficulty: "Intermediate"
+  related_program_title: "MS in Computer Vision & Visual AI"
+  topics:
+    - "Computer Vision"
+    - "Transformers"
+  body: |
+    <h2>The CNN Era</h2>
+    <p>For most of the deep learning era, convolutional neural networks (CNNs) were the unchallenged architecture for vision tasks. AlexNet (2012) launched the deep learning era. VGG, ResNet, EfficientNet, and ConvNeXt progressively improved performance and efficiency. CNNs have inductive biases well-suited to vision: translation equivariance (a cat is a cat regardless of where it appears in the image) and local connectivity (nearby pixels are more related than distant ones).</p>
+    <p>By 2020, CNNs had achieved remarkable results across object classification, detection, and segmentation. The question wasn't whether to use CNNs for vision — it was which CNN.</p>
+
+    <h2>ViT: Applying Transformer to Images</h2>
+    <p>Vision Transformer (ViT), from Google Brain in 2020, applied the transformer architecture to images with minimal changes. The approach: divide the image into 16×16 pixel patches, embed each patch as a single token, add position embeddings, and run a standard transformer encoder. The resulting "sequence of image patches" is processed identically to a sequence of words in NLP.</p>
+    <p>The paper's key finding: ViT matches or exceeds CNNs at scale, but requires much more data and compute to train. On ImageNet (1.2M images), a ViT trained from scratch underperforms ResNet. But pre-trained on JFT-300M (300M images), ViT significantly outperforms ResNet.</p>
+    <p>This data-dependence was initially seen as a limitation. It turned out to be a preview of a more general principle: transformers improve more rapidly with scale than CNNs, eventually overtaking them as scale increases.</p>
+
+    <h2>Why ViT Wins at Scale</h2>
+    <p>CNNs have strong inductive biases (local connectivity, translation equivariance) that help with limited data. Transformers have weaker inductive biases but can learn any relationship between arbitrary positions — including non-local ones that CNNs find difficult. With enough data, transformers learn the inductive biases that CNNs have built in, plus additional ones CNNs can't express.</p>
+    <p>Self-attention also scales favorably: larger ViT models show consistent improvement on LSVRC ImageNet-1K without the performance saturation that affects large CNNs. The quadratic attention cost is less of a problem for images than text (images are shorter sequences when patched) and can be addressed with efficient attention variants.</p>
+
+    <h2>DINO and Self-Supervised ViT</h2>
+    <p>DINO (Caron et al., 2021) from Meta demonstrated that self-supervised training — without labels — could produce ViT representations with striking properties: clear semantic segmentation emerging without any segmentation supervision, nearest-neighbor retrieval matching supervised methods, and probing for object boundaries. DINO's success showed that ViT's inductive biases, when combined with sufficient self-supervised training data, produce feature spaces with qualitatively different properties from CNNs.</p>
+    <p>DINOv2 (2023) scaled this up with curated training data, producing backbone features competitive with supervised training on nearly all downstream tasks. DINOv2 features are now a standard starting point for many computer vision applications.</p>
+
+    <h2>Hybrid Architectures</h2>
+    <p>The CNN vs. ViT debate has largely been resolved in practice: hybrid architectures combining convolutional and attention layers often outperform pure versions of either. ConvNeXt (2022) showed that carefully modernized CNNs match ViTs; MaxViT, EfficientViT, and Swin Transformer use hierarchical designs that combine local convolutional processing with global attention. The practical choice depends on the task, data scale, and deployment constraints rather than a blanket architecture preference.</p>
+
+- title: "CLIP: Connecting Vision and Language"
+  type: resource_article
+  school: "School of Perception & Synthesis"
+  difficulty: "Intermediate"
+  topics:
+    - "Computer Vision"
+    - "Multimodal AI"
+  body: |
+    <h2>The Power of Unlabeled Image-Text Pairs</h2>
+    <p>CLIP (Contrastive Language-Image Pre-Training), from OpenAI in 2021, changed how we think about visual representation learning. Instead of training classifiers on labeled datasets, CLIP learns from 400 million (image, text) pairs scraped from the internet — pairs where a caption describes or discusses an image. The result: a model that understands images in terms of natural language, enabling zero-shot classification of arbitrary categories and cross-modal retrieval.</p>
+
+    <h2>The Architecture</h2>
+    <p>CLIP has two encoders: a vision encoder (ViT or ResNet) that maps images to embedding vectors, and a text encoder (transformer) that maps text to embedding vectors. Both embeddings live in the same shared vector space, trained such that matching image-text pairs have similar embeddings and non-matching pairs have dissimilar embeddings.</p>
+    <p>Training uses contrastive loss: for a batch of N image-text pairs, the model learns to maximize similarity between the N matching pairs and minimize similarity between the N² - N non-matching pairs. This creates a rich embedding space where proximity means semantic relevance across modalities.</p>
+
+    <h2>Zero-Shot Classification</h2>
+    <p>CLIP's most striking capability is zero-shot image classification. To classify an image into K categories without any category-specific training:</p>
+    <ol>
+      <li>For each category, create a text prompt: "A photo of a [category]."</li>
+      <li>Embed all text prompts and the query image</li>
+      <li>Find the text embedding most similar to the image embedding</li>
+      <li>The corresponding category is the classification</li>
+    </ol>
+    <p>On ImageNet, zero-shot CLIP achieves 76.2% top-1 accuracy — competitive with many supervised ResNet models, without seeing a single labeled ImageNet example. This generalizes to any category that can be described in text, including categories that don't exist in any training set.</p>
+
+    <h2>Applications and Derivatives</h2>
+    <p>CLIP embeddings are widely used for: image retrieval (find images matching a text query), filtering training data (select images matching specific criteria), open-vocabulary object detection (ground any textual description to image regions), and as the image encoder in text-to-image models (Stable Diffusion, DALL-E).</p>
+    <p>Significant derivatives include SigLIP (Google, 2023: improved training efficiency), ALIGN (Google: larger training data), OpenCLIP (open-source reimplementation with multiple model sizes), and EVA-CLIP (improved ViT backbone). CLIP-family models are foundational infrastructure in modern multimodal AI.</p>
+
+- title: "SAM and the Democratization of Image Segmentation"
+  type: resource_article
+  school: "School of Perception & Synthesis"
+  difficulty: "Intermediate"
+  topics:
+    - "Computer Vision"
+  body: |
+    <h2>The Segmentation Problem</h2>
+    <p>Image segmentation — identifying which pixels belong to which object — has historically required large amounts of labeled training data specific to each application domain. A model trained on medical images can't segment satellite imagery. A model trained on indoor scenes doesn't work on microscopy slides. This data requirement has been a major barrier to deploying segmentation in new applications.</p>
+    <p>The Segment Anything Model (SAM), from Meta AI Research in 2023, changed this by building a foundation model for segmentation — one that generalizes to new domains and objects without retraining.</p>
+
+    <h2>SAM's Architecture</h2>
+    <p>SAM consists of three components: an image encoder (heavyweight ViT that runs once per image), a prompt encoder (lightweight, for interactive prompts), and a mask decoder (lightweight transformer that outputs segmentation masks). The image encoder produces a feature representation of the entire image; the prompt encoder handles point, box, mask, or text prompts that indicate what to segment; the mask decoder generates the actual segmentation mask.</p>
+    <p>The separation of heavy (image encoding) from light (prompt + decode) is key for interactive use: you precompute the expensive image encoding once, then respond to user prompts at real-time speeds.</p>
+
+    <h2>The SA-1B Dataset</h2>
+    <p>SAM's capabilities come from scale: it was trained on SA-1B, a dataset of 1 billion segmentation masks across 11 million images, assembled through a "data engine" that used SAM itself (in progressively capable versions) to annotate images with human review. No previously available segmentation dataset came close to this scale.</p>
+
+    <h2>Zero-Shot Generalization</h2>
+    <p>SAM was tested on 23 diverse segmentation benchmarks it had never seen during training, ranging from underwater footage to microscopy to satellite imagery. It outperformed prior state-of-the-art segmentation models on 16 of 23 benchmarks, without any fine-tuning. This zero-shot performance demonstrates genuine generalization rather than task-specific optimization.</p>
+
+    <h2>SAM 2: Video Segmentation</h2>
+    <p>SAM 2 (2024) extended SAM to video: given a prompt in any frame, SAM 2 propagates the segmentation through the entire video, handling occlusion and reappearance. This is significantly harder than per-frame segmentation because objects change appearance, get occluded, and require tracking memory. SAM 2 sets state-of-the-art results on video object segmentation benchmarks while maintaining the interactive, promptable interface of the original SAM.</p>
+
+- title: "Multimodal AI: When Models See, Hear, and Read"
+  type: resource_article
+  school: "School of Perception & Synthesis"
+  difficulty: "Introductory"
+  topics:
+    - "Multimodal AI"
+  body: |
+    <h2>Beyond Single-Modality AI</h2>
+    <p>Human cognition is inherently multimodal: we process visual, auditory, and textual information simultaneously, combining them to understand context that no single modality could provide alone. AI systems are increasingly following this pattern — not through a single grand unified model, but through increasingly tight integration of vision, language, and audio processing.</p>
+
+    <h2>What "Multimodal" Means in Practice</h2>
+    <p>In current AI systems, "multimodal" usually means at least one of:</p>
+    <ul>
+      <li><strong>Vision + Language:</strong> Models that understand and generate both images and text. GPT-4V, Claude 3, Gemini 1.5 — all can read images, answer questions about them, analyze charts, describe scenes.</li>
+      <li><strong>Text-to-Image:</strong> Generating images from text descriptions. Stable Diffusion, DALL-E 3, FLUX, Midjourney.</li>
+      <li><strong>Speech + Language:</strong> Speech recognition (Whisper), text-to-speech (ElevenLabs, OpenAI TTS), and real-time voice conversation (GPT-4o voice mode).</li>
+      <li><strong>Video Understanding:</strong> Analyzing video content, describing actions, answering questions about scenes in video.</li>
+    </ul>
+
+    <h2>Architecture Approaches</h2>
+    <p>The dominant architecture for language models that understand images uses a projection layer between a vision encoder (usually CLIP-family or DINOv2) and a language model. The vision encoder converts the image to patch embeddings; the projection layer aligns these to the language model's embedding space; the language model processes them as additional tokens. This "visual tokens" approach is used in LLaVA, InstructBLIP, and variants of GPT-4V.</p>
+    <p>More tightly integrated architectures (like Gemini 1.5 and Claude 3's native vision) train visual understanding from the beginning rather than adapting a pre-trained language model, enabling better integration of visual and linguistic reasoning.</p>
+
+    <h2>What Multimodal Models Actually Do Well</h2>
+    <p>Current multimodal LLMs excel at: describing image content, answering factual questions about images, reading text in images (OCR), analyzing charts and diagrams (with some errors), identifying objects and spatial relationships, and understanding document layouts. They struggle with: precise counting and measurement, detailed spatial reasoning, identifying subtle visual differences, and understanding novel image types outside their training distribution.</p>
+
+    <h2>Emerging Capabilities</h2>
+    <p>The frontier is moving rapidly. GPT-4o, Gemini 2.0 Flash, and Llama 3.2 Vision demonstrate increasingly sophisticated visual reasoning. Audio-visual models (processing video with sound together) are emerging. Real-time vision for robotics is an active area. The combination of better vision encoders, larger language models, and richer multimodal training data continues to push capabilities forward rapidly.</p>
+
+- title: "Object Detection in 2026: YOLO, DETR, and Beyond"
+  type: resource_article
+  school: "School of Perception & Synthesis"
+  difficulty: "Advanced"
+  topics:
+    - "Computer Vision"
+  body: |
+    <h2>The Object Detection Problem</h2>
+    <p>Object detection is the task of identifying all objects of interest in an image and drawing bounding boxes around them. It's one of the most practically important computer vision tasks: it underlies autonomous driving, security systems, medical imaging, inventory management, and countless other applications. The field has undergone several architectural revolutions since 2014.</p>
+
+    <h2>Two-Stage Detectors: Precision First</h2>
+    <p>Two-stage detectors (Faster R-CNN, Mask R-CNN) first propose candidate object regions, then classify and refine them. Stage 1: a Region Proposal Network (RPN) uses sliding windows over feature maps to generate candidate bounding boxes. Stage 2: an ROI pooling operation extracts features for each proposal, which are then classified and box-refined. This approach is highly accurate but slower due to the two-stage pipeline.</p>
+
+    <h2>YOLO: Real-Time Detection</h2>
+    <p>YOLO (You Only Look Once) prioritizes speed by treating detection as a single regression problem. The image is divided into an S×S grid; each grid cell predicts B bounding boxes and class probabilities. This single-pass approach achieves real-time detection speeds (30-100+ FPS) that two-stage detectors can't match. The tradeoff: historically lower accuracy, especially on small objects.</p>
+    <p>YOLOv8 (Ultralytics, 2023) and YOLOv9/v10/v11 have dramatically narrowed the accuracy gap with two-stage detectors while maintaining excellent speed. On COCO, YOLOv9 achieves 55.6% mAP at 53.6 FPS on an A100 — competitive with much slower approaches.</p>
+
+    <h2>DETR: Detection as Set Prediction</h2>
+    <p>DETR (DEtection TRansformer, 2020) reformulated object detection using a transformer encoder-decoder and treating detection as a set prediction problem. No anchor boxes, no non-maximum suppression, no hand-crafted components — the model directly outputs a fixed set of predicted objects. The simplicity is appealing; the training is expensive and slow.</p>
+    <p>DETR variants (Deformable DETR, DINO-DETR, RT-DETR) have addressed the training speed problem and significantly improved performance. RT-DETR (Real-Time DETR) achieves 53.1% mAP at 108 FPS on A100 — showing that transformer-based detection can be both accurate and fast.</p>
+
+    <h2>Open-Vocabulary and Grounding Models</h2>
+    <p>The frontier in 2026 is open-vocabulary detection: detecting objects described in natural language rather than fixed category lists. GroundingDINO, GDINO-1.5, and similar models can detect "the person wearing a red hat" or "the broken circuit board" without any category-specific training. This enables new applications like instruction-following visual agents and zero-shot quality control systems.</p>
+
+- title: "Text-to-Image in 2026: FLUX, Midjourney, DALL-E, and Open Alternatives"
+  type: resource_article
+  school: "School of Perception & Synthesis"
+  difficulty: "Introductory"
+  topics:
+    - "Generative AI"
+  body: |
+    <h2>The State of Image Generation</h2>
+    <p>In 2022, a text-to-image system that could generate photorealistic images from arbitrary descriptions was science fiction for most users. By 2024, it was a commodity. By 2026, the technology is embedded in creative workflows across advertising, entertainment, design, and media production. This article provides a practical overview of the major systems and how to choose between them.</p>
+
+    <h2>FLUX (Black Forest Labs)</h2>
+    <p>FLUX.1 (2024) represents the current state of the art in open-weight text-to-image generation. Its architecture uses flow matching with a transformer backbone (MMDiT — Multimodal Diffusion Transformer) that jointly processes text and image tokens. Key strengths: excellent text rendering in images (historically a weakness of diffusion models), superior prompt adherence, highly realistic human faces and anatomy, and strong compositional understanding.</p>
+    <p>FLUX.1 Pro (via API) and FLUX.1 Dev (open weights, non-commercial) are the primary variants. FLUX.1 Schnell is a distilled version for faster generation at modest quality cost. The open weights have spawned a large ecosystem of fine-tunes and community models.</p>
+
+    <h2>Midjourney</h2>
+    <p>Midjourney (V6, V7) prioritizes artistic quality and aesthetic appeal. Its proprietary training and model architecture produce images with a distinctive "Midjourney look" — often described as painterly, dramatic, and visually striking — that differs from the photorealistic default of FLUX and DALL-E. Midjourney is the dominant choice for artistic and creative work where aesthetic quality matters more than photographic accuracy.</p>
+    <p>Midjourney is available only via API (Discord-based or web interface); no open weights. Strong community around prompting guides and style references.</p>
+
+    <h2>DALL-E 3 (OpenAI)</h2>
+    <p>DALL-E 3 is notable for its tight integration with ChatGPT, which rewrites user prompts to be more effective before sending them to the image model. This "prompt improvement" step significantly helps non-expert users but can frustrate power users who want precise control. DALL-E 3's quality is excellent, with particular strength in following complex compositional instructions. Available via OpenAI API and ChatGPT Plus.</p>
+
+    <h2>Stable Diffusion Ecosystem</h2>
+    <p>The Stable Diffusion ecosystem (Stability AI plus community) remains the choice when: you need full control and privacy (self-hosted), want to fine-tune on specific styles or subjects, or need to integrate with custom workflows. The ComfyUI and Automatic1111 UIs provide extensive control over sampling parameters, LoRA composition, ControlNet conditioning, and pipeline customization. Stable Diffusion XL (SDXL) and SD3 are the current flagship models; community fine-tunes cover essentially every style and subject imaginable.</p>
+
+    <h2>Practical Guidance</h2>
+    <ul>
+      <li><strong>Best quality, photorealistic:</strong> FLUX.1 Pro or DALL-E 3</li>
+      <li><strong>Artistic / aesthetic:</strong> Midjourney V7</li>
+      <li><strong>Self-hosted / full control:</strong> FLUX.1 Dev or SDXL</li>
+      <li><strong>Character consistency:</strong> FLUX fine-tunes or Midjourney character reference</li>
+      <li><strong>Text in images:</strong> FLUX (best in class)</li>
+      <li><strong>Budget / batch generation:</strong> SDXL or Schnell</li>
+    </ul>

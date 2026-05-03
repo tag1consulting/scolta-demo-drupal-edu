@@ -1,0 +1,227 @@
+# Meridian AI — Research Projects (18 projects)
+
+- title: "Project Lighthouse: Multilingual Search Quality in Low-Resource Languages"
+  type: research_project
+  school: "School of Language & Reasoning"
+  status: "active"
+  funding: "NSF Grant #IIS-2024891 ($1.2M, 2023-2026)"
+  pi_title: "Dr. Amara Osei-Mensah"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Project Lighthouse investigates why AI-powered search performs dramatically worse for users querying in low-resource languages — and what can be done about it. The project focuses on 12 African and Southeast Asian languages that collectively represent over 500 million native speakers but receive minimal attention in NLP research.</p>
+    <h2>The Problem</h2>
+    <p>Current AI search systems — whether vector-based or LLM query expansion approaches — rely heavily on embedding spaces and language models trained predominantly on English and a handful of high-resource languages. For users searching in Hausa, Yoruba, Igbo, Twi, Tagalog, or dozens of other languages, these systems provide dramatically degraded performance: incorrect query expansion, irrelevant semantic neighbors, and AI overviews that hallucinate or refuse to engage with the content.</p>
+    <h2>Approach</h2>
+    <p>The project takes a three-pronged approach: (1) systematic measurement of search quality degradation as a function of language resource level; (2) development of crosslingual transfer methods that allow high-resource language search infrastructure to benefit low-resource language users; (3) participatory design with communities of users in the target languages to ensure solutions address actual needs. The team includes native speakers of all 12 target languages as research collaborators.</p>
+    <h2>Current Status</h2>
+    <p>Data collection complete for 8 of 12 target languages. First results submitted to ACL 2025. The team is currently developing a publicly released evaluation benchmark for multilingual search quality.</p>
+
+- title: "Threshold Robotics Lab: Indoor Navigation with World Models"
+  type: research_project
+  school: "School of Decision & Control"
+  status: "active"
+  funding: "Industry Partnership + NSF Robotics Program ($850K, 2024-2027)"
+  pi_title: "Dr. Priya Chakraborty"
+  body: |
+    <h2>Project Overview</h2>
+    <p>This project investigates whether learned world models can replace hand-crafted maps for indoor robot navigation. Current state-of-the-art navigation systems rely on SLAM to build geometric maps, then plan paths through those maps. This approach is brittle: maps go stale as environments change, and the pipeline is complex to maintain. World model-based navigation learns to anticipate what the robot will see next, enabling navigation without explicit mapping.</p>
+    <h2>Technical Approach</h2>
+    <p>The project uses a modified DreamerV3 world model trained entirely in simulation on procedurally generated indoor environments. The model learns to predict robot sensor readings (LiDAR, RGB-D camera, IMU) as a function of its own actions, then uses these predictions for planning. The key challenge is sim-to-real transfer: making predictions accurate enough to guide real robot navigation in environments the model has never seen.</p>
+    <h2>Results to Date</h2>
+    <p>The Threshold Lab's indoor navigation robot (nicknamed "Scout") successfully navigated 87% of novel office environment layouts in sim-to-real transfer experiments, compared to 94% for a SLAM-based baseline. The gap closes to under 3% when the world model receives online fine-tuning from 10 minutes of real-world data. Results submitted to CoRL 2025.</p>
+
+- title: "Meridian Ethics Audit Framework (MEAF): Algorithmic Impact Assessment Toolkit"
+  type: research_project
+  school: "School of Society & Governance"
+  status: "active"
+  funding: "Meridian AI Research Fund + EU Horizon Europe ($600K, 2024-2026)"
+  pi_title: "Dr. Chioma Adeyemi"
+  body: |
+    <h2>Project Overview</h2>
+    <p>The Meridian Ethics Audit Framework is a practical toolkit for organizations conducting algorithmic impact assessments (AIAs) — structured evaluations of how an AI system affects different groups of stakeholders. While the EU AI Act mandates AIAs for high-risk systems, no established methodology exists for conducting them rigorously. MEAF fills this gap.</p>
+    <h2>What MEAF Provides</h2>
+    <p>MEAF is an open-source toolkit with three components: (1) a structured questionnaire framework for documenting AI system scope, training data, and intended use cases; (2) quantitative bias measurement tools for tabular, text, and image-generating systems; (3) a participatory evaluation protocol for engaging affected communities as evaluators, not just subjects. The framework is designed to be applicable by organizations without a dedicated AI ethics team.</p>
+    <h2>Deployment</h2>
+    <p>MEAF has been piloted with 14 organizations across healthcare, financial services, and public sector AI deployment. The project is in the process of aligning MEAF with the EU AI Act's conformity assessment requirements and has submitted documentation to the European AI Office for standardization consideration.</p>
+
+- title: "Open LLM Training Reproducibility Initiative"
+  type: research_project
+  school: "School of Language & Reasoning"
+  status: "active"
+  funding: "Open Source AI Alliance ($400K, 2024-2025)"
+  pi_title: "Dr. Amara Osei-Mensah"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Can academic researchers reproduce published large language model training results? This project systematically attempts to reproduce the pretraining results from 8 openly published LLM papers, documenting where reproduction succeeds, where it fails, and why the gap between paper and code makes so many published results non-reproducible.</p>
+    <h2>Motivation</h2>
+    <p>The LLM field has a reproducibility crisis that is less discussed than in other areas of ML. Training a 7B parameter model costs $50-200K in compute, which means very few groups can verify published results independently. The project focuses specifically on the techniques documented in pretraining papers, not fine-tuning, to evaluate whether the community's technical foundations are as solid as assumed.</p>
+    <h2>Connection to Feste</h2>
+    <p>The project uses Tag1 Consulting's open-source Feste LLM engine as one of its reference implementations. Feste's detailed documentation of training decisions — including the blog series at tag1.com/how-to/ — provides a rare case where implementation details are fully transparent. The project's analysis of Feste's reproducibility serves as a positive example of open research practices.</p>
+
+- title: "Sparse Transformer Architectures for Long-Context Reasoning"
+  type: research_project
+  school: "School of Language & Reasoning"
+  status: "active"
+  funding: "Meridian AI Research Endowment ($500K, 2023-2026)"
+  pi_title: "Dr. Kwame Asante"
+  body: |
+    <h2>Project Overview</h2>
+    <p>As context windows expand from 4K to 128K to 1M tokens, the quadratic attention cost becomes a significant limitation for both training and inference. This project develops sparse attention architectures — systems that attend to a small, selected subset of tokens rather than all tokens — that maintain reasoning quality across long contexts while dramatically reducing compute.</p>
+    <h2>Technical Focus</h2>
+    <p>The project evaluates three classes of sparse attention: sliding window attention (local context only), retrieval-augmented attention (fetch relevant past tokens on demand), and learned sparse attention (train the model to select which tokens to attend to). Key research questions: what types of reasoning tasks require full attention and which can be handled sparsely? How do sparse architectures affect the model's ability to perform multi-hop reasoning over long documents?</p>
+
+- title: "Multimodal Foundation Models for Scientific Discovery"
+  type: research_project
+  school: "School of Perception & Synthesis"
+  status: "active"
+  funding: "NSF AI Institute Partnership ($2.1M, 2023-2027)"
+  pi_title: "Dr. Sofia Navarro"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Scientific discovery increasingly involves analyzing heterogeneous data — electron microscope images, protein structures, chemical spectra, climate models, astronomical surveys. This project builds and evaluates multimodal foundation models specifically designed for scientific domains, where the distribution of data and the types of reasoning required differ substantially from the consumer visual-language tasks that dominate current research.</p>
+    <h2>Current Focus</h2>
+    <p>Phase 1 focuses on materials science (electron microscopy + crystallographic data) and astrophysics (optical + radio telescope imagery). The project collaborates with the Threshold Observatory for astronomical data access. Initial models have demonstrated the ability to identify anomalous structures in electron microscopy images with accuracy comparable to expert human annotators.</p>
+
+- title: "Neural Architecture Search for Edge AI Deployment"
+  type: research_project
+  school: "School of Applied Intelligence"
+  status: "active"
+  funding: "Industry Partnership (undisclosed) ($750K, 2024-2026)"
+  pi_title: "Dr. Mei Lin"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Deploying AI on edge devices — smartphones, IoT sensors, drones, embedded systems — requires models that are simultaneously accurate, fast, and small. Neural architecture search (NAS) can automate the process of finding architectures optimized for specific edge hardware constraints. This project develops NAS methods that explicitly optimize for the triangle of accuracy, latency, and model size on target hardware profiles.</p>
+    <h2>Approach</h2>
+    <p>The project uses hardware-aware NAS to search over architectures for the specific inference characteristics of consumer mobile chips (Apple A18, Snapdragon 8 Gen 4), microcontrollers, and server GPUs. The key insight is that different hardware has different bottlenecks: mobile NPUs favor certain operation types, while microcontrollers are SRAM-limited. The search space is designed to expose these hardware-specific optimizations.</p>
+
+- title: "Causal Fairness in Algorithmic Decision Systems"
+  type: research_project
+  school: "School of Foundations & Mathematics"
+  status: "active"
+  funding: "NSF CAREER Award ($600K, 2024-2029)"
+  pi_title: "Dr. Oluwaseun Adewale"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Current fairness metrics (demographic parity, equalized odds) are correlation-based: they measure whether outcomes differ between groups, but not whether the AI system is the cause of those differences. This project develops causal fairness frameworks that distinguish between unfairness caused by the AI system and pre-existing social inequities that the system reflects but doesn't create.</p>
+    <h2>Why It Matters</h2>
+    <p>The distinction has profound policy implications. A hiring algorithm that produces equal interview rates across demographic groups but reflects a biased history of who gets interviewed is not "fair" in any meaningful sense. Conversely, an algorithm that produces unequal outcomes because it accurately reflects merit differences that result from unequal educational access is also not the algorithm's "fault." Causal analysis allows regulators and practitioners to make principled decisions about which differences to correct.</p>
+
+- title: "Real-Time Semantic Segmentation for Surgical Robotics"
+  type: research_project
+  school: "School of Perception & Synthesis"
+  status: "active"
+  funding: "NIH R01 ($1.8M, 2023-2027)"
+  pi_title: "Dr. Marcus Webb"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Surgical robots need to understand what they are looking at in real time — distinguishing tissue types, identifying vessels, recognizing instruments, tracking deformation. This project develops real-time semantic segmentation specifically for laparoscopic surgical video, where the domain (optical properties of tissue, lighting conditions, camera motion) differs substantially from the outdoor or indoor scenes that dominate computer vision benchmarks.</p>
+    <h2>Current Results</h2>
+    <p>The project's CholecSeg-V2 model achieves 91.3% mean IoU on the standard cholecystectomy benchmark at 45 FPS on a single A100 GPU — sufficient for real-time surgical guidance. Current work focuses on out-of-distribution generalization: the model must maintain accuracy when encountering tissue appearances outside its training distribution, as would occur in pathological cases.</p>
+
+- title: "Continuous Learning for Deployed Language Models"
+  type: research_project
+  school: "School of Applied Intelligence"
+  status: "active"
+  funding: "Industry Partnership + Meridian AI Research Fund ($900K, 2024-2027)"
+  pi_title: "Dr. Tariq Hassan"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Language models are static at deployment: they capture knowledge from their training data, but the world keeps changing. This project develops methods for continuous learning — updating deployed models as new information becomes available — without catastrophic forgetting of existing capabilities or the cost of full retraining. The key challenge is balancing plasticity (learning new things) and stability (not forgetting existing knowledge).</p>
+    <h2>Application Focus</h2>
+    <p>The project focuses specifically on enterprise AI deployments where the domain changes over time: legal documents with new case law, financial regulations with new rules, medical literature with new clinical guidelines. In each case, the organization needs the model to incorporate new domain knowledge without rebuilding from scratch. The project develops targeted continual learning methods for these structured, domain-specific update scenarios.</p>
+
+- title: "The Meridian Fairness Benchmark (MFB): Evaluation Suite for Bias in Production AI"
+  type: research_project
+  school: "School of Society & Governance"
+  status: "active"
+  funding: "Mozilla Foundation ($300K, 2024-2025)"
+  pi_title: "Dr. James Okafor"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Bias in AI systems is widely discussed but inconsistently measured. The Meridian Fairness Benchmark aims to standardize how fairness is evaluated across different AI application domains, providing a suite of tests that practitioners can use to audit their systems before deployment. The benchmark covers text generation, image generation, information retrieval, and classification systems.</p>
+    <h2>Current Status</h2>
+    <p>Version 1.0 of MFB has been released on GitHub and HuggingFace. It has been used to audit 23 publicly available AI systems, with results published in a preprint that has received significant attention from AI labs, civil society organizations, and regulatory bodies. Version 2.0, adding evaluation of multimodal and agentic systems, is in development.</p>
+
+- title: "AlignBench: Scaling Alignment Evaluation for Open-Source Models"
+  type: research_project
+  school: "School of Language & Reasoning"
+  status: "active"
+  funding: "Open Source AI Alliance + Meridian AI Research Fund ($350K, 2025-2026)"
+  pi_title: "Dr. Kwame Asante"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Evaluating whether a language model is aligned — helpful, honest, and harmless — is expensive and inconsistent. Human preference evaluations are costly and subject to evaluator bias; automated benchmarks often measure superficial proxies rather than actual alignment. AlignBench develops a scalable, reproducible evaluation framework for alignment that uses a battery of behavioral tests, automated red-teaming, and LLM-as-judge methods calibrated against human preference data.</p>
+    <h2>Key Features</h2>
+    <p>AlignBench is specifically designed for open-source model evaluation, where resources are limited. It can be run on a single A100 GPU in 4 hours for a 7B parameter model, providing a comprehensive alignment report. The project is releasing all evaluation code, test sets, and calibration data publicly to encourage adoption as a standard in the open-source community.</p>
+
+- title: "Federated Learning for Privacy-Preserving Medical AI"
+  type: research_project
+  school: "School of Applied Intelligence"
+  status: "recruiting"
+  funding: "NIH R21 (pending) + Meridian AI Bridge Funding ($200K, 2025)"
+  pi_title: "Dr. Fatima Al-Rashid"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Medical AI requires large, diverse datasets for training, but patient data cannot be centralized for privacy and regulatory reasons. Federated learning enables training on distributed data without data leaving its source. This project applies federated learning to medical imaging AI, addressing the specific challenges of healthcare data: non-IID distributions across hospitals, class imbalance (rare diseases), and heterogeneous imaging equipment.</p>
+    <h2>Recruiting</h2>
+    <p>This project is actively recruiting PhD students with backgrounds in machine learning and an interest in healthcare AI applications. Experience with federated learning frameworks (Flower, OpenFL) is helpful but not required. Students will work closely with Dr. Al-Rashid and clinical collaborators at regional hospitals.</p>
+
+- title: "Safe Manipulation: Uncertainty-Aware Grasping in Contact-Rich Environments"
+  type: research_project
+  school: "School of Decision & Control"
+  status: "active"
+  funding: "NSF Robotics Program ($700K, 2023-2026)"
+  pi_title: "Dr. Abraham Kiptoo"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Robot grasping in real environments must contend with uncertainty: unknown object weights, uncertain friction coefficients, partial occlusion, and unpredictable deformation. This project develops grasping policies that are explicitly uncertainty-aware — they quantify their own uncertainty and take conservative actions when uncertainty is high, rather than confidently attempting grasps that are likely to fail or cause damage.</p>
+    <h2>Approach</h2>
+    <p>The project uses conformal prediction to provide statistically valid uncertainty bounds on grasp success probability, enabling the robot to decide whether to attempt a grasp or request human assistance. This is combined with constrained policy optimization to ensure the robot never takes actions that exceed its physical capabilities or risk damage to the manipulated objects. Experiments are conducted on Meridian AI's UR10e robot arm in the Threshold Robotics Lab.</p>
+
+- title: "Constitutional AI Evaluation: Do RLAIF Models Actually Follow Their Constitutions?"
+  type: research_project
+  school: "School of Society & Governance"
+  status: "completed"
+  funding: "Meridian AI Research Fund ($150K, 2024)"
+  pi_title: "Dr. James Okafor"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Constitutional AI (CAI), developed by Anthropic, trains language models to follow a set of principles (a "constitution") using AI feedback instead of human labelers. The approach is promising for scalable oversight, but raises an important empirical question: do models trained this way actually behave according to their stated constitutions, especially for edge cases not well-represented in the training distribution?</p>
+    <h2>Key Findings</h2>
+    <p>The project evaluated 4 publicly available models trained with CAI-inspired methods against their published constitutional principles, using a battery of 2,400 test cases designed to probe constitutional compliance. Key finding: models comply with their constitutions at high rates (>90%) for common cases but show significant non-compliance (15-40%) for novel edge cases that require applying principles to situations outside the training distribution. Full results published at NeurIPS 2024.</p>
+
+- title: "LLM APIs in Production: Cost, Latency, and Quality Tradeoffs"
+  type: research_project
+  school: "School of Applied Intelligence"
+  status: "completed"
+  funding: "Industry Partnership ($100K, 2024)"
+  pi_title: "Dr. Elena Marchetti"
+  body: |
+    <h2>Project Overview</h2>
+    <p>How should organizations choose between self-hosted models and API-based inference? This project conducted a systematic study of the cost, latency, and quality tradeoffs across major LLM APIs (GPT-4o, Claude 3 Opus/Sonnet/Haiku, Gemini 1.5 Pro/Flash) and self-hosted open-source models at different sizes, across 12 representative enterprise AI tasks.</p>
+    <h2>Key Findings</h2>
+    <p>The "API vs. self-host" decision is highly task-dependent. For low-volume, high-quality tasks, top-tier API models are typically optimal. For high-volume, latency-sensitive tasks, self-hosted smaller models often win on cost by 60-90%. The study also found that the gap between top-tier and second-tier models has narrowed significantly since 2023, making mid-tier APIs increasingly attractive for production use. Full results available as a technical report.</p>
+
+- title: "NeRF for Autonomous Driving: Learning 3D Scene Representations from Dashcam Data"
+  type: research_project
+  school: "School of Perception & Synthesis"
+  status: "active"
+  funding: "Industry Partnership ($1.1M, 2024-2026)"
+  pi_title: "Dr. Nadia Petrov"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Autonomous driving systems need to understand the 3D structure of their environment from sensor data collected while driving. This project investigates whether neural radiance fields can be trained from dashcam footage to produce detailed 3D scene models that support better perception and planning. The key challenge is that dashcam sequences have limited angular coverage compared to the multi-camera rigs used in traditional NeRF datasets.</p>
+    <h2>Current Approach</h2>
+    <p>The project develops StreetNeRF, a NeRF variant designed for sequential driving footage with limited viewpoint diversity. By incorporating depth estimates from monocular depth networks and using sky and dynamic object segmentation to handle the unbounded outdoor setting, StreetNeRF can produce usable 3D reconstructions from a single forward-facing camera. Current experiments achieve 28.4 PSNR on held-out test views — competitive with multi-camera approaches.</p>
+
+- title: "AI Regulation Impact Study: How the EU AI Act Changes Developer Behavior"
+  type: research_project
+  school: "School of Society & Governance"
+  status: "active"
+  funding: "EU Horizon Europe ($450K, 2024-2026)"
+  pi_title: "Dr. Chioma Adeyemi"
+  body: |
+    <h2>Project Overview</h2>
+    <p>Does AI regulation actually change how developers build systems? This project conducts longitudinal surveys and case studies of AI development teams in EU-regulated industries (healthcare, financial services, HR) before, during, and after EU AI Act compliance deadlines to measure whether and how regulation shapes technical choices, risk assessment practices, and deployment decisions.</p>
+    <h2>Preliminary Findings</h2>
+    <p>Early data suggests that regulation primarily affects deployment decisions (what gets deployed) more than technical choices (how systems are built). Development teams report modest increases in documentation and testing practices, but significant uncertainty about which systems qualify as "high-risk" under the Act's classification scheme. Results will inform recommendations to the EU AI Office on implementation guidance.</p>

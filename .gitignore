@@ -1,0 +1,35 @@
+# Drupal
+web/core/
+web/modules/contrib/
+web/themes/contrib/
+web/vendor/
+
+# Composer
+vendor/
+composer.lock
+
+# DDEV
+.ddev/.gitignore
+.ddev/import.yaml
+.ddev/.homeadditions/
+.ddev/config.local.yaml
+
+# Database dump (generated locally via bootstrap procedure)
+db/dump.sql.gz
+
+# Drupal files directory
+web/sites/default/files/
+web/sites/default/settings.local.php
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if needed for theme build)
+node_modules/

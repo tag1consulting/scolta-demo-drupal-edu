@@ -1,0 +1,199 @@
+news:
+
+  - title: "Meridian AI Welcomes Dr. Amelia Torres as Founding Director of Labor and Society Program"
+    news_category: "Faculty News"
+    date: "2026-01-15"
+    body: |
+      The Meridian Institute of Artificial Intelligence is pleased to announce the appointment of Dr. Amelia Torres as the founding director of the new AI, Labor, and Society initiative within the School of Societal and Governance AI. Dr. Torres joins Meridian from the MIT Media Lab, where she led the Future of Work research group for five years.
+
+      "We are seeing a once-in-a-generation transformation in how work is organized, valued, and distributed," said Dr. Torres. "Meridian offers a unique environment to study these changes rigorously and to develop frameworks that help organizations and policymakers navigate them responsibly."
+
+      Dr. Torres's research centers on the distributional effects of automation on labor markets, with particular emphasis on occupations in the global South and among historically marginalized communities in wealthy nations. Her 2024 paper, "Automation Gradients and Precarity: A Cross-National Analysis," examined wage and employment trajectories in 28 countries over a period of accelerating AI adoption. The paper won the American Sociological Review's outstanding article award.
+
+      At Meridian, Dr. Torres will teach ETH-420: AI, Work, and Economic Justice, a new course added to the spring 2026 curriculum. She will also serve as faculty lead for a planned interdisciplinary research project examining how AI hiring tools affect candidate pools across socioeconomic strata.
+
+      "What distinguishes Meridian is the genuine integration of technical depth and societal analysis," Torres said in her welcome address to the School of Societal and Governance AI. "I have spent my career trying to get economists to talk to computer scientists. Here, it is the default."
+
+      Dr. Torres earned her PhD in sociology from the University of Chicago and a secondary appointment in the Harris School of Public Policy. She completed a postdoctoral fellowship at the Berkman Klein Center at Harvard before joining MIT. She is the author of two books: *Machines and Margins* (2021) and *The Equity Audit: Tools for AI Accountability* (2024).
+
+      She will join Meridian full-time beginning in the fall 2026 semester, with a visiting appointment this spring to oversee curriculum development and the launch of the initiative's first funded research project.
+
+  - title: "Project Lighthouse Publishes Multilingual Benchmark Showing 23% Search Quality Gap for Low-Resource Languages"
+    news_category: "Research"
+    date: "2026-02-03"
+    body: |
+      The Meridian AI Project Lighthouse team has released a major benchmark study examining AI-powered search quality across 47 languages, revealing a persistent and statistically significant quality gap for low-resource languages that the team argues has been systematically underreported in prior evaluations.
+
+      The study, titled "Beyond English NDCG: A Multilingual Audit of Neural Information Retrieval Systems," was released as a preprint and accepted for presentation at the 2026 ACL conference. The research was led by principal investigator Dr. Elena Marchetti and doctoral candidate Isabel Ferreira, with contributions from the full Project Lighthouse team.
+
+      The core finding: across 11 evaluated search systems — including two major commercial systems evaluated under academic access agreements — search quality for low-resource languages (defined as languages with fewer than 1 billion tokens in common pretraining corpora) averaged 23% lower on normalized discounted cumulative gain (NDCG@10) compared to high-resource languages, even when document corpora were held constant and translated by professional translators.
+
+      "The gap is not explained by document quality," said Dr. Marchetti. "We controlled for that carefully. The gap comes from the representation of those languages in the underlying models used for query expansion and reranking."
+
+      The benchmark, called ML-IR Bench 2026, is being released as an open resource for the community. It covers languages including Yoruba, Swahili, Tagalog, Bengali, Tamil, Urdu, and 41 others, with human-annotated relevance judgments for 500 queries per language contributed by native speakers recruited through a partner network developed over 18 months.
+
+      The Lighthouse team's own search system, which was developed using techniques applicable to open-source implementations including Scolta's query expansion pipeline, showed a smaller gap of 14% — still statistically significant, but representing what the team calls a "directionally promising" result that they attribute to deliberate multilingual fine-tuning during the query expansion model selection process.
+
+      The full benchmark and evaluation harness are available on the Project Lighthouse GitHub repository. The team is actively recruiting collaborators with expertise in additional low-resource languages.
+
+  - title: "Meridian Students Win First Place at the 2026 AI Safety Hackathon"
+    news_category: "Student News"
+    date: "2026-02-18"
+    body: |
+      A team of five Meridian AI graduate students took first place at the 2026 NeurIPS AI Safety Hackathon, a 48-hour competition organized by the Center for AI Safety that attracted 312 teams from 68 institutions worldwide. The Meridian team was the only team to receive maximum scores from all three judges in the final evaluation round.
+
+      The winning project, called "Canary: Continuous Behavioral Drift Detection for Deployed LLMs," addresses a practical safety challenge that has become increasingly urgent as language models are integrated into high-stakes decision systems. The team built a lightweight runtime monitoring system that detects when a deployed LLM begins producing outputs that diverge from its evaluated behavior — a phenomenon sometimes called "behavioral drift" that can occur due to changes in input distribution, prompt injection, or subtle model updates.
+
+      "The core insight is that you can detect drift without access to ground truth labels," explained team lead Preet Ahluwalia, a second-year PhD student in the School of AI Safety under the supervision of Dr. James Okafor. "We use a combination of output distribution statistics and a small set of synthetic probe queries to build a behavioral fingerprint at deployment time, then monitor for divergence. It runs in under two milliseconds per inference on CPU."
+
+      The system demonstrated a 94% detection rate on a held-out set of deliberately introduced drift scenarios, with a false positive rate of under 1.2%. Judges noted the practical deployability and the clarity of the technical writeup.
+
+      The winning team members are Preet Ahluwalia, Mei-Ling Zhu (PhD, SFM), Daniel Osei (MS, SSG), Valentina Rossi (MS, SAI), and Kofi Mensah (MS, SSG). The team will present a paper based on their work at the Meridian AI spring research symposium in April.
+
+      "This win reflects the depth of our students and the interdisciplinary training they receive," said Dr. James Okafor, faculty advisor. "Preet brought the safety-theoretic framing; Valentina and Kofi brought the production engineering perspective. That combination is exactly what we are trying to build here."
+
+      The team will receive a $15,000 prize, which they have elected to donate to the Open LLM Reproducibility Initiative.
+
+  - title: "Meridian AI Signs Research Partnership with Archipelago Health Systems"
+    news_category: "Partnerships"
+    date: "2026-02-28"
+    body: |
+      The Meridian Institute of Artificial Intelligence has announced a three-year research partnership with Archipelago Health Systems, a regional health network operating 14 hospitals and over 80 outpatient clinics. The partnership will support applied research on clinical AI deployment, with a focus on equity, reliability, and transparency.
+
+      The collaboration is the largest industry partnership in Meridian's history, providing $2.4 million in research funding and access to de-identified clinical datasets covering more than 4 million patient encounters. The data will be used under a strict data governance framework developed jointly by the two organizations and reviewed by Meridian's institutional review board.
+
+      Research under the partnership will be led by Dr. Fatima Al-Rashid, director of Meridian's Clinical AI Research Group, with co-investigator roles for Dr. Chioma Adeyemi (AI ethics) and Dr. Marcus Webb (computer vision). Three PhD students and two postdoctoral fellows will be funded through the grant.
+
+      The initial research agenda includes three projects: a study of how clinical decision support AI affects diagnostic equity across patient demographic groups; a computer vision project examining the reliability of AI-assisted radiology tools under distribution shift (e.g., imaging hardware changes between facilities); and a governance framework project developing institutional protocols for responsible AI procurement in healthcare settings.
+
+      "Health AI is moving fast and the field needs more rigorous, independent research on what happens after deployment," said Dr. Al-Rashid. "Archipelago has been a genuinely thoughtful partner in designing this collaboration. They gave us real access and real research freedom, which is not something every health system is ready to do."
+
+      Dr. Yolanda Ferris, Archipelago's Chief Medical Officer, said the partnership reflects the health system's commitment to evidence-based AI adoption. "We are deploying AI tools, and we want to know honestly how they perform and for whom. Meridian's expertise in ethics and technical evaluation is exactly what we need."
+
+      The partnership launches in Q2 2026, with first research outputs expected by early 2027.
+
+  - title: "Dr. Ravi Shankar Receives NSF CAREER Award for Optimization Research"
+    news_category: "Faculty News"
+    date: "2026-03-10"
+    body: |
+      Dr. Ravi Shankar, assistant professor in the School of Foundations and Mathematics, has been awarded the National Science Foundation's prestigious CAREER Award for his research on optimization algorithms for deep learning. The five-year award provides $625,000 in funding and represents one of the NSF's most competitive early-career recognitions.
+
+      Dr. Shankar's funded research program, titled "Adaptive Curvature Estimation for Non-Convex Optimization in Large-Scale Machine Learning," investigates the theoretical foundations of why certain adaptive optimizers — particularly variants of Adam — generalize better than others in practice, despite theoretical results suggesting they should not.
+
+      "This is a known puzzle in the field," Dr. Shankar explained at a research colloquium held to celebrate the award. "Theoretical convergence bounds for Adam are worse than SGD in many settings, but practitioners consistently find Adam generalizes better on real models. Understanding why requires a new theoretical lens, and that is what we are building."
+
+      The research will develop new tools in stochastic differential equations and random matrix theory to analyze the implicit regularization effects of adaptive gradient methods. The work has potential applications to training efficiency (faster convergence with less compute) and safety (understanding the loss landscape geometry that models settle into during training).
+
+      Dr. Shankar joined Meridian as a founding faculty member in 2022 after completing his PhD at Stanford and a postdoc at the Flatiron Institute's Center for Computational Mathematics. He teaches MATH-430: Optimization for Machine Learning and MATH-490: Advanced Topics in Learning Theory.
+
+      "Ravi's work is exactly the kind of research that makes Meridian distinctive," said Dr. Ingrid Holmberg, chair of the School of Foundations and Mathematics. "It is theoretically deep and practically motivated. The NSF recognized what we have known since we recruited him."
+
+      The CAREER Award begins in July 2026.
+
+  - title: "Meridian AI Launches Open Certificate Program in AI Literacy for Non-Technical Professionals"
+    news_category: "Academics"
+    date: "2026-03-20"
+    body: |
+      Meridian AI announced today the launch of an open-enrollment Certificate in AI Literacy, a non-credit professional development program designed for people who work with or alongside AI systems but do not have a technical background in machine learning. The program is offered online, self-paced, and priced at $499 — significantly below comparable offerings from peer institutions.
+
+      The certificate covers four modules: (1) How AI Systems Work: intuitions without the math; (2) Evaluating AI Outputs: when to trust, when to verify, when to escalate; (3) AI in the Workplace: procurement, governance, and change management; and (4) Responsible AI: fairness, bias, transparency, and your organization's responsibilities. Each module takes approximately six hours and includes case studies, interactive exercises, and a short assessment.
+
+      Content was developed by faculty from the School of Societal and Governance AI, with instructional design support from Meridian's academic technology team. The curriculum draws on real AI system evaluations, regulatory guidance from the EU AI Act, and case studies from healthcare, legal, finance, and public sector contexts.
+
+      "There is a massive population of professionals — lawyers, doctors, HR managers, journalists, policymakers — who are making consequential decisions about AI adoption without a foundation for evaluating what they are being sold," said Dr. Chioma Adeyemi, who led curriculum development for the program. "This certificate is designed to give them that foundation."
+
+      The program does not require any programming knowledge or mathematics background beyond basic numeracy. Upon completion, participants receive a digital credential issued through Meridian's learning management system.
+
+      Applications are open immediately. The first cohort cap is 2,000 students; demand has already exceeded initial projections with over 1,400 registrations in the first week following the soft launch announcement on social media.
+
+  - title: "Meridian AI Presents Five Papers at ICML 2026"
+    news_category: "Research"
+    date: "2026-04-05"
+    body: |
+      Meridian AI faculty and students will present five papers at the 2026 International Conference on Machine Learning (ICML), to be held in Vienna, Austria. The accepted papers span the institute's core research areas and represent some of the strongest ICML acceptance rates of Meridian's short history.
+
+      The accepted papers are:
+
+      **"Spectral Normalization is Insufficient: New Stability Criteria for Transformer Attention"** — Dr. Ingrid Holmberg and PhD students Lucas Bauer and Preet Ahluwalia. This paper provides new theoretical results on when transformer attention becomes numerically unstable during training and derives practical initialization criteria that reduce training loss spikes.
+
+      **"AlignBench: A Reproducible Suite for LLM Value Alignment Evaluation"** — Dr. Kwame Asante, Dr. James Okafor, and the AlignBench team. The paper introduces the AlignBench evaluation framework and presents results across 14 open-source and proprietary models. Full dataset and evaluation code are released.
+
+      **"DreamerV4: World Model Scaling Laws and the Sample Efficiency Frontier"** — Dr. Elias Müller, Dr. Abraham Kiptoo, and PhD candidate Sakura Yamamoto. An empirical investigation of how world model quality scales with model size and environment diversity, with implications for safe offline RL.
+
+      **"Curvature Concentration in the Adam Loss Landscape: A Random Matrix Analysis"** — Dr. Ravi Shankar (solo paper). The first paper from the NSF CAREER-funded research program.
+
+      **"Canary: Lightweight Behavioral Drift Detection for Production LLMs"** — Preet Ahluwalia, Mei-Ling Zhu, et al. The hackathon-winning safety monitoring system, expanded into a full research contribution.
+
+      "Five ICML papers in a single year, for an institute that graduated its first PhD students just two years ago, is a remarkable outcome," said Provost Dr. Helena Voss. "It reflects both the quality of our faculty and the caliber of students they are training."
+
+      The ICML conference runs July 18-26 in Vienna.
+
+  - title: "Scolta-Powered Search Goes Live on Meridian AI Website"
+    news_category: "Institutional"
+    date: "2026-04-15"
+    body: |
+      The Meridian AI website has launched a new AI-powered search experience built on Scolta, the open-source search platform developed by Tag1 Consulting. The new search replaces the previous keyword-based site search and adds AI-generated overviews, semantic query expansion, and cross-content-type discovery that the previous system could not support.
+
+      The integration project was led by Meridian's academic technology team in collaboration with Tag1's Scolta engineering team. The deployment uses Pagefind as the underlying static search index and Claude via the Anthropic API for query expansion and overview generation.
+
+      For Meridian users, the practical change is significant. A search for "how do transformers handle long documents" now returns not just pages containing those exact words, but also the lecture page on context windows and positional encoding, the relevant courses in the LLM Engineering program, faculty with relevant expertise, and a research project examining context length scaling. An AI-generated overview explains the core concepts before the results list, giving users immediate orientation before they click through.
+
+      "Our content has grown to a point where simple keyword search was genuinely failing users," said Director of Academic Technology Miranda Okafor. "Students were missing relevant lectures because the query words didn't match the page title. Scolta fixes that."
+
+      The Scolta platform is described in detail in the Meridian resource article "Scolta: How Pagefind, Query Expansion, and AI Overviews Work Together," which was written specifically for Meridian students interested in understanding the system they are using. The article walks through the full technical stack including BM25 scoring, embedding-based expansion, and the Claude API integration.
+
+      Tag1 Consulting, who built Scolta, works extensively with Drupal-based organizations on AI-powered content experiences. The Meridian deployment is one of the first EDU-sector uses of the Scolta platform and is being documented as a case study.
+
+  - title: "PhD Student Isabel Ferreira Wins Google Fellowship in Machine Learning"
+    news_category: "Student News"
+    date: "2026-04-22"
+    body: |
+      Isabel Ferreira, a third-year PhD student in the School of Applied AI at Meridian, has been awarded a 2026 Google Fellowship in Machine Learning. The fellowship provides two years of funding, a summer research internship at Google DeepMind, and mentorship from a senior Google researcher. It is one of the most competitive fellowship programs available to ML PhD students.
+
+      Ferreira's research focuses on information retrieval systems that work well across languages with uneven representation in pretraining corpora. Her dissertation, tentatively titled "Closing the Retrieval Gap: Multilingual IR in the Era of Large Language Models," is supervised by Dr. Elena Marchetti and co-supervised by Dr. Ingrid Holmberg.
+
+      "Isabel has done extraordinary work on the ML-IR Bench 2026 benchmark," said Dr. Marchetti. "She recruited and coordinated the native-speaker annotation team across 47 languages, designed the evaluation methodology, and wrote most of the technical implementation. The Google Fellowship is well deserved and long overdue."
+
+      Ferreira is originally from São Paulo and completed her undergraduate degree in computer science at Universidade de São Paulo before coming to Meridian. She said the research reflects a personal motivation: "When I was learning Portuguese, I noticed that AI tools performed noticeably worse for my language than for English. I thought: that seems like a solvable problem. I want to be one of the people who solves it."
+
+      The Google DeepMind internship will focus on multilingual query understanding for search, directly aligned with her dissertation work. She returns to Meridian after the internship to complete her degree, with an expected graduation date of spring 2028.
+
+      Ferreira is the third Meridian student to receive a major industry fellowship in the past 18 months, following Preet Ahluwalia's Open Philanthropy AI Safety Fellowship and Mei-Ling Zhu's Schmidt Futures AI fellowship.
+
+  - title: "Meridian AI Partners with Municipal Government on AI Governance Framework"
+    news_category: "Partnerships"
+    date: "2026-04-30"
+    body: |
+      The Meridian Institute of Artificial Intelligence has entered a partnership with the City of Estero Bay to develop an AI governance framework for municipal AI deployments. The agreement positions Meridian as an independent technical advisor as the city evaluates and adopts AI tools across departments including public safety, social services, and permitting.
+
+      The partnership was developed over six months of conversations following a public forum on algorithmic decision-making in government that Meridian co-hosted with the city's Office of Innovation last fall. City officials said they wanted independent academic expertise to balance the vendor-facing information they were receiving.
+
+      "We are being pitched AI tools constantly," said Estero Bay City Manager David Chen. "Predictive policing, benefits eligibility screening, AI-assisted zoning review — each of these tools has real implications for residents, and we needed a framework for evaluating them that is independent, technically informed, and grounded in our community's values."
+
+      Meridian's team, led by Dr. Chioma Adeyemi and Dr. James Okafor, will develop a tiered risk framework for municipal AI procurement, an audit protocol for systems already in use, and a set of participatory process guidelines for community engagement in AI adoption decisions. The framework will be released publicly as an open-source resource for other municipalities.
+
+      The work draws directly on research conducted under the MEAF (Municipal Ethics and AI Frameworks) project, which has been running in Meridian's SSG school for 18 months. Early MEAF outputs have already been cited in EU AI Act implementation guidance documents.
+
+      "What makes this partnership meaningful is that the city is genuinely open to the possibility that the right answer for some tools is 'don't deploy it,'" said Dr. Adeyemi. "That kind of intellectual honesty from a government client is rare and it makes the work worthwhile."
+
+      The partnership runs through the end of 2027.
+
+  - title: "Spring Research Symposium Highlights Meridian AI's Growing PhD Program"
+    news_category: "Research"
+    date: "2026-05-02"
+    body: |
+      Meridian AI's annual spring research symposium, held on the campus of the Lattice Conference Center overlooking Meridian Sea, showcased work from all six schools and drew over 400 attendees including researchers from partner institutions, industry guests, and prospective students.
+
+      The two-day event featured 28 poster presentations, 12 short talks, three keynotes, and an industry panel. Highlights included:
+
+      The Canary drift detection system, previously announced as the winner of the 2026 AI Safety Hackathon, was demonstrated live against a set of deliberately perturbed models. The system correctly flagged all 12 introduced perturbations with no false positives during the live demo, to audible appreciation from the audience.
+
+      The AlignBench team presented updated results including evaluations of three new model releases since the ICML submission deadline. The benchmark is now tracking 18 models, and the team announced a community contribution workflow allowing external researchers to submit evaluation results.
+
+      The Project Lighthouse team presented the ML-IR Bench 2026 findings to a full room, with Dr. Marchetti and Isabel Ferreira fielding questions for nearly 40 minutes. Several attendees from industry expressed interest in contributing to the benchmark's ongoing expansion.
+
+      A panel on "AI Governance in Practice" included Dr. Adeyemi, Estero Bay City Manager David Chen, an Archipelago Health Systems clinical informaticist, and a representative from Tag1 Consulting's AI advisory practice. The panel discussion centered on the gap between how AI tools are marketed and how they perform in deployment — a theme that recurred throughout the symposium.
+
+      The keynote speaker, Dr. Yoshua Bengio, spoke on the current state of AI safety research and the role of academic institutions in maintaining independence from commercial pressures. He specifically called out Meridian's interdisciplinary model as "a template worth emulating."
+
+      Symposium proceedings will be published on the Meridian AI research portal. Video recordings of the keynotes and panels will be available by June.

@@ -1,0 +1,984 @@
+# Meridian AI — Lecture Pages (8 lecture pages, 2000-3000 words each)
+
+- title: "Lecture: Building a Tokenizer From Scratch"
+  type: lecture_page
+  school: "School of Language & Reasoning"
+  difficulty: "Advanced"
+  course_number: "LLM-402"
+  estimated_time: "90 minutes"
+  topics:
+    - "Large Language Models"
+    - "Natural Language Processing"
+  body: |
+    <div class="callout">
+      <div class="callout__title">Learning Objectives</div>
+      <p>By the end of this lecture, you will be able to: (1) implement the BPE algorithm from first principles, (2) train a vocabulary on a text corpus, (3) encode and decode text using a trained tokenizer, and (4) explain why tokenization choices affect downstream model capabilities.</p>
+    </div>
+
+    <h2>1. Introduction: Why Build Your Own?</h2>
+    <p>Most practitioners never implement a tokenizer — they call <code>from transformers import AutoTokenizer</code> and move on. But implementing one teaches you things you can't get from using a pre-built tokenizer. You'll understand exactly what a "token" is, why GPT-4 tokenizes "strawberry" differently than "apple," and why some languages cost more tokens than others. You'll also understand the Feste approach (tag1.com/how-to/ Part 1), which is exactly the approach we follow here, implemented in Rust.</p>
+    <p>This lecture uses Python for clarity, but the concepts are language-agnostic.</p>
+
+    <h2>2. The Corpus and Character-Level Vocabulary</h2>
+    <p>Start with a text corpus — for this lecture, we'll use a small sample:</p>
+    <pre><code>corpus = [
+    "low low low low low",
+    "lower lower",
+    "newest newest newest",
+    "widest widest",
+]</code></pre>
+
+    <p>Step 1: Count word frequencies with end-of-word markers (BPE treats word boundaries as meaningful):</p>
+    <pre><code>from collections import Counter
+
+def get_word_freqs(corpus):
+    word_freqs = Counter()
+    for text in corpus:
+        for word in text.split():
+            # Add end-of-word marker
+            word_freqs[" ".join(list(word)) + " </w>"] += 1
+    return word_freqs
+
+word_freqs = get_word_freqs(corpus)
+# {"l o w </w>": 5, "l o w e r </w>": 2, "n e w e s t </w>": 3, "w i d e s t </w>": 2}</code></pre>
+
+    <p>Step 2: Build the initial vocabulary (all unique characters):</p>
+    <pre><code>def get_vocab(word_freqs):
+    vocab = set()
+    for word in word_freqs:
+        for char in word.split():
+            vocab.add(char)
+    return vocab
+
+vocab = get_vocab(word_freqs)
+# {'l', 'o', 'w', '</w>', 'e', 'r', 'n', 's', 't', 'i', 'd'}</code></pre>
+
+    <h2>3. The Merge Algorithm</h2>
+    <p>BPE iteratively merges the most frequent adjacent pair of tokens. Here's the implementation:</p>
+    <pre><code>def get_stats(word_freqs):
+    """Count frequency of all adjacent pairs."""
+    pairs = Counter()
+    for word, freq in word_freqs.items():
+        symbols = word.split()
+        for i in range(len(symbols) - 1):
+            pairs[(symbols[i], symbols[i+1])] += freq
+    return pairs
+
+def merge_vocab(pair, word_freqs):
+    """Merge all occurrences of a pair in the vocabulary."""
+    new_vocab = {}
+    bigram = " ".join(pair)
+    replacement = "".join(pair)
+    for word, freq in word_freqs.items():
+        new_word = word.replace(bigram, replacement)
+        new_vocab[new_word] = freq
+    return new_vocab
+
+# Training loop
+merges = {}
+num_merges = 10
+
+for i in range(num_merges):
+    pairs = get_stats(word_freqs)
+    if not pairs:
+        break
+    # Find the most frequent pair
+    best_pair = max(pairs, key=pairs.get)
+    # Merge it
+    word_freqs = merge_vocab(best_pair, word_freqs)
+    merges[best_pair] = i
+    print(f"Merge {i+1}: {best_pair[0]} + {best_pair[1]} → {''.join(best_pair)}")</code></pre>
+
+    <p>Running this on our corpus produces merge rules like:</p>
+    <pre><code>Merge 1: e + s → es     (frequency: 5)
+Merge 2: es + t → est    (frequency: 5)
+Merge 3: l + o → lo      (frequency: 7)
+Merge 4: lo + w → low    (frequency: 7)
+Merge 5: n + e → ne      (frequency: 3)
+Merge 6: ne + w → new    (frequency: 3)
+Merge 7: new + est → newest (frequency: 3)</code></pre>
+
+    <h2>4. Encoding New Text</h2>
+    <p>To tokenize new text, apply the merge rules in order:</p>
+    <pre><code>def tokenize(word, merges):
+    """Apply learned merges to tokenize a word."""
+    # Start as individual characters
+    tokens = list(word) + ["</w>"]
+
+    # Apply merges in order
+    for (left, right), _ in sorted(merges.items(), key=lambda x: x[1]):
+        i = 0
+        while i < len(tokens) - 1:
+            if tokens[i] == left and tokens[i+1] == right:
+                tokens = tokens[:i] + ["".join([left, right])] + tokens[i+2:]
+            else:
+                i += 1
+    return tokens
+
+print(tokenize("lowest", merges))
+# ['low', 'es', 't', '</w>']  — "low" is known, but "lowest" isn't a learned merge
+
+print(tokenize("newest", merges))
+# ['newest</w>']  — fully merged!</code></pre>
+
+    <h2>5. Vocabulary Size and Its Consequences</h2>
+    <p>In production tokenizers, you run thousands of merge steps until you reach your target vocabulary size. GPT-2 uses 50,257 tokens; Llama 3 uses 128,000. Larger vocabulary = more tokens encoded as single units = shorter sequences = cheaper inference. But larger vocabulary also means the embedding matrix is larger (vocab_size × embedding_dim).</p>
+
+    <p>The tradeoff:</p>
+    <table>
+      <thead><tr><th>Vocab Size</th><th>Avg Tokens/Word</th><th>Embedding Matrix (768-dim)</th></tr></thead>
+      <tbody>
+        <tr><td>8,000</td><td>~1.8</td><td>6.1M params</td></tr>
+        <tr><td>32,000</td><td>~1.3</td><td>24.6M params</td></tr>
+        <tr><td>128,000</td><td>~1.1</td><td>98.3M params</td></tr>
+      </tbody>
+    </table>
+
+    <h2>6. Special Tokens</h2>
+    <p>Every tokenizer has special tokens with predefined IDs that the model is trained to treat specially:</p>
+    <ul>
+      <li><code>&lt;|endoftext|&gt;</code> (GPT): marks end of a document</li>
+      <li><code>[CLS]</code>, <code>[SEP]</code> (BERT): classification token and separator</li>
+      <li><code>&lt;|im_start|&gt;</code>, <code>&lt;|im_end|&gt;</code> (ChatML format): structure conversational turns</li>
+      <li><code>&lt;unk&gt;</code>: unknown token (rare in BPE which covers all bytes)</li>
+    </ul>
+    <p>In the Feste implementation (tag1.com/how-to/ Part 1), special token handling is explicit: the tokenizer distinguishes between "merge-generated tokens" and "special tokens" at the encoding level, which matters when implementing attention masking.</p>
+
+    <h2>7. The Rust Perspective</h2>
+    <p>The Tag1 Feste implementation of this algorithm in Rust is worth examining. The merge rules file is a flat text file: one merge rule per line, in order. The encoding function applies rules greedily using a hash map for O(1) lookup. The key insight from the Rust implementation: the tokenizer is not magic. It's a sequence of string substitution rules stored in a file and applied in order. That's it.</p>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise 1</div>
+      <p>Implement the BPE tokenizer in Python. Train it on a small corpus of your choice (try 10 sentences from Wikipedia). Run 50 merge steps. Examine which pairs got merged first and explain why.</p>
+    </div>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise 2</div>
+      <p>Take the trained tokenizer from Exercise 1 and compute the "fertility" (average characters per token) for English, French, and Japanese text samples of equal character length. What do you observe? Why?</p>
+    </div>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise 3 (Advanced)</div>
+      <p>Modify the BPE implementation to support byte-level tokenization (instead of character-level). This is what GPT-2's tokenizer uses. Hint: convert text to bytes first, then run BPE over byte sequences. What changes?</p>
+    </div>
+
+    <h2>Key Takeaways</h2>
+    <ul>
+      <li>BPE is an algorithm: iteratively merge the most frequent adjacent pair until target vocabulary size is reached</li>
+      <li>The merge rule file is the tokenizer — encoding is just applying these rules in order</li>
+      <li>Vocabulary size is a tradeoff between sequence length, model size, and multilingual coverage</li>
+      <li>Tokenization shapes model capabilities: arithmetic, spelling, and multilingual performance are all affected</li>
+    </ul>
+
+- title: "Lecture: The Transformer Architecture Step by Step"
+  type: lecture_page
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  course_number: "LLM-401"
+  estimated_time: "120 minutes"
+  topics:
+    - "Transformers"
+    - "Large Language Models"
+  body: |
+    <div class="callout">
+      <div class="callout__title">Learning Objectives</div>
+      <p>Implement every component of the transformer architecture in PyTorch from scratch. Understand why each component exists and what would happen if it were removed. Connect the mathematical description in "Attention Is All You Need" to working code.</p>
+    </div>
+
+    <h2>1. Setup: The Problem We're Solving</h2>
+    <p>We're building a decoder-only transformer (GPT-style) for language modeling. Given a sequence of tokens, predict the next token. After training on enough text, this objective teaches the model language structure, factual knowledge, and reasoning.</p>
+    <pre><code>import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import math
+
+# Hyperparameters for a tiny model
+VOCAB_SIZE = 50257   # GPT-2 vocabulary size
+CONTEXT_LEN = 1024   # Maximum sequence length
+D_MODEL = 768        # Embedding dimension
+N_HEADS = 12         # Number of attention heads
+D_FF = 3072          # Feed-forward inner dimension (4 * D_MODEL)
+N_LAYERS = 12        # Number of transformer layers
+DROPOUT = 0.1</code></pre>
+
+    <h2>2. Token and Positional Embeddings</h2>
+    <p>Each token ID maps to a learnable embedding vector. Position information is added via learned positional embeddings:</p>
+    <pre><code>class Embeddings(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.token_embed = nn.Embedding(VOCAB_SIZE, D_MODEL)
+        self.pos_embed = nn.Embedding(CONTEXT_LEN, D_MODEL)
+        self.dropout = nn.Dropout(DROPOUT)
+
+    def forward(self, x):
+        # x: (batch, seq_len) token IDs
+        B, T = x.shape
+        positions = torch.arange(T, device=x.device)
+
+        tok = self.token_embed(x)           # (B, T, D_MODEL)
+        pos = self.pos_embed(positions)     # (T, D_MODEL)
+
+        return self.dropout(tok + pos)      # broadcast adds position to each batch</code></pre>
+
+    <h2>3. Scaled Dot-Product Attention</h2>
+    <p>The core operation. Every token "queries" every other token, producing a weighted sum of values:</p>
+    <pre><code>def scaled_dot_product_attention(Q, K, V, mask=None):
+    """
+    Q, K, V: (batch, heads, seq_len, d_head)
+    Returns: (batch, heads, seq_len, d_head)
+    """
+    d_k = Q.size(-1)
+
+    # Compute attention scores
+    scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(d_k)
+    # scores: (batch, heads, seq_len, seq_len)
+
+    # Apply causal mask (decoder: can only attend to past tokens)
+    if mask is not None:
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+
+    # Softmax over the last dimension
+    attn_weights = F.softmax(scores, dim=-1)
+
+    # Weighted sum of values
+    output = torch.matmul(attn_weights, V)
+    return output, attn_weights</code></pre>
+
+    <p><strong>Why the scaling factor?</strong> Without <code>sqrt(d_k)</code>, dot products grow with dimension size, pushing softmax into regions of very small gradients (saturation). Scaling prevents this. At d_k=64, the typical dot product magnitude without scaling would push softmax to near-zero gradients for all but the maximum value.</p>
+
+    <h2>4. Multi-Head Attention</h2>
+    <pre><code>class MultiHeadAttention(nn.Module):
+    def __init__(self):
+        super().__init__()
+        assert D_MODEL % N_HEADS == 0
+        self.d_head = D_MODEL // N_HEADS
+
+        self.W_Q = nn.Linear(D_MODEL, D_MODEL)
+        self.W_K = nn.Linear(D_MODEL, D_MODEL)
+        self.W_V = nn.Linear(D_MODEL, D_MODEL)
+        self.W_O = nn.Linear(D_MODEL, D_MODEL)
+        self.dropout = nn.Dropout(DROPOUT)
+
+    def forward(self, x, mask=None):
+        B, T, C = x.shape  # batch, seq_len, d_model
+
+        # Project to Q, K, V
+        Q = self.W_Q(x).view(B, T, N_HEADS, self.d_head).transpose(1, 2)
+        K = self.W_K(x).view(B, T, N_HEADS, self.d_head).transpose(1, 2)
+        V = self.W_V(x).view(B, T, N_HEADS, self.d_head).transpose(1, 2)
+        # Each: (B, N_HEADS, T, d_head)
+
+        # Attention
+        out, _ = scaled_dot_product_attention(Q, K, V, mask)
+
+        # Recombine heads
+        out = out.transpose(1, 2).contiguous().view(B, T, C)
+
+        return self.W_O(out)</code></pre>
+
+    <h2>5. Feed-Forward Network</h2>
+    <p>Two linear layers with a GeLU nonlinearity. This is where most of the model's "knowledge storage" happens:</p>
+    <pre><code>class FeedForward(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(D_MODEL, D_FF),
+            nn.GELU(),          # More than just ReLU: smoother, handles negative inputs
+            nn.Linear(D_FF, D_MODEL),
+            nn.Dropout(DROPOUT),
+        )
+
+    def forward(self, x):
+        return self.net(x)</code></pre>
+
+    <h2>6. Transformer Block with Pre-Norm</h2>
+    <p>Modern LLMs use pre-normalization (LayerNorm before the sublayer) rather than the original paper's post-normalization. Pre-norm is more stable for deep networks:</p>
+    <pre><code>class TransformerBlock(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.ln1 = nn.LayerNorm(D_MODEL)
+        self.attn = MultiHeadAttention()
+        self.ln2 = nn.LayerNorm(D_MODEL)
+        self.ff = FeedForward()
+
+    def forward(self, x, mask=None):
+        # Pre-norm + residual connection for attention
+        x = x + self.attn(self.ln1(x), mask)
+        # Pre-norm + residual connection for FFN
+        x = x + self.ff(self.ln2(x))
+        return x</code></pre>
+
+    <h2>7. The Full GPT Model</h2>
+    <pre><code>class GPT(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.embed = Embeddings()
+        self.blocks = nn.ModuleList([TransformerBlock() for _ in range(N_LAYERS)])
+        self.ln_f = nn.LayerNorm(D_MODEL)
+        self.lm_head = nn.Linear(D_MODEL, VOCAB_SIZE, bias=False)
+
+        # Causal mask (lower triangular)
+        self.register_buffer('causal_mask',
+            torch.tril(torch.ones(CONTEXT_LEN, CONTEXT_LEN)).view(
+                1, 1, CONTEXT_LEN, CONTEXT_LEN))
+
+    def forward(self, idx, targets=None):
+        B, T = idx.shape
+
+        x = self.embed(idx)
+        mask = self.causal_mask[:, :, :T, :T]
+
+        for block in self.blocks:
+            x = block(x, mask)
+
+        x = self.ln_f(x)
+        logits = self.lm_head(x)  # (B, T, VOCAB_SIZE)
+
+        loss = None
+        if targets is not None:
+            loss = F.cross_entropy(
+                logits.view(-1, VOCAB_SIZE),
+                targets.view(-1)
+            )
+        return logits, loss</code></pre>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise 1</div>
+      <p>Count the total number of parameters in this GPT model. Compare to GPT-2 (117M, 345M, 762M, 1.5B). What configuration produces each size? What's the main scaling axis?</p>
+    </div>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise 2</div>
+      <p>Remove the causal mask from the attention computation. What would the model now be able to do that it shouldn't? What type of model does this produce? (Hint: think BERT.)</p>
+    </div>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise 3 (Advanced)</div>
+      <p>Replace the learned absolute positional embeddings with RoPE (Rotary Position Embedding). The key: apply rotation matrices to Q and K before computing attention scores. Implement and compare training curves on a tiny dataset.</p>
+    </div>
+
+- title: "Lecture: Introduction to Reinforcement Learning"
+  type: lecture_page
+  school: "School of Decision & Control"
+  difficulty: "Introductory"
+  course_number: "RL-401"
+  estimated_time: "90 minutes"
+  topics:
+    - "Reinforcement Learning"
+    - "Mathematics & Foundations"
+  body: |
+    <div class="callout">
+      <div class="callout__title">Learning Objectives</div>
+      <p>Understand the Markov Decision Process framework. Implement Q-learning to solve a grid world problem. Explain the exploration-exploitation tradeoff and how epsilon-greedy addresses it. Connect RL to real applications including RLHF.</p>
+    </div>
+
+    <h2>1. The RL Setting</h2>
+    <p>Reinforcement learning addresses a fundamental question: how should an agent act in an environment to maximize cumulative reward? Unlike supervised learning (learn from labeled examples), RL learns from interaction: try something, see what happens, adjust.</p>
+    <p>The formal framework is the Markov Decision Process (MDP), consisting of:</p>
+    <ul>
+      <li><strong>S:</strong> State space — all possible states the environment can be in</li>
+      <li><strong>A:</strong> Action space — all possible actions the agent can take</li>
+      <li><strong>P(s'|s,a):</strong> Transition dynamics — probability of reaching s' after taking action a in state s</li>
+      <li><strong>R(s,a,s'):</strong> Reward function — scalar feedback signal</li>
+      <li><strong>γ ∈ [0,1):</strong> Discount factor — how much to value future rewards vs. immediate ones</li>
+    </ul>
+    <p>The agent's goal: find a policy π(a|s) — a mapping from states to action probabilities — that maximizes expected discounted cumulative reward: E[Σ γᵗ rₜ].</p>
+
+    <h2>2. The Grid World Environment</h2>
+    <pre><code>import numpy as np
+import random
+
+class GridWorld:
+    """
+    Simple 4x4 grid world:
+    S: start (0,0), G: goal (3,3), H: holes (1,1), (2,3)
+
+    Actions: 0=up, 1=right, 2=down, 3=left
+    Reward: +10 for goal, -10 for hole, -0.1 for step
+    """
+    def __init__(self):
+        self.size = 4
+        self.holes = {(1,1), (2,3)}
+        self.goal = (3,3)
+        self.reset()
+
+    def reset(self):
+        self.state = (0, 0)
+        return self.state
+
+    def step(self, action):
+        r, c = self.state
+        if action == 0:   dr, dc = -1, 0   # up
+        elif action == 1: dr, dc = 0, 1    # right
+        elif action == 2: dr, dc = 1, 0    # down
+        else:             dr, dc = 0, -1   # left
+
+        # Clip to grid boundaries
+        new_r = max(0, min(self.size-1, r + dr))
+        new_c = max(0, min(self.size-1, c + dc))
+        self.state = (new_r, new_c)
+
+        if self.state == self.goal:
+            return self.state, +10, True    # done!
+        elif self.state in self.holes:
+            return self.state, -10, True    # fell in
+        else:
+            return self.state, -0.1, False  # still going</code></pre>
+
+    <h2>3. Q-Learning: Learning Action Values</h2>
+    <p>Q-learning estimates the value of taking action a in state s under the optimal policy:</p>
+    <p>Q*(s,a) = E[r + γ max_a' Q*(s', a')]</p>
+    <p>The Q-learning update rule applies this Bellman equation incrementally:</p>
+    <pre><code>Q[s,a] ← Q[s,a] + α (r + γ max_a' Q[s',a'] - Q[s,a])
+
+Where:
+  α = learning rate (how fast to update)
+  γ = discount factor (future vs immediate reward)
+  The term in parentheses is the "TD error" (temporal difference error)</code></pre>
+
+    <pre><code>class QLearningAgent:
+    def __init__(self, n_states=16, n_actions=4, lr=0.1, gamma=0.99, epsilon=0.1):
+        self.Q = np.zeros((n_states, n_actions))
+        self.lr = lr
+        self.gamma = gamma
+        self.epsilon = epsilon
+
+    def state_to_idx(self, state):
+        r, c = state
+        return r * 4 + c  # Convert (row, col) to flat index
+
+    def choose_action(self, state):
+        """Epsilon-greedy: explore randomly epsilon% of the time."""
+        if random.random() < self.epsilon:
+            return random.randint(0, 3)     # random action (explore)
+        else:
+            s = self.state_to_idx(state)
+            return np.argmax(self.Q[s])     # greedy action (exploit)
+
+    def update(self, state, action, reward, next_state, done):
+        s = self.state_to_idx(state)
+        s_next = self.state_to_idx(next_state)
+
+        # Bellman target
+        if done:
+            target = reward
+        else:
+            target = reward + self.gamma * np.max(self.Q[s_next])
+
+        # Q-value update
+        self.Q[s, action] += self.lr * (target - self.Q[s, action])</code></pre>
+
+    <h2>4. Training Loop</h2>
+    <pre><code>env = GridWorld()
+agent = QLearningAgent(epsilon=0.3)   # start with high exploration
+
+episode_rewards = []
+for episode in range(5000):
+    state = env.reset()
+    total_reward = 0
+
+    for step in range(100):   # max 100 steps per episode
+        action = agent.choose_action(state)
+        next_state, reward, done = env.step(action)
+        agent.update(state, action, reward, next_state, done)
+        state = next_state
+        total_reward += reward
+        if done:
+            break
+
+    # Decay epsilon (explore less as we learn more)
+    agent.epsilon = max(0.01, agent.epsilon * 0.999)
+    episode_rewards.append(total_reward)
+
+print(f"Average reward (last 100 episodes): {np.mean(episode_rewards[-100:]):.2f}")</code></pre>
+
+    <h2>5. The Exploration-Exploitation Tradeoff</h2>
+    <p>Epsilon-greedy exploration is simple but naive. The fundamental question: how much should the agent explore (try new actions to gather information) vs. exploit (take the best known action)?</p>
+    <ul>
+      <li>Too much exploration: the agent never converges to a good policy</li>
+      <li>Too little exploration: the agent gets stuck in locally good but globally suboptimal policies</li>
+    </ul>
+    <p>More sophisticated exploration strategies: Upper Confidence Bound (UCB) which selects actions based on both expected value and uncertainty; Thompson Sampling which samples from a posterior over Q-values; and Intrinsic Motivation which adds rewards for visiting unexplored states.</p>
+
+    <h2>6. Connection to RLHF</h2>
+    <p>RLHF (Reinforcement Learning from Human Feedback) applies exactly these ideas to language models. The "state" is the conversation context, the "actions" are tokens generated, and the "reward" comes from a learned reward model trained on human preferences. The same Bellman equations, the same policy gradient updates, the same exploration-exploitation tradeoff — applied at a massive scale with neural network function approximation instead of a lookup table.</p>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise</div>
+      <p>Modify the epsilon decay schedule. Try: (1) no decay (constant epsilon), (2) fast linear decay, (3) slow exponential decay. What effect does each have on the learning curve? Which produces the best final policy?</p>
+    </div>
+
+- title: "Lecture: Prompt Engineering as Software Engineering"
+  type: lecture_page
+  school: "School of Language & Reasoning"
+  difficulty: "Introductory"
+  course_number: "AGT-101"
+  estimated_time: "75 minutes"
+  topics:
+    - "Large Language Models"
+    - "AI Agents"
+  body: |
+    <div class="callout">
+      <div class="callout__title">Learning Objectives</div>
+      <p>Write system prompts that produce consistent, production-quality behavior. Apply chain-of-thought prompting to reasoning tasks. Structure prompts for JSON output and validate results. Build an evaluation harness for testing prompt quality.</p>
+    </div>
+
+    <h2>1. The System Prompt Is Your API Contract</h2>
+    <p>Before writing a single line of code, the most important decision in a Claude-powered application is the system prompt. It establishes the model's role, constraints, output format, and behavior for the entire interaction. Treat it like a function signature: be explicit about inputs, outputs, and constraints.</p>
+    <pre><code>WEAK (inconsistent behavior):
+"You are a helpful customer service bot."
+
+STRONG (consistent, predictable behavior):
+"""You are a customer service agent for Acme Corp's online store.
+
+Your role:
+- Answer questions about orders, shipping, and returns
+- Provide accurate information from the knowledge base you're given
+- Escalate to human support for billing disputes and technical issues
+
+Constraints:
+- Never speculate about information not provided in the context
+- If you don't know something, say "I don't have that information"
+  and provide the contact link: support@acmecorp.com
+- Respond in under 100 words unless a longer answer is clearly needed
+
+Output format: Plain text, friendly and professional tone."""</code></pre>
+
+    <h2>2. Chain-of-Thought for Reasoning Tasks</h2>
+    <pre><code>import anthropic
+
+client = anthropic.Anthropic()
+
+# WITHOUT chain-of-thought — often wrong on multi-step problems
+response = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=100,
+    messages=[{"role": "user",
+               "content": "A train leaves Chicago at 2pm going 60mph. "
+                          "Another train leaves Detroit (280 miles away) at 3pm "
+                          "going 80mph toward Chicago. When do they meet?"}]
+)
+# Might just guess: "Around 5:20pm"
+
+# WITH chain-of-thought — shows work, higher accuracy
+response = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=400,
+    system="Think through problems step by step before giving your final answer.",
+    messages=[{"role": "user",
+               "content": "A train leaves Chicago at 2pm..."}]
+)
+# Shows: "Train 1 travels for t hours. Train 2 travels for (t-1) hours..."
+# Then solves correctly.</code></pre>
+
+    <h2>3. Structured JSON Output</h2>
+    <pre><code>import json
+from pydantic import BaseModel
+
+class ProductReview(BaseModel):
+    sentiment: str       # "positive", "negative", "neutral"
+    rating: int          # 1-5
+    key_issues: list[str]
+    would_recommend: bool
+
+def analyze_review(review_text: str) -> ProductReview:
+    response = client.messages.create(
+        model="claude-haiku-4-5-20251001",  # Use cheaper model for structured extraction
+        max_tokens=300,
+        system="""Analyze product reviews and extract structured information.
+
+Respond with valid JSON matching this schema:
+{
+  "sentiment": "positive" | "negative" | "neutral",
+  "rating": 1-5 integer,
+  "key_issues": ["issue1", "issue2"],
+  "would_recommend": true | false
+}
+
+Nothing before or after the JSON. Just the JSON object.""",
+        messages=[{"role": "user", "content": review_text}]
+    )
+
+    # Parse and validate
+    data = json.loads(response.content[0].text)
+    return ProductReview(**data)
+
+# Test
+review = "Great build quality but the battery only lasts 4 hours. Disappointed."
+result = analyze_review(review)
+print(result.sentiment)    # "negative"
+print(result.rating)       # 2
+print(result.key_issues)   # ["short battery life"]</code></pre>
+
+    <h2>4. Building an Eval Harness</h2>
+    <p>Every production prompt needs systematic evaluation. Here's a minimal eval harness:</p>
+    <pre><code>from dataclasses import dataclass
+from typing import Callable
+
+@dataclass
+class EvalCase:
+    input: str
+    expected_sentiment: str
+    expected_would_recommend: bool
+
+eval_cases = [
+    EvalCase("Amazing product! Best purchase this year.", "positive", True),
+    EvalCase("Arrived broken. Won't buy again.", "negative", False),
+    EvalCase("It's okay. Does what it says.", "neutral", None),
+]
+
+def run_eval(eval_cases):
+    correct = 0
+    for case in eval_cases:
+        result = analyze_review(case.input)
+
+        sentiment_correct = result.sentiment == case.expected_sentiment
+        rec_correct = (case.expected_would_recommend is None or
+                      result.would_recommend == case.expected_would_recommend)
+
+        if sentiment_correct and rec_correct:
+            correct += 1
+        else:
+            print(f"FAIL: {case.input[:50]}...")
+            print(f"  Expected: {case.expected_sentiment}, got: {result.sentiment}")
+
+    print(f"\nAccuracy: {correct}/{len(eval_cases)} = {correct/len(eval_cases):.0%}")
+
+run_eval(eval_cases)</code></pre>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise</div>
+      <p>Add 10 more eval cases to the harness, including edge cases (mixed positive/negative, foreign language reviews, very short reviews like "ok"). Measure accuracy. Then modify the system prompt to improve accuracy on failing cases. Does improving one case type hurt another? This is prompt engineering's version of overfitting.</p>
+    </div>
+
+- title: "Lecture: AI Ethics Case Studies"
+  type: lecture_page
+  school: "School of Society & Governance"
+  difficulty: "Introductory"
+  course_number: "ETH-401"
+  estimated_time: "90 minutes"
+  topics:
+    - "Ethics & Governance"
+  body: |
+    <div class="callout">
+      <div class="callout__title">Learning Objectives</div>
+      <p>Apply ethical analysis frameworks to real AI deployment scenarios. Identify stakeholders, harms, and tradeoffs in AI systems. Evaluate competing fairness and accountability claims. Practice structured ethical argumentation.</p>
+    </div>
+
+    <h2>Introduction: From Abstract to Applied</h2>
+    <p>AI ethics is easy to discuss in the abstract. Applied to real systems with real data and real affected populations, the easy principles ("AI should be fair") reveal themselves as complex tradeoffs with no clean answers. This lecture examines three case studies in depth, giving you frameworks and vocabulary for this analysis.</p>
+    <p>For each case study: (1) identify the stakeholders, (2) identify the potential harms and benefits, (3) apply a relevant ethical framework, (4) consider the distributional effects, and (5) assess what should be done.</p>
+
+    <h2>Case Study 1: Algorithmic Hiring Screening</h2>
+    <p><strong>Scenario:</strong> A Fortune 500 company deploys an AI system to pre-screen 50,000 job applications per year for engineering roles. The model predicts "likelihood of success" based on resume content. It reduces screening time from 6 weeks to 3 days. An internal audit finds the model recommends female candidates at 75% the rate of equivalent male candidates. HR says this mirrors historical hiring rates; the ML team says the model is simply "reflecting reality."</p>
+
+    <p><strong>The "reflecting reality" argument, examined:</strong> If historical hiring rates for women in engineering were 75% of men's rates, and those rates resulted from bias (gender discrimination, hostile work culture, unequal educational opportunity) rather than merit, then training a model on these rates "encodes" the bias. The model doesn't merely reflect reality — it perpetuates it, and at scale, with algorithmic authority that may be harder to challenge than individual human decisions.</p>
+
+    <p><strong>Stakeholders:</strong></p>
+    <ul>
+      <li>Applicants (especially women and minorities who are disproportionately screened out)</li>
+      <li>Hiring managers (who have less time but may be working with a systematically biased tool)</li>
+      <li>The company (efficiency gains, but legal risk under Title VII, EEOC guidelines)</li>
+      <li>Future employees of the company (workforce diversity affects culture and problem-solving)</li>
+    </ul>
+
+    <p><strong>Discussion questions:</strong></p>
+    <ol>
+      <li>Is training on historical data that reflects discrimination ethically permissible?</li>
+      <li>What fairness metric should be applied? Demographic parity (equal recommendation rates) or equalized odds (equal rates conditional on actual job performance)?</li>
+      <li>What transparency obligations exist to applicants who are screened out by this system?</li>
+      <li>If the company audits and finds bias, what are their obligations? To fix it? To stop using it?</li>
+    </ol>
+
+    <h2>Case Study 2: AI Diagnostic Aid in Emergency Medicine</h2>
+    <p><strong>Scenario:</strong> A large hospital network deploys an AI system that analyzes chest X-rays to flag potential pneumonia for urgent review. The system was trained on 2 million X-rays from academic medical centers. It has 92% sensitivity and 88% specificity overall. An equity audit reveals: 86% sensitivity and 84% specificity for Black patients, 88%/86% for Hispanic patients, and 95%/91% for white patients. The performance gap is attributed to underrepresentation of darker skin tones in training X-rays (X-ray exposure settings vary by radiologist practice).</p>
+
+    <p><strong>The harm quantified:</strong> At 92% sensitivity for the overall population, the hospital flags 92 of 100 pneumonia cases for urgent review. But Black patients experience only 86% sensitivity — the system misses 6 more cases per 100 than for white patients. In emergency medicine, a missed pneumonia diagnosis increases mortality risk significantly. The disparity is literally life and death.</p>
+
+    <p><strong>The deployment dilemma:</strong> The system, even for Black patients, is probably better than no AI assistance at all. But is it ethical to deploy a system with known disparate performance that may widen health disparities? Is it ethical not to deploy it because Black patients also benefit from the 86% sensitivity? What are the disclosure obligations to patients?</p>
+
+    <p><strong>Discussion questions:</strong></p>
+    <ol>
+      <li>Should the hospital deploy the system with the known disparity while working to address it?</li>
+      <li>Should the hospital develop separate models by demographic group? What problems does this raise?</li>
+      <li>What are the disclosure obligations to patients whose X-rays are screened by this system?</li>
+      <li>Who is responsible for the training data underrepresentation — the model developer, the hospital, the training data providers?</li>
+    </ol>
+
+    <h2>Case Study 3: Content Moderation at Scale</h2>
+    <p><strong>Scenario:</strong> A social media platform with 500 million users uses ML models to detect and remove policy-violating content (hate speech, harassment, misinformation). The models process 10 million posts per day and flag 2% for removal. Accuracy: 78% precision (78% of removed posts genuinely violate policy) and 65% recall (65% of violating posts are caught). The error analysis reveals: satirical content, non-English languages (especially African languages), and political speech about marginalized communities are overrepresented in false positives.</p>
+
+    <p><strong>The precision-recall tradeoff as an ethics question:</strong> Improving precision (fewer innocent posts removed) requires accepting lower recall (more harmful content stays up). Improving recall (more harmful content removed) requires accepting lower precision (more innocent content removed). Who bears the costs of each type of error? Innocent posts removed are disproportionately from underrepresented language communities. Harmful content that remains reaches users who may be harassed or radicalized. Neither error is costless; both errors fall disproportionately on specific populations.</p>
+
+    <p><strong>The scale problem:</strong> At 10 million posts/day, even a very accurate system makes hundreds of thousands of errors daily. Human review of flagged posts is expensive and psychologically damaging to reviewers. Automated systems are the only economically feasible option at scale. But automated systems can't do nuance well.</p>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Discussion Exercise (30 minutes)</div>
+      <p>For each case study, write a 200-word recommendation memo. Your memo should: identify the 3 most important stakeholders, state the key ethical tradeoff, take a position, and explain what monitoring or mitigation you'd require. Compare your recommendations with classmates. Where do people disagree? Why?</p>
+    </div>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Research Exercise</div>
+      <p>Find one real-world case from the past 3 years that resembles one of these scenarios. What actually happened? What would you have recommended? What does the actual outcome teach you about the gap between ethical recommendation and organizational reality?</p>
+    </div>
+
+- title: "Lecture: How Search Engines Use AI"
+  type: lecture_page
+  school: "School of Applied Intelligence"
+  difficulty: "Introductory"
+  course_number: "IR-101"
+  estimated_time: "75 minutes"
+  topics:
+    - "Search & Information Retrieval"
+    - "Natural Language Processing"
+  body: |
+    <div class="callout">
+      <div class="callout__title">Learning Objectives</div>
+      <p>Understand the history of search from TF-IDF to modern AI-enhanced systems. Implement BM25 from scratch. Explain how neural reranking improves search quality. Analyze Scolta's architecture as a worked example of practical AI search.</p>
+    </div>
+
+    <h2>1. The Vocabulary Problem</h2>
+    <p>Information retrieval's core challenge: users and documents use different words for the same concept. A user searching "heart attack symptoms" might miss a document titled "Signs of Myocardial Infarction." This vocabulary mismatch limits every keyword-based search system.</p>
+    <p>The evolution of search is largely the evolution of approaches to this problem: from user-driven synonym lists, through statistical analysis of co-occurrence, to neural models that understand semantic meaning.</p>
+
+    <h2>2. TF-IDF: The Classic Foundation</h2>
+    <pre><code>import math
+from collections import Counter
+
+def tf_idf(query_terms, documents):
+    """
+    TF-IDF scoring for a query against a document collection.
+
+    documents: list of tokenized documents
+    Returns: {doc_id: score} sorted by relevance
+    """
+    N = len(documents)
+
+    # IDF: how rare is each term across the corpus?
+    df = Counter()   # document frequency
+    for doc in documents:
+        for term in set(doc):
+            df[term] += 1
+
+    idf = {term: math.log(N / (freq + 1)) for term, freq in df.items()}
+
+    scores = {}
+    for i, doc in enumerate(documents):
+        doc_len = len(doc)
+        tf = Counter(doc)
+
+        score = 0
+        for term in query_terms:
+            if term in tf:
+                # TF: how often does the term appear in this document?
+                term_freq = tf[term] / doc_len
+                score += term_freq * idf.get(term, 0)
+
+        scores[i] = score
+
+    return sorted(scores.items(), key=lambda x: x[1], reverse=True)</code></pre>
+
+    <p>TF-IDF is remarkably effective for its simplicity. Its limitations: no understanding of synonymy ("car" ≠ "automobile"), no handling of query term order, and sensitivity to document length normalization.</p>
+
+    <h2>3. BM25: The Production Standard</h2>
+    <p>BM25 (Best Match 25) addresses TF-IDF's length sensitivity and term saturation problems:</p>
+    <pre><code>def bm25_score(query_terms, doc, documents, k1=1.5, b=0.75):
+    """
+    BM25 scoring for one document.
+    k1: controls term frequency saturation (typical: 1.2-2.0)
+    b: controls length normalization (0=none, 1=full)
+    """
+    N = len(documents)
+    avgdl = sum(len(d) for d in documents) / N
+    doc_len = len(doc)
+    tf = Counter(doc)
+
+    # Compute IDF (BPM25 variant)
+    df = Counter()
+    for d in documents:
+        for term in set(d):
+            df[term] += 1
+
+    score = 0
+    for term in query_terms:
+        if term not in tf:
+            continue
+
+        # TF with saturation and length normalization
+        tf_normalized = (tf[term] * (k1 + 1)) / (
+            tf[term] + k1 * (1 - b + b * doc_len / avgdl))
+
+        # IDF component
+        idf = math.log((N - df[term] + 0.5) / (df[term] + 0.5) + 1)
+
+        score += idf * tf_normalized
+
+    return score</code></pre>
+
+    <p>BM25's improvements: term frequency saturation (adding more occurrences of a term has diminishing returns) and explicit length normalization. These make it more robust than raw TF-IDF on realistic document collections.</p>
+
+    <h2>4. Neural Reranking with Cross-Encoders</h2>
+    <p>BM25 retrieves fast; cross-encoders rerank with precision. The difference: BM25 looks at query and document terms separately (O(n) retrieval); a cross-encoder reads query and document together (more expensive but more accurate).</p>
+    <pre><code>from sentence_transformers import CrossEncoder
+
+# Load a cross-encoder trained for reranking
+reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+
+def rerank(query, candidates):
+    """
+    candidates: list of (doc_id, text) tuples from BM25 retrieval
+    Returns: reranked list
+    """
+    pairs = [(query, text) for _, text in candidates]
+    scores = reranker.predict(pairs)
+
+    # Sort by cross-encoder score
+    reranked = sorted(zip(scores, candidates), reverse=True)
+    return [(doc_id, text, score) for score, (doc_id, text) in reranked]</code></pre>
+
+    <h2>5. Scolta: A Worked Example</h2>
+    <p>Scolta integrates these ideas with LLM-based query expansion and AI overview generation. The full pipeline:</p>
+    <pre><code>def scolta_search(user_query: str, corpus: list[dict]) -> dict:
+    """Simplified Scolta pipeline."""
+
+    # 1. LLM Query Expansion
+    expanded_query = llm_expand(
+        user_query,
+        prompt="Generate 5-10 alternative phrasings, synonyms, and related terms "
+               f"for this search query: '{user_query}'. Return as comma-separated list."
+    )
+    search_query = user_query + " " + expanded_query
+
+    # 2. BM25 retrieval on expanded query
+    candidates = bm25_search(search_query, corpus, k=20)
+
+    # 3. AI overview from top results
+    top_texts = [c['text'][:500] for c in candidates[:5]]
+    overview = llm_summarize(
+        user_query,
+        top_texts,
+        prompt=f"Based on these search results, answer: '{user_query}'"
+    )
+
+    return {
+        "overview": overview,
+        "results": candidates,
+        "expanded_query": expanded_query
+    }</code></pre>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise</div>
+      <p>Build a minimal search system for a small corpus (100 Wikipedia article paragraphs). Implement BM25 from scratch. Measure nDCG@10 on 20 queries with known relevant documents. Then add a simple LLM query expansion step (using the Anthropic API). Measure how much nDCG improves. What types of queries improve most? Why?</p>
+    </div>
+
+- title: "Lecture: Diffusion Models from First Principles"
+  type: lecture_page
+  school: "School of Perception & Synthesis"
+  difficulty: "Advanced"
+  course_number: "GEN-101"
+  estimated_time: "120 minutes"
+  topics:
+    - "Generative AI"
+    - "Mathematics & Foundations"
+  body: |
+    <div class="callout">
+      <div class="callout__title">Learning Objectives</div>
+      <p>Derive the diffusion forward and reverse processes from first principles. Implement DDPM training and sampling in PyTorch. Understand classifier-free guidance. Connect DDPM to latent diffusion and flow matching.</p>
+    </div>
+
+    <h2>1. The Problem: Learning to Generate</h2>
+    <p>We want to learn to sample from an unknown data distribution p_data(x) — the distribution of all natural images. If we had p_data, we could just sample from it. Instead, we have samples from p_data (training images) and need to learn the distribution.</p>
+    <p>Diffusion models take an indirect approach: instead of learning p_data directly (intractable), learn to reverse a known destruction process that converts p_data to pure noise.</p>
+
+    <h2>2. The Forward Process: Destroying Data</h2>
+    <p>Define a T-step process that gradually adds Gaussian noise to data. At each step t:</p>
+    <pre><code>q(x_t | x_{t-1}) = N(x_t; sqrt(1 - β_t) * x_{t-1}, β_t * I)
+
+Where β_t ∈ (0,1) is a variance schedule that increases from β_1 ≈ 0.0001 to β_T ≈ 0.02</code></pre>
+
+    <p>Key property (derived by telescoping the product):</p>
+    <pre><code>q(x_t | x_0) = N(x_t; sqrt(ᾱ_t) * x_0, (1 - ᾱ_t) * I)
+
+Where ᾱ_t = ∏_{s=1}^t (1 - β_s)
+
+This lets us sample x_t directly from x_0 without running t steps:
+x_t = sqrt(ᾱ_t) * x_0 + sqrt(1 - ᾱ_t) * ε   where ε ~ N(0, I)</code></pre>
+
+    <h2>3. Training the Denoising Network</h2>
+    <p>The model ε_θ(x_t, t) learns to predict the noise ε that was added:</p>
+    <pre><code>import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+def p_losses(denoise_model, x_start, t, noise=None):
+    """
+    Simple DDPM training objective: predict the added noise.
+    """
+    if noise is None:
+        noise = torch.randn_like(x_start)
+
+    # Get noisy image at timestep t
+    alphas_cumprod = ... # precomputed schedule
+    sqrt_alphas_cumprod = alphas_cumprod.sqrt()
+    sqrt_one_minus_alphas_cumprod = (1 - alphas_cumprod).sqrt()
+
+    x_noisy = (sqrt_alphas_cumprod[t] * x_start +
+               sqrt_one_minus_alphas_cumprod[t] * noise)
+
+    # Predict the noise
+    predicted_noise = denoise_model(x_noisy, t)
+
+    # MSE loss between predicted and actual noise
+    loss = F.mse_loss(noise, predicted_noise)
+    return loss</code></pre>
+
+    <h2>4. DDPM Sampling: The Reverse Process</h2>
+    <pre><code>@torch.no_grad()
+def p_sample(model, x, t, t_index, betas, posterior_variance):
+    """Single denoising step from x_t to x_{t-1}."""
+
+    # Predict noise
+    predicted_noise = model(x, t)
+
+    # Compute the mean of p(x_{t-1} | x_t, x_0_hat)
+    alpha = 1 - betas[t_index]
+    alpha_cumprod = ...  # ᾱ_t
+
+    mean = (1 / alpha.sqrt()) * (x -
+           betas[t_index] / (1 - alpha_cumprod).sqrt() * predicted_noise)
+
+    if t_index == 0:
+        return mean
+    else:
+        # Add noise scaled by the posterior variance
+        noise = torch.randn_like(x)
+        return mean + posterior_variance[t_index].sqrt() * noise
+
+@torch.no_grad()
+def sample(model, image_size, batch_size=16, channels=3):
+    """Full DDPM sampling: start from noise, denoise T times."""
+
+    shape = (batch_size, channels, image_size, image_size)
+    x = torch.randn(shape)  # Start from pure noise
+
+    for i in reversed(range(T)):
+        t = torch.full((batch_size,), i, dtype=torch.long)
+        x = p_sample(model, x, t, i, betas, posterior_variance)
+
+    return x</code></pre>
+
+    <h2>5. Classifier-Free Guidance</h2>
+    <p>To condition generation on a text prompt (or class), classifier-free guidance (CFG) trains the model jointly on conditional and unconditional objectives, then at inference linearly combines them:</p>
+    <pre><code># At training time: randomly drop condition with probability p_uncond
+# At inference time:
+guided_noise = (1 + w) * conditional_noise - w * unconditional_noise
+
+# Where w is the guidance scale:
+# w=0: no guidance (unconditional sampling)
+# w=7.5: typical for image generation (strong guidance)
+# w=15+: over-guidance produces oversaturated, less natural images</code></pre>
+
+    <div class="callout callout--exercise">
+      <div class="callout__title">Exercise</div>
+      <p>Train a small DDPM on the MNIST dataset (28×28 grayscale images). Monitor training loss and sample images at epochs 10, 50, and 100. At what point do generated digits become recognizable? How does the guidance scale affect sample quality for digit-conditioned generation?</p>
+    </div>

@@ -1,0 +1,395 @@
+# Meridian AI — Resource Articles Batch 3
+# SDC Articles (RL/Robotics) + SFM Articles (Math) + Part of SSG (Ethics)
+
+# ============================================================
+# SCHOOL OF DECISION & CONTROL
+# ============================================================
+
+- title: "Beyond LLMs: Why Reinforcement Learning Matters More Than Ever"
+  type: resource_article
+  school: "School of Decision & Control"
+  difficulty: "Introductory"
+  related_program_title: "MS in Reinforcement Learning & Autonomous Systems"
+  topics:
+    - "Reinforcement Learning"
+  body: |
+    <h2>The LLM Shadow</h2>
+    <p>Since ChatGPT launched in late 2022, large language models have dominated AI discussions. Budgets, talent, and media attention have concentrated on text and image generation. But reinforcement learning — the framework for training agents through trial and reward — has been quietly having one of its most productive periods ever. Understanding why requires stepping back from the current hype cycle.</p>
+
+    <h2>What RL Is That LLMs Aren't</h2>
+    <p>Language models are trained on static data: text that was written before training began. They're optimized to predict the next token, which is a powerful proxy for many tasks but doesn't directly optimize for taking actions in the world. Reinforcement learning trains on experience: an agent takes actions, observes outcomes, receives rewards, and adjusts its behavior to maximize cumulative reward over time.</p>
+    <p>This distinction matters for any task that requires: sequential decision-making (where current actions affect future options), optimization against sparse rewards (the right answer isn't evident until many steps later), physical interaction (robots don't get "next token" feedback), or discovering strategies humans haven't thought of.</p>
+
+    <h2>RL Inside LLMs</h2>
+    <p>Ironically, the biggest recent advance in LLMs — alignment via RLHF — is reinforcement learning. The "RL" in RLHF is used to train language models to be more helpful and less harmful. DeepSeek R1's chain-of-thought reasoning was discovered through reinforcement learning from outcome-based rewards. OpenAI's o1 and o3 models use RL-based inference-time scaling. RL is the core technology enabling the most capable aspects of modern language models.</p>
+
+    <h2>Physical AI: The Next Frontier</h2>
+    <p>Physical AI — robots that can perform complex manipulation and locomotion in unstructured environments — requires RL at its core. Boston Dynamics, Figure, Physical Intelligence (Pi), and 1X Technologies are all investing heavily in RL-based control. The sim-to-real pipeline (train in simulation, deploy in the real world) has matured dramatically: models trained entirely in simulation now control real robots with sub-second response times and human-competitive dexterity on specific tasks.</p>
+
+    <h2>AlphaFold 2 and Scientific Discovery</h2>
+    <p>AlphaFold 2, which solved the 50-year-old protein structure prediction problem, used a combination of transformer architecture and evolutionary data — but the refinement and confidence calibration components relied on RL-style iterative optimization. This is characteristic of RL's role in scientific AI: enabling optimization toward complex, hard-to-specify objectives.</p>
+
+    <h2>Recommendation and Control Systems</h2>
+    <p>The systems that most people interact with most often — content recommendation, ad placement, logistics routing, trading algorithms — are RL systems. YouTube's recommendation system optimizes watch time (a reward signal) through bandit-style RL. Uber's pricing is a contextual bandit. FedEx's route optimization uses deep RL. These systems are less glamorous than image generation but more economically significant.</p>
+    <p>Anyone building AI applications beyond text generation will likely encounter reinforcement learning sooner or later. Meridian AI's MS in Reinforcement Learning &amp; Autonomous Systems prepares students for exactly this landscape.</p>
+
+- title: "World Models: Teaching AI to Simulate Reality"
+  type: resource_article
+  school: "School of Decision & Control"
+  difficulty: "Advanced"
+  related_program_title: "MS in Reinforcement Learning & Autonomous Systems"
+  topics:
+    - "Reinforcement Learning"
+  body: |
+    <h2>What Is a World Model?</h2>
+    <p>A world model is a learned simulator: a neural network that can predict what the world will look like after the agent takes an action, without requiring the real environment to run. Rather than learning purely from trial and error in the actual environment (model-free RL), model-based RL uses a learned model of the environment dynamics to plan, imagine, and train without as much real-world interaction.</p>
+    <p>The idea is appealing: humans don't need to physically try every option before making a decision. We mentally simulate likely outcomes, predict which actions are dangerous before taking them, and plan complex sequences of actions by reasoning in our heads. World models aim to give AI agents similar capabilities.</p>
+
+    <h2>DreamerV3: A Modern World Model</h2>
+    <p>DreamerV3 (Hafner et al., 2023) is the current state of the art in model-based RL. Its architecture has three components: a Recurrent State Space Model (RSSM) that learns to predict the next state from current state and action; an encoder that maps observations to the latent state; and a decoder that maps latent states back to observations (for visualization and auxiliary objectives).</p>
+    <p>DreamerV3's key claim: a single model that works across 150+ diverse tasks spanning Atari, continuous control, 3D environments, and robotics — trained only from reward and visual observations, without task-specific architecture changes. This generality is significant; earlier model-based methods typically required extensive tuning for each domain.</p>
+
+    <h2>Planning in Latent Space</h2>
+    <p>With a world model, the agent can plan entirely in latent space — imagining trajectories without rendering them, evaluating potential future states cheaply, and backpropagating gradients through simulated trajectories. This dramatically improves sample efficiency: the agent can make thousands of imagined decisions for every real-world step. DreamerV3 typically achieves human-level performance on Atari in 200M imagined steps, corresponding to only 20M real environment steps.</p>
+
+    <h2>Challenges: Distribution Shift and Compounding Errors</h2>
+    <p>World models have a fundamental challenge: they're trained on the agent's current behavior, but used to plan future behavior that may be very different. Predictions become increasingly inaccurate for plans that explore regions of state space the agent hasn't visited. Small errors in each prediction step compound: after 50 steps, a 1% per-step error rate can produce completely unrealistic imagined trajectories.</p>
+    <p>Practical mitigations: use short planning horizons (avoid compounding errors over many steps); maintain an ensemble of world models and only use states where models agree; use uncertainty-aware planning that treats high-disagreement regions as dangerous.</p>
+
+    <h2>Application to Robotics</h2>
+    <p>World models are particularly powerful for robotics, where real-world interaction is expensive and sometimes dangerous. The Threshold Robotics Lab at Meridian AI uses a world model approach: train in simulation, use the world model to bridge the sim-to-real gap, and only collect real-world data for fine-tuning the world model to capture reality's deviations from simulation. This pipeline reduces the required real-world robot interactions by 10-100× compared to purely model-free approaches.</p>
+
+- title: "Policy Gradients: The Math Behind Modern RL"
+  type: resource_article
+  school: "School of Decision & Control"
+  difficulty: "Advanced"
+  related_program_title: "MS in Reinforcement Learning & Autonomous Systems"
+  topics:
+    - "Reinforcement Learning"
+    - "Mathematics & Foundations"
+  body: |
+    <h2>The Optimization Problem</h2>
+    <p>Reinforcement learning seeks to maximize expected cumulative reward. Formally: find a policy π(a|s) — a probability distribution over actions given states — that maximizes:</p>
+    <pre><code>J(π) = E[Σ_t γ^t r_t | π]</code></pre>
+    <p>Where γ is the discount factor and r_t is the reward at time t. Policy gradient methods optimize J directly by computing its gradient with respect to the policy parameters and ascending the gradient — standard optimization, but for this specific objective.</p>
+
+    <h2>The Policy Gradient Theorem</h2>
+    <p>The key result (Sutton et al., 1999) shows how to compute ∇J(π) without knowing the environment dynamics:</p>
+    <pre><code>∇J(π_θ) = E[Q^π(s,a) ∇ log π_θ(a|s)]</code></pre>
+    <p>Where Q^π(s,a) is the action-value function under π. This tells us: the gradient of expected return equals the expected gradient of the log-policy, weighted by the action-value. Intuitively: increase the probability of actions that lead to high value, decrease the probability of actions that lead to low value.</p>
+    <p>This "likelihood ratio" trick is fundamental: it allows us to differentiate through expectations of functions of samples from the policy, even though we don't know the environment dynamics that generate the rewards.</p>
+
+    <h2>REINFORCE and Its Problems</h2>
+    <p>REINFORCE (Williams, 1992) estimates Q^π with Monte Carlo returns: complete an episode, compute the total return from each state-action pair, use these as estimates. Simple but very high variance: returns are noisy because many other actions in the episode affect the total return. High variance means slow, unstable learning.</p>
+
+    <h2>Actor-Critic Methods</h2>
+    <p>Actor-critic methods reduce variance by using a learned value function (the "critic") to estimate Q^π rather than Monte Carlo returns. The critic is trained to minimize TD error; the actor uses the critic's estimates to compute policy gradients. This significantly reduces variance at the cost of introducing bias from the critic's approximation errors.</p>
+    <p>A2C/A3C (Asynchronous Advantage Actor-Critic) uses A^π(s,a) = Q^π(s,a) - V^π(s) (the "advantage" — how much better is this action than average?) as the policy gradient weight, further reducing variance. PPO (Proximal Policy Optimization) adds a clipping constraint that prevents the policy from changing too much in any single update, dramatically improving stability. PPO is the current default algorithm for most RL applications including RLHF.</p>
+
+    <h2>SAC: Entropy Maximization</h2>
+    <p>SAC (Soft Actor-Critic) adds an entropy term to the objective: the policy should not only maximize expected return but also maximize entropy (stay as random as possible while still achieving high reward). This encourages exploration, prevents premature convergence to suboptimal deterministic policies, and improves robustness. SAC is the dominant algorithm for continuous control tasks in robotics and simulation.</p>
+
+- title: "Sim-to-Real: Training Robots in Virtual Worlds"
+  type: resource_article
+  school: "School of Decision & Control"
+  difficulty: "Advanced"
+  related_program_title: "Certificate in AI for Robotics"
+  topics:
+    - "Robotics"
+    - "Reinforcement Learning"
+  body: |
+    <h2>The Training Data Problem for Robots</h2>
+    <p>Neural network training requires data — lots of it. A robot learning to walk might need to attempt the task millions of times before achieving consistent performance. In the real world, a million attempts would take months, wear out hardware, and likely involve many destructive falls. Simulation solves this: in a physics simulator, a million training steps might take hours, cost nothing in hardware, and enable parallel training across hundreds of virtual instances simultaneously.</p>
+    <p>The catch is the "reality gap": simulated environments are approximations. Physics simulators don't perfectly model friction, contact dynamics, material deformation, or sensor noise. A policy trained in simulation may fail when deployed on real hardware because the simulator was wrong about something important.</p>
+
+    <h2>Domain Randomization</h2>
+    <p>The dominant technique for crossing the reality gap is domain randomization: randomize the simulation parameters during training so the robot learns a policy that works across a wide distribution of environments, rather than the specific parameters of any single simulator. Randomize: physics parameters (friction, mass, inertia), visual parameters (lighting, texture, camera noise), and dynamic parameters (actuator delays, gravity magnitude, object placement).</p>
+    <p>The intuition: if the simulation distribution includes the real world (or is close to it), the policy trained on the distribution will work in reality. More specifically: the real environment is just one more point in the distribution the policy has been trained to handle.</p>
+    <p>Dr. Chakraborty's lab at Meridian AI has developed adaptive domain randomization — automatically adjusting which parameters to randomize and by how much based on the difficulty of the current training step, prioritizing parameters that actually affect task performance.</p>
+
+    <h2>Isaac Lab and GPU-Accelerated Simulation</h2>
+    <p>NVIDIA's Isaac Lab enables GPU-accelerated physics simulation, running thousands of robot environments in parallel on a single A100. This changes the economics: a sim-to-real training run that previously took weeks now takes hours. The quality of the physics simulation has also improved dramatically: contact dynamics, deformable objects, and fluid simulation are now fast enough to use in training loops.</p>
+
+    <h2>Privileged Information and Asymmetric Actor-Critic</h2>
+    <p>A clever sim-to-real technique: during training, give the policy access to information that's available in simulation (exact contact forces, precise state of hidden objects) but not in the real world. This "privileged information" makes the training problem easier and produces better policy networks. At deployment, train a "student" policy that maps only real-sensor observations to the actions the privileged "teacher" would take. The student learns to infer what the teacher knew directly.</p>
+
+    <h2>Results at Meridian AI</h2>
+    <p>The Threshold Robotics Lab's work on indoor navigation (Project: Indoor Navigation with World Models) has achieved 87% success on novel layouts in sim-to-real transfer using this approach. For manipulation tasks, the lab's diffusion policy implementation achieves sub-centimeter grasping accuracy on objects seen only in simulation during training. These results indicate that the sim-to-real gap has narrowed to the point where many practical tasks can be solved entirely in simulation.</p>
+
+# ============================================================
+# SCHOOL OF FOUNDATIONS & MATHEMATICS
+# ============================================================
+
+- title: "The Linear Algebra Every ML Engineer Actually Needs"
+  type: resource_article
+  school: "School of Foundations & Mathematics"
+  difficulty: "Introductory"
+  related_program_title: "MS in Mathematical Foundations of AI"
+  topics:
+    - "Mathematics & Foundations"
+  body: |
+    <h2>What to Learn vs. What to Skip</h2>
+    <p>A typical linear algebra course covers abstract vector spaces, determinants, and theoretical proofs. Machine learning uses a specific subset of linear algebra: mostly operations on matrices and vectors that show up repeatedly. This article identifies what actually matters for ML practitioners, explains why, and points to where you'll encounter each concept.</p>
+
+    <h2>Matrix Multiplication: The Foundation</h2>
+    <p>Almost everything in deep learning is matrix multiplication. A fully connected layer: Y = XW + b, where X is the input matrix (batch_size × features), W is the weight matrix (features × outputs). An attention mechanism: Q·K^T / sqrt(d_k). The forward pass of a transformer is a sequence of matrix multiplications with nonlinearities between them.</p>
+    <p>You need to be fluent with: matrix dimensions and why they have to be compatible, the transpose operation, batch matrix multiplication (processing many matrices simultaneously), and the computational cost O(m×n×k) for multiplying an (m×k) matrix by a (k×n) matrix.</p>
+
+    <h2>Eigenvalues and Eigenvectors</h2>
+    <p>An eigenvector of matrix A is a vector v such that Av = λv — the matrix transforms it only by scaling (by eigenvalue λ), not by rotation. This shows up in ML through: PCA (principal components are eigenvectors of the covariance matrix), analyzing gradient flow (eigenvalues of the Hessian determine optimization curvature), and understanding why some layers have better gradient propagation than others.</p>
+
+    <h2>Singular Value Decomposition (SVD)</h2>
+    <p>SVD decomposes any matrix A = UΣV^T where U and V are orthogonal and Σ is diagonal. This is the factorization that underlies: data compression (keep only the top-k singular vectors), understanding matrix rank, LoRA fine-tuning (which approximates weight update matrices as low-rank = low-k SVD), and noise filtering. The singular values in Σ tell you the "intrinsic dimensionality" of the information in a matrix.</p>
+
+    <h2>Norms and Distances</h2>
+    <p>The L2 norm ||v||₂ = sqrt(Σ vᵢ²) is the standard Euclidean distance. It appears everywhere: gradient clipping (||∇||₂), regularization (L2/weight decay adds ||W||₂² to the loss), cosine similarity (measuring semantic similarity in embedding spaces), and matrix norms (measuring how much a transformation stretches vectors).</p>
+    <p>The L1 norm ||v||₁ = Σ |vᵢ| produces sparsity when used as a regularizer (Lasso regression). Understanding when to use L1 vs. L2 regularization requires understanding how these norms penalize different parameter configurations.</p>
+
+    <h2>Gradients and the Jacobian</h2>
+    <p>Backpropagation computes gradients: for a scalar loss L and a parameter vector θ, ∇L is the vector of partial derivatives ∂L/∂θᵢ. For vector-valued functions, the Jacobian J[i,j] = ∂fᵢ/∂xⱼ is the matrix of all partial derivatives. Chain rule for matrices (Jacobian chain rule) is how backprop flows through multiple layers.</p>
+    <p>You don't need to compute Jacobians by hand, but understanding what they are — and that PyTorch's autograd is computing them efficiently — is essential for debugging gradient issues and understanding why certain architectures train better than others.</p>
+
+- title: "Gradient Descent: From Intuition to Implementation"
+  type: resource_article
+  school: "School of Foundations & Mathematics"
+  difficulty: "Introductory"
+  topics:
+    - "Mathematics & Foundations"
+  body: |
+    <h2>The Mountain in the Dark</h2>
+    <p>Optimization in machine learning is like trying to find the lowest point in a mountain range while blindfolded. You can feel the slope under your feet (the gradient), but you can't see the landscape. Gradient descent is the simplest strategy: always step in the direction that slopes downward. This simple idea, combined with careful tuning and clever variants, is how virtually all neural networks are trained.</p>
+
+    <h2>Vanilla Gradient Descent</h2>
+    <p>The basic update rule:</p>
+    <pre><code>θ ← θ - η ∇_θ L(θ)</code></pre>
+    <p>Where η is the learning rate and ∇_θ L is the gradient of the loss with respect to parameters. Take small steps in the direction of steepest descent. The learning rate η is the most critical hyperparameter: too large and training diverges; too small and training is impossibly slow.</p>
+    <p>For a quadratic loss (the simplest case), gradient descent converges geometrically: the error multiplies by (1 - ηλ) at each step, where λ is the smallest eigenvalue of the Hessian. Optimal convergence rate requires η = 2/(λ_min + λ_max), which requires knowing the Hessian's spectrum — not practical for neural networks.</p>
+
+    <h2>Stochastic Gradient Descent</h2>
+    <p>Computing the exact gradient requires evaluating the loss over the full dataset — expensive for millions of examples. SGD (Stochastic Gradient Descent) approximates the gradient using a random mini-batch:</p>
+    <pre><code>∇̃L ≈ (1/B) Σ_{i∈batch} ∇L(xᵢ, yᵢ; θ)</code></pre>
+    <p>This is noisy but much faster per step than full-batch gradient descent. Surprisingly, SGD's noise is often beneficial: it acts as regularization, helps escape sharp minima, and is thought to bias optimization toward flatter minima that generalize better (the "flat minima" hypothesis).</p>
+
+    <h2>Momentum</h2>
+    <p>SGD oscillates in directions of high curvature. Momentum smooths this by accumulating a velocity vector that decays over time:</p>
+    <pre><code>v ← μv - η∇L
+θ ← θ + v</code></pre>
+    <p>With momentum μ = 0.9, the optimizer accumulates gradients from the past ~10 steps, dampening oscillations and enabling larger effective learning rates. Nesterov momentum computes the gradient slightly ahead of the current position for better theoretical convergence.</p>
+
+    <h2>Adam and AdamW</h2>
+    <p>Adam adapts the learning rate per parameter based on estimates of first and second moments of the gradient:</p>
+    <pre><code>m ← β₁m + (1-β₁)g      # first moment (mean)
+v ← β₂v + (1-β₂)g²     # second moment (variance)
+m̂ = m/(1-β₁ᵗ)          # bias correction
+v̂ = v/(1-β₂ᵗ)          # bias correction
+θ ← θ - η m̂/(√v̂ + ε)</code></pre>
+    <p>Parameters with consistently large gradients get smaller effective learning rates (v̂ grows large). Parameters with small or noisy gradients get larger effective learning rates. This automatic adaptation is why Adam usually works better than SGD without careful tuning.</p>
+    <p>AdamW (Loshchilov &amp; Hutter, 2019) fixes a subtle bug in L2 regularization with Adam: instead of adding the regularization term to the gradient (which Adam downscales), AdamW applies weight decay directly to the parameters. This produces better regularization and is the default optimizer for most large model training.</p>
+
+- title: "Information Theory for Machine Learning Practitioners"
+  type: resource_article
+  school: "School of Foundations & Mathematics"
+  difficulty: "Intermediate"
+  topics:
+    - "Mathematics & Foundations"
+  body: |
+    <h2>Why Information Theory Matters for ML</h2>
+    <p>Shannon's information theory, developed in 1948 for communications engineering, turns out to be deeply connected to machine learning. Cross-entropy — the standard loss function for classification — is an information-theoretic concept. The KL divergence that appears in VAEs, RL, and alignment training is from information theory. The mutual information used to analyze what neural networks learn is from information theory. Understanding these connections gives you a much deeper understanding of why standard ML methods work.</p>
+
+    <h2>Entropy: Measuring Uncertainty</h2>
+    <p>Shannon entropy measures the average information content of a random variable:</p>
+    <pre><code>H(X) = -Σ_x p(x) log p(x)</code></pre>
+    <p>High entropy = high uncertainty. A fair coin has entropy 1 bit. A two-headed coin has entropy 0 (no uncertainty). A uniform distribution over 256 outcomes has entropy 8 bits.</p>
+    <p>In ML: model uncertainty (how uncertain is the model about this prediction?) is related to entropy of the output distribution. Entropy maximization in SAC (reinforcement learning) explicitly rewards high-entropy policies. The entropy of the training data distribution affects how hard the learning problem is.</p>
+
+    <h2>Cross-Entropy: The Standard Loss Function</h2>
+    <p>Cross-entropy H(p, q) measures the expected log-loss when using distribution q to encode events drawn from distribution p:</p>
+    <pre><code>H(p, q) = -Σ_x p(x) log q(x)</code></pre>
+    <p>In classification: p is the true distribution (one-hot label), q is the model's predicted distribution. Minimizing cross-entropy is exactly maximum likelihood estimation — you're finding model parameters that make the training data most likely. Cross-entropy = entropy + KL divergence: H(p, q) = H(p) + KL(p||q).</p>
+
+    <h2>KL Divergence: Measuring Distribution Difference</h2>
+    <p>KL divergence (Kullback-Leibler divergence) measures how much one distribution differs from another:</p>
+    <pre><code>KL(p||q) = Σ_x p(x) log(p(x)/q(x))</code></pre>
+    <p>It's not symmetric (KL(p||q) ≠ KL(q||p)) and can be interpreted as the extra bits needed to encode samples from p when using an optimal code for q. KL appears everywhere in ML: RLHF/PPO uses KL as a constraint between the policy being trained and the reference policy; VAEs minimize KL between the posterior and the prior; information bottleneck theory uses KL to formalize compression.</p>
+
+    <h2>Mutual Information: What's Shared Between Variables</h2>
+    <p>Mutual information measures how much information X and Y share:</p>
+    <pre><code>I(X;Y) = KL(p(x,y) || p(x)p(y)) = H(X) - H(X|Y)</code></pre>
+    <p>High mutual information = knowing Y tells you a lot about X. Research on "what neural networks learn" often uses mutual information between representations and input/output: good representations should have high I(representation; label) and low I(representation; spurious features). The information bottleneck principle proposes that good representations compress away irrelevant information while retaining task-relevant information.</p>
+
+- title: "Probability Theory for Deep Learning"
+  type: resource_article
+  school: "School of Foundations & Mathematics"
+  difficulty: "Intermediate"
+  topics:
+    - "Mathematics & Foundations"
+  body: |
+    <h2>Why Probability Is Non-Negotiable</h2>
+    <p>Deep learning is fundamentally probabilistic: models output probability distributions, loss functions come from probability theory, regularization has Bayesian interpretations, and uncertainty quantification requires probabilistic reasoning. You can write code without understanding probability, but you can't debug, evaluate, or improve systems without it.</p>
+
+    <h2>Basic Probability</h2>
+    <p>A probability distribution assigns probabilities to events such that all probabilities are non-negative and sum to 1. Key distributions for ML:</p>
+    <ul>
+      <li><strong>Gaussian (Normal):</strong> Most common. Central limit theorem says sums of random variables converge to Gaussian. Shows up in weight initialization, noise models, VAE priors.</li>
+      <li><strong>Bernoulli/Categorical:</strong> Binary and multi-class classification outputs. Categorical cross-entropy is the natural loss for categorical distributions.</li>
+      <li><strong>Uniform:</strong> Used for random initialization, some regularization.</li>
+      <li><strong>Dirichlet:</strong> Distribution over probability vectors; used in topic models and Bayesian neural networks.</li>
+    </ul>
+
+    <h2>Bayes' Theorem</h2>
+    <p>Bayes' theorem connects prior beliefs to updated beliefs after observing data:</p>
+    <pre><code>p(θ|D) = p(D|θ) p(θ) / p(D)</code></pre>
+    <p>Posterior ∝ Likelihood × Prior. Maximum likelihood estimation (what most deep learning does) maximizes p(D|θ) ignoring the prior. Maximum a posteriori (MAP) estimation maximizes p(D|θ)p(θ) — which is ML with regularization. L2 regularization corresponds to a Gaussian prior on weights; L1 regularization corresponds to a Laplace prior.</p>
+
+    <h2>Expectation, Variance, and Moments</h2>
+    <p>Expected value E[X] = Σ x p(x) is the probability-weighted average. Variance Var[X] = E[(X-E[X])²] = E[X²] - (E[X])² measures spread. Standard deviation is the square root of variance.</p>
+    <p>In training: batch statistics (used in batch normalization) are estimates of population means and variances. Gradient variance is a key optimization concept — high variance means unreliable gradient estimates and unstable training. Adam's adaptive learning rates reduce the effect of variance in gradient estimates.</p>
+
+    <h2>Monte Carlo Methods</h2>
+    <p>Many integrals and expectations in ML can't be computed analytically. Monte Carlo methods approximate them by sampling: E[f(X)] ≈ (1/N) Σ f(xᵢ) where xᵢ ~ p(X). The law of large numbers guarantees convergence. Applications: SGD (Monte Carlo estimate of gradient), REINFORCE (Monte Carlo estimate of policy gradient), variational inference (Monte Carlo estimation of the ELBO).</p>
+
+# ============================================================
+# SCHOOL OF SOCIETY & GOVERNANCE
+# ============================================================
+
+- title: "The EU AI Act Explained: What Developers Need to Know"
+  type: resource_article
+  school: "School of Society & Governance"
+  difficulty: "Introductory"
+  related_program_title: "MS in AI Ethics & Governance"
+  topics:
+    - "Ethics & Governance"
+  body: |
+    <h2>The World's First Comprehensive AI Law</h2>
+    <p>The EU AI Act, which entered into force in August 2024, is the world's first comprehensive regulatory framework for artificial intelligence. If you develop, deploy, or use AI systems in ways that affect people in the European Union — even if your company is headquartered elsewhere — you need to understand it. This article provides a practical overview for developers and technical teams.</p>
+
+    <h2>The Risk-Based Framework</h2>
+    <p>The Act organizes AI systems into four risk tiers:</p>
+    <ul>
+      <li><strong>Prohibited AI:</strong> Flatly banned. Includes: real-time biometric surveillance in public spaces (limited exceptions), social scoring systems, exploitation of vulnerabilities, emotion recognition in workplaces and schools, AI that manipulates behavior through subliminal techniques.</li>
+      <li><strong>High-risk AI:</strong> Permitted but heavily regulated. Includes: safety components of critical infrastructure, AI in medical devices, biometric identification, AI in employment decisions, credit scoring, immigration, law enforcement, judicial decisions. Must meet requirements for data governance, transparency, human oversight, accuracy, and robustness. Must register in an EU database before deployment.</li>
+      <li><strong>Limited risk AI:</strong> Transparency obligations. Chatbots must disclose that users are talking to AI. Deepfakes must be labeled. No substantive pre-deployment requirements.</li>
+      <li><strong>Minimal risk AI:</strong> AI spam filters, AI chess games, etc. No additional obligations.</li>
+    </ul>
+
+    <h2>General Purpose AI (GPAI) Models</h2>
+    <p>A significant addition to the Act covers "general-purpose AI models" — foundation models like GPT-4, Claude, and Llama. All GPAI models must: provide technical documentation, comply with EU copyright law, publish summaries of training data. "Systemic risk" GPAI models (those above 10^25 FLOPs training compute threshold, roughly GPT-4-scale and above) have additional obligations: mandatory adversarial testing, incident reporting, cybersecurity measures, energy efficiency reporting.</p>
+
+    <h2>Key Compliance Timelines</h2>
+    <ul>
+      <li><strong>February 2025:</strong> Prohibited AI provisions apply</li>
+      <li><strong>August 2025:</strong> GPAI model provisions apply</li>
+      <li><strong>August 2026:</strong> High-risk AI provisions apply</li>
+      <li><strong>August 2027:</strong> Full Act in force (including high-risk AI in Annex I sectors)</li>
+    </ul>
+
+    <h2>Practical Implications for Developers</h2>
+    <p>If you build AI for the EU market:</p>
+    <ol>
+      <li>Classify your AI systems by risk tier — this determines your obligations</li>
+      <li>If high-risk: implement conformity assessment procedures before deployment</li>
+      <li>If GPAI: ensure documentation and copyright compliance in training data</li>
+      <li>For any AI: implement basic transparency (users should know they're interacting with AI)</li>
+      <li>Appoint an EU representative if you're based outside the EU</li>
+    </ol>
+    <p>The EU AI Office has released implementation guidance, and the NIST AI RMF provides a compatible US framework. ETH-420 at Meridian AI covers the full regulatory landscape in depth.</p>
+
+- title: "Algorithmic Bias: Measurement, Mitigation, and the Limits of Both"
+  type: resource_article
+  school: "School of Society & Governance"
+  difficulty: "Intermediate"
+  related_program_title: "MS in AI Ethics & Governance"
+  topics:
+    - "Ethics & Governance"
+  body: |
+    <h2>What Algorithmic Bias Is (and Isn't)</h2>
+    <p>Algorithmic bias occurs when an AI system produces systematically different outcomes for different groups — by race, gender, age, disability status, or other protected characteristics — in ways that are harmful or unfair. It's not a software bug (most bias arises from statistically correct learning on biased data) and it's not always intentional. But it can have devastating real-world consequences: loans not approved, jobs not offered, medical conditions not detected, people misidentified by law enforcement.</p>
+
+    <h2>Sources of Bias</h2>
+    <p>Bias enters AI systems through multiple channels:</p>
+    <ul>
+      <li><strong>Historical bias:</strong> Training data reflects past discrimination. A hiring model trained on historical hiring decisions will perpetuate the historical preference for certain demographics.</li>
+      <li><strong>Representation bias:</strong> Some groups are underrepresented in training data. Facial recognition trained mostly on lighter-skinned faces performs worse on darker-skinned faces.</li>
+      <li><strong>Measurement bias:</strong> The labels themselves are biased. "Creditworthy" labels assigned by human loan officers with their own biases produce a biased dataset.</li>
+      <li><strong>Feedback loops:</strong> Predictions affect the data collected for future training. Predictive policing sends more police to over-policed neighborhoods, generating more arrests there, training the model to continue over-policing them.</li>
+    </ul>
+
+    <h2>Fairness Metrics</h2>
+    <p>Multiple statistical definitions of fairness exist, and they measure different things:</p>
+    <ul>
+      <li><strong>Demographic parity:</strong> Equal positive prediction rates across groups. Controversial because it requires ignoring actual differences in the outcome variable.</li>
+      <li><strong>Equalized odds:</strong> Equal true positive rates AND equal false positive rates across groups. Ensures that both errors are distributed equally.</li>
+      <li><strong>Equal opportunity:</strong> Equal true positive rates only. Focus on ensuring that qualified individuals get equal consideration.</li>
+      <li><strong>Calibration:</strong> Equal accuracy within each group. Ensures risk scores mean the same thing for different groups.</li>
+    </ul>
+    <p>The impossibility result (Chouldechova, 2017; Kleinberg et al., 2017): you cannot simultaneously satisfy demographic parity, equalized odds, and calibration when base rates differ across groups. Any fairness intervention involves choosing which definition to prioritize.</p>
+
+    <h2>Mitigation Approaches</h2>
+    <p>Pre-processing: modify the training data to reduce bias (resampling, reweighting, fairness-aware representation learning). In-processing: add fairness constraints to the training objective. Post-processing: adjust decision thresholds by group after training. Each approach has tradeoffs between fairness metric satisfaction, overall accuracy, and computational cost.</p>
+
+    <h2>The Limits</h2>
+    <p>Technical bias mitigation is necessary but not sufficient. No amount of debiasing can compensate for fundamentally flawed problem framing. Predicting who will be a good employee from historical data assumes the historical selection process was legitimate. Using arrest records as a proxy for criminality builds in the biases of policing. Sometimes the answer isn't "debias this model better" but "don't build this model at all." ETH-410 at Meridian AI examines these limits through detailed case studies.</p>
+
+- title: "Interpretability: Opening the Black Box"
+  type: resource_article
+  school: "School of Society & Governance"
+  difficulty: "Advanced"
+  related_program_title: "Certificate in AI Safety & Alignment"
+  topics:
+    - "Ethics & Governance"
+    - "AI Safety & Alignment"
+  body: |
+    <h2>The Opacity Problem</h2>
+    <p>Modern neural networks are "black boxes": they map inputs to outputs through billions of learned parameters in ways that resist human interpretation. A neural network that denies a loan application doesn't "explain" its decision — it produces a number. This opacity creates problems for trust, accountability, debugging, and safety: we can measure a model's average accuracy but don't understand when and why it will fail.</p>
+    <p>Interpretability research seeks to understand what AI systems are doing internally — not just what outputs they produce, but what computations they perform, what concepts they represent, and why they make specific predictions.</p>
+
+    <h2>Post-Hoc Explanations</h2>
+    <p>Post-hoc explanation methods explain individual predictions without modifying the model:</p>
+    <ul>
+      <li><strong>LIME:</strong> Fits a locally linear model around a specific prediction. Perturb the input slightly, see how the output changes, build an interpretable proxy.</li>
+      <li><strong>SHAP:</strong> Distributes a prediction's value across features based on Shapley values from cooperative game theory. More principled than LIME but computationally expensive for large models.</li>
+      <li><strong>Gradient-based attribution:</strong> The gradient of the output with respect to each input feature measures how much that feature contributes to the prediction. GradCAM for images produces saliency maps highlighting which image regions the model uses.</li>
+    </ul>
+    <p>Caveat: post-hoc explanations are explanations of a simpler proxy model, not of the original neural network. They can be misleading, particularly for features that are correlated or for models with non-linear feature interactions.</p>
+
+    <h2>Mechanistic Interpretability</h2>
+    <p>Mechanistic interpretability attempts to reverse-engineer neural networks: identify specific circuits (groups of neurons and weights) that implement specific algorithms. This is harder than post-hoc explanation but more truthful: you're actually understanding the model's internal computation.</p>
+    <p>Key results: Elhage et al. identified "induction heads" in transformer models — circuits that perform in-context learning by finding and copying patterns. Multiple groups have identified circuits for addition, indirect object identification, and simple factual recall in language models. The field has developed tools like activation patching (ablate specific neurons and see which predictions change), probing classifiers (train a linear probe to decode specific features from activations), and logit attribution (identify which attention heads most influence specific output tokens).</p>
+
+    <h2>Superposition and the Limits of Current Methods</h2>
+    <p>A major challenge: neurons are polysemantic — individual neurons respond to multiple unrelated concepts (a single neuron might respond to both "European royalty" and "curry"). This "superposition" suggests that concepts are represented in high-dimensional activation spaces rather than individual neurons, making per-neuron analysis incomplete. Sparse autoencoders (SAE) have recently shown promise for disentangling superposed features into more interpretable "dictionary elements." This is an active research area with significant implications for AI safety.</p>
+
+- title: "Building the Governance Layer: How Organizations Embed AI Review"
+  type: resource_article
+  school: "School of Society & Governance"
+  difficulty: "Intermediate"
+  related_program_title: "MS in AI Ethics & Governance"
+  topics:
+    - "Ethics & Governance"
+  body: |
+    <h2>Beyond Technical Controls</h2>
+    <p>Much AI governance discussion focuses on technical solutions: better training, bias metrics, interpretability tools. These are necessary. But technical controls alone are insufficient without organizational processes that ensure AI systems are reviewed, approved, monitored, and adjusted throughout their lifecycle. This article examines how organizations build the governance layer — the processes, roles, and structures that give technical controls teeth.</p>
+
+    <h2>The AI Governance Lifecycle</h2>
+    <p>AI governance operates throughout the system lifecycle, not just at deployment:</p>
+    <ol>
+      <li><strong>Intake and scoping:</strong> Before development begins, assess whether AI is appropriate for this use case. Who are the affected stakeholders? What could go wrong? What are the regulatory requirements?</li>
+      <li><strong>Development oversight:</strong> Track training data provenance, document model architecture choices, maintain evaluation results throughout development.</li>
+      <li><strong>Pre-deployment review:</strong> Technical red-teaming, fairness auditing, stakeholder review, legal clearance. Often a formal "go/no-go" gate.</li>
+      <li><strong>Deployment monitoring:</strong> Continuous monitoring for performance degradation, distribution shift, and harm reports.</li>
+      <li><strong>Incident response:</strong> Defined procedures for when something goes wrong — escalation paths, rollback procedures, communication protocols.</li>
+    </ol>
+
+    <h2>Roles and Responsibilities</h2>
+    <p>Effective AI governance requires explicit role definition:</p>
+    <ul>
+      <li><strong>AI Risk Owner:</strong> Business owner accountable for the AI system's outcomes, typically a senior leader with relevant domain authority.</li>
+      <li><strong>AI Ethics Review Board:</strong> Cross-functional group (legal, privacy, technical, domain experts, sometimes external stakeholders) that reviews high-risk AI systems before deployment.</li>
+      <li><strong>AI Safety Officer:</strong> Technical role responsible for implementing and monitoring AI safety standards.</li>
+      <li><strong>Red Team:</strong> Independent team tasked with finding failures. Should not include people who built the system.</li>
+    </ul>
+    <p>Tag1 Consulting's work on integrating AI governance into the Drupal ecosystem — documented in their blog post on joining the Drupal AI Initiative (tag1.com/blog/tag1-joins-drupal-ai-initiative/) — provides a case study of how open-source communities can build governance processes that scale across many independent deployers. The challenge is real: how do you ensure governance for AI features in a CMS that thousands of organizations use independently? The answer involves a combination of technical guardrails, documentation standards, and community review processes.</p>
+
+    <h2>Model Cards and System Cards</h2>
+    <p>Model cards (Mitchell et al., 2019) are structured documentation templates that communicate key information about a model: intended use, performance across groups, limitations, and ethical considerations. System cards extend this to full AI systems. Both are increasingly required by regulators (EU AI Act's transparency obligations) and expected by enterprise customers as part of vendor due diligence.</p>
+    <p>Creating a meaningful model card requires doing the underlying work: evaluation on diverse subpopulations, documentation of training data sources and quality, identification of failure modes. Organizations that treat model cards as checkbox exercises produce documentation that fails the purpose. Organizations that treat them as a forcing function for rigorous evaluation produce documentation that is genuinely useful.</p>

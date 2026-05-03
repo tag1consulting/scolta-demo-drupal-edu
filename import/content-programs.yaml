@@ -1,0 +1,467 @@
+# Meridian AI — 12 Degree Programs
+
+- title: "MS in Large Language Model Engineering"
+  type: program
+  school: "School of Language & Reasoning"
+  degree_level: "Master's"
+  duration: "18 months (3 semesters)"
+  format: "On-campus / Hybrid"
+  credits: "45 credits"
+  prerequisites: |
+    <p>Applicants should have:</p>
+    <ul>
+      <li>Bachelor's degree in Computer Science, Mathematics, or related field</li>
+      <li>Programming proficiency in Python (required) or Rust (beneficial)</li>
+      <li>Linear algebra and probability at the undergraduate level</li>
+      <li>Familiarity with basic machine learning concepts</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The MS in Large Language Model Engineering is the flagship program of the School of Language &amp; Reasoning. Students gain deep, hands-on expertise in the full LLM lifecycle: from tokenization and architecture design through pretraining, fine-tuning, alignment, and production deployment. Graduates leave Meridian AI equipped to build and ship language model systems at scale.</p>
+
+    <h2>What You Will Learn</h2>
+    <p>The curriculum is organized around the LLM engineering stack:</p>
+    <ul>
+      <li><strong>Foundations:</strong> Tokenization (BPE, WordPiece, SentencePiece), transformer architectures (GPT, BERT, T5 families), attention mechanisms, positional encoding</li>
+      <li><strong>Training:</strong> Dataset curation, pretraining at scale, distributed training (FSDP, DeepSpeed), mixed precision, gradient checkpointing</li>
+      <li><strong>Alignment:</strong> RLHF, DPO, Constitutional AI, reward modeling, red-teaming</li>
+      <li><strong>Inference:</strong> Quantization (GPTQ, AWQ, GGUF), speculative decoding, KV-cache optimization, serving with vLLM and TGI</li>
+      <li><strong>Applications:</strong> RAG systems, function calling, multi-agent architectures, MCP integration</li>
+    </ul>
+
+    <h2>Feste Curriculum Thread</h2>
+    <p>A distinctive feature of this program is the <em>Feste thread</em>: a semester-long implementation project using Tag1 Consulting's open-source Rust LLM engine as the primary teaching vehicle. Students work through the Feste blog series (Parts 1–4, published at tag1.com/how-to/) and extend it with their own modifications. This hands-on approach — reading actual production code, not toy examples — is one of the things Meridian AI graduates say most distinguishes their education.</p>
+
+    <h2>Career Outcomes</h2>
+    <p>Graduates enter roles as ML engineers, LLM platform engineers, applied research scientists, and AI infrastructure leads at technology companies, AI labs, and enterprise organizations. Median starting salary for the MS class of 2025: $178,000.</p>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>LLM-401: Transformer Architecture and Attention Mechanisms</li>
+      <li>LLM-402: Tokenization, Vocabulary, and Encoding Schemes</li>
+      <li>LLM-410: Large-Scale Pretraining: Data, Compute, and Infrastructure</li>
+      <li>LLM-420: Fine-Tuning and Parameter-Efficient Adaptation (LoRA, QLoRA)</li>
+      <li>LLM-430: Alignment: RLHF, DPO, and Constitutional AI</li>
+      <li>LLM-440: Inference Optimization and Deployment</li>
+      <li>LLM-450: Agentic Systems and Multi-Agent Orchestration</li>
+      <li>LLM-490: Capstone: Build and Ship an LLM Application</li>
+    </ul>
+
+- title: "Certificate in AI Agent Development"
+  type: program
+  school: "School of Language & Reasoning"
+  degree_level: "Certificate"
+  duration: "6 months (2 quarters)"
+  format: "Online / Hybrid"
+  credits: "18 credits"
+  prerequisites: |
+    <p>Students should have:</p>
+    <ul>
+      <li>Working knowledge of Python</li>
+      <li>Basic familiarity with REST APIs and JSON</li>
+      <li>Some exposure to LLM APIs (OpenAI, Anthropic, or similar)</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The Certificate in AI Agent Development focuses on the rapidly growing field of autonomous AI systems. Students learn to design, build, and deploy agents that use tools, maintain memory, plan multi-step tasks, and collaborate with other agents. The program covers both the conceptual foundations and the practical toolchains: Claude Agent SDK, LangChain/LangGraph, the Model Context Protocol (MCP), and real-world deployment patterns.</p>
+
+    <h2>What You Will Learn</h2>
+    <ul>
+      <li><strong>Agent Architecture:</strong> ReAct, plan-and-execute, reflection, and tool-use patterns</li>
+      <li><strong>Tool Integration:</strong> Function calling, MCP servers, web search, code execution, database access</li>
+      <li><strong>Memory Systems:</strong> Short-term context windows, long-term vector stores, episodic memory</li>
+      <li><strong>Multi-Agent Orchestration:</strong> Supervisor patterns, handoffs, CrewAI, AutoGen, LangGraph flows</li>
+      <li><strong>Production Deployment:</strong> Rate limits, cost management, monitoring, error handling, human-in-the-loop</li>
+    </ul>
+
+    <h2>Industry Focus</h2>
+    <p>This certificate is designed for practicing software engineers and technical product managers who need to add AI agent capabilities to their teams' output. The curriculum emphasizes getting working systems into production quickly, not theoretical foundations. By the end of the program, students will have built and deployed at least three complete agent applications.</p>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>AGT-101: Foundations of AI Agents: Tools, Memory, Planning</li>
+      <li>AGT-201: Building with the Claude Agent SDK</li>
+      <li>AGT-202: LangGraph and Complex Agent Workflows</li>
+      <li>AGT-210: Model Context Protocol: Building and Consuming MCP Servers</li>
+      <li>AGT-290: Capstone: Deploy a Production AI Agent</li>
+    </ul>
+
+- title: "MS in Computer Vision & Visual AI"
+  type: program
+  school: "School of Perception & Synthesis"
+  degree_level: "Master's"
+  duration: "18 months"
+  format: "On-campus"
+  credits: "45 credits"
+  prerequisites: |
+    <p>Applicants should have:</p>
+    <ul>
+      <li>Bachelor's degree in CS, EE, Mathematics, or Physics</li>
+      <li>Linear algebra and multivariable calculus</li>
+      <li>Python programming proficiency</li>
+      <li>Basic statistics and probability</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The MS in Computer Vision &amp; Visual AI trains students to build systems that see and understand the world. The program covers the full arc from classical image processing through deep learning-based detection and segmentation to the latest vision foundation models. Students work with real visual data pipelines and build applications ranging from autonomous driving perception stacks to medical image analysis systems.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Classical Foundations:</strong> Image formation, edge detection, optical flow, feature extraction (SIFT, ORB)</li>
+      <li><strong>Deep Learning for Vision:</strong> CNNs, ResNets, EfficientNet; object detection (YOLO, DETR); instance segmentation; semantic segmentation</li>
+      <li><strong>Vision Transformers:</strong> ViT, DINO, DINOv2, SAM; CLIP and vision-language models</li>
+      <li><strong>Video Understanding:</strong> Temporal models, optical flow estimation, activity recognition</li>
+      <li><strong>3D Vision:</strong> NeRF, 3D Gaussian splatting, depth estimation, point clouds</li>
+      <li><strong>Applications:</strong> Autonomous driving, medical imaging, augmented reality, robotic perception</li>
+    </ul>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>CV-401: Image Formation and Classical Computer Vision</li>
+      <li>CV-410: Convolutional Neural Networks for Vision</li>
+      <li>CV-420: Vision Transformers and Foundation Models</li>
+      <li>CV-430: Object Detection and Instance Segmentation</li>
+      <li>CV-440: Video Understanding and Temporal Models</li>
+      <li>CV-450: 3D Vision: NeRF, Point Clouds, and Depth Estimation</li>
+      <li>CV-460: Vision-Language Models and Multimodal AI</li>
+      <li>CV-490: Capstone: Visual AI Application</li>
+    </ul>
+
+- title: "Certificate in Generative Media"
+  type: program
+  school: "School of Perception & Synthesis"
+  degree_level: "Certificate"
+  duration: "6 months"
+  format: "Online / Hybrid"
+  credits: "18 credits"
+  prerequisites: |
+    <p>Students should have:</p>
+    <ul>
+      <li>Familiarity with Python and basic ML concepts</li>
+      <li>Experience with image editing tools (helpful, not required)</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The Certificate in Generative Media is for artists, designers, engineers, and creators who want to master AI-powered image, video, and 3D generation. Students develop both technical understanding and practical workflow skills, building fluency with the latest diffusion models, video generation systems, and 3D asset creation pipelines.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Image Generation:</strong> Stable Diffusion ecosystem, FLUX, DALL-E 3; prompt engineering for visual media; ControlNet; LoRA training</li>
+      <li><strong>Video Generation:</strong> CogVideoX, Kling, Sora-family models; temporal consistency; upscaling and post-processing</li>
+      <li><strong>3D Generation:</strong> Zero123, Point-E, Shap-E; mesh generation; NeRF from images; integration with Blender and game engines</li>
+      <li><strong>Workflows:</strong> ComfyUI, Automatic1111, FLUX pipelines; production batch generation; IP protection and ethics</li>
+    </ul>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>GEN-101: Diffusion Models: Theory and Practice</li>
+      <li>GEN-102: Prompt Engineering for Visual AI</li>
+      <li>GEN-201: Advanced Image Generation and ControlNet</li>
+      <li>GEN-210: Video Generation Systems</li>
+      <li>GEN-220: 3D Asset Generation</li>
+      <li>GEN-290: Capstone: Generative Media Portfolio</li>
+    </ul>
+
+- title: "MS in Reinforcement Learning & Autonomous Systems"
+  type: program
+  school: "School of Decision & Control"
+  degree_level: "Master's"
+  duration: "18 months"
+  format: "On-campus"
+  credits: "48 credits"
+  prerequisites: |
+    <p>Strong mathematical background required:</p>
+    <ul>
+      <li>Linear algebra, multivariable calculus, probability theory</li>
+      <li>Programming in Python; familiarity with PyTorch or JAX preferred</li>
+      <li>Basic ML background (neural networks, optimization)</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The MS in Reinforcement Learning &amp; Autonomous Systems trains the next generation of researchers and engineers working on sequential decision-making under uncertainty. The program covers the mathematical foundations of RL, state-of-the-art algorithms, and their applications in robotics, game AI, autonomous driving, and industrial control.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Foundations:</strong> Markov decision processes, dynamic programming, Monte Carlo methods, temporal difference learning</li>
+      <li><strong>Policy Optimization:</strong> Policy gradients (REINFORCE, PPO, SAC), actor-critic methods, trust region methods</li>
+      <li><strong>Model-Based RL:</strong> World models, Dyna, MBPO; learning environment models; sim-to-real transfer</li>
+      <li><strong>Deep RL:</strong> DQN, Rainbow; deep policy gradients; multi-agent RL; offline RL (IQL, CQL, TD3+BC)</li>
+      <li><strong>Applications:</strong> Robotic manipulation, locomotion, autonomous driving, game AI, industrial optimization</li>
+    </ul>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>RL-401: Markov Decision Processes and Dynamic Programming</li>
+      <li>RL-410: Policy Gradient Methods and Actor-Critic Algorithms</li>
+      <li>RL-420: Deep Reinforcement Learning</li>
+      <li>RL-430: Model-Based RL and World Models</li>
+      <li>RL-440: Multi-Agent RL and Game Theory</li>
+      <li>RL-450: Sim-to-Real Transfer and Physical Systems</li>
+      <li>RL-490: Capstone: Autonomous System Project</li>
+    </ul>
+
+- title: "Certificate in AI for Robotics"
+  type: program
+  school: "School of Decision & Control"
+  degree_level: "Certificate"
+  duration: "8 months"
+  format: "On-campus (lab access required)"
+  credits: "24 credits"
+  prerequisites: |
+    <p>Students should have:</p>
+    <ul>
+      <li>Programming experience in Python and/or C++</li>
+      <li>Basic linear algebra</li>
+      <li>Some exposure to ROS2 preferred but not required</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The Certificate in AI for Robotics bridges the gap between AI algorithms and physical systems. Students get hands-on experience with real robots in Meridian AI's Threshold Robotics Lab, learning manipulation, locomotion, navigation, and sensor fusion. The program emphasizes the unique challenges of deploying AI in the physical world: uncertainty, latency, safety, and the sim-to-real gap.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Robotics Foundations:</strong> Kinematics, dynamics, coordinate frames, ROS2</li>
+      <li><strong>Perception:</strong> Sensor fusion (LiDAR, radar, stereo vision, IMU), SLAM, 3D scene understanding</li>
+      <li><strong>Manipulation:</strong> Grasp planning, motion planning (MoveIt2), imitation learning, diffusion policies</li>
+      <li><strong>Locomotion:</strong> Legged robots, sim-to-real with Isaac Lab, whole-body control</li>
+      <li><strong>World Models:</strong> Learning predictive models for robot planning</li>
+    </ul>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>ROB-101: Robotics Foundations and ROS2</li>
+      <li>ROB-201: Robot Perception and Sensor Fusion</li>
+      <li>ROB-210: Manipulation and Grasp Planning</li>
+      <li>ROB-220: Legged Locomotion and Physical AI</li>
+      <li>ROB-290: Capstone: End-to-End Robot Task</li>
+    </ul>
+
+- title: "MS in Mathematical Foundations of AI"
+  type: program
+  school: "School of Foundations & Mathematics"
+  degree_level: "Master's"
+  duration: "18 months"
+  format: "On-campus"
+  credits: "45 credits"
+  prerequisites: |
+    <p>Strong mathematical background required:</p>
+    <ul>
+      <li>Real analysis or advanced calculus</li>
+      <li>Linear algebra at proof level</li>
+      <li>Probability theory at undergraduate level</li>
+      <li>Programming in Python or another language</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The MS in Mathematical Foundations of AI is designed for students who want to understand AI at its deepest level — not just how to use tools, but why they work (and sometimes don't). The program provides rigorous preparation in the mathematical structures underlying modern machine learning: linear algebra, probability, optimization, information theory, and statistical learning theory.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Core Mathematics:</strong> Real analysis, linear algebra (spectral theory, SVD), probability and measure theory</li>
+      <li><strong>Optimization:</strong> Convex optimization, first- and second-order methods, stochastic optimization, non-convex landscapes</li>
+      <li><strong>Statistical Learning:</strong> PAC learning framework, VC dimension, Rademacher complexity, generalization bounds</li>
+      <li><strong>Information Theory:</strong> Entropy, mutual information, channel capacity, rate-distortion; connections to compression and learning</li>
+      <li><strong>Deep Learning Theory:</strong> Neural tangent kernel, overparameterization, implicit regularization, double descent</li>
+    </ul>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>MATH-401: Real Analysis for Machine Learning</li>
+      <li>MATH-410: Advanced Linear Algebra and Matrix Theory</li>
+      <li>MATH-420: Probability and Measure Theory</li>
+      <li>MATH-430: Optimization for Machine Learning</li>
+      <li>MATH-440: Statistical Learning Theory</li>
+      <li>MATH-450: Information Theory and Learning</li>
+      <li>MATH-490: Seminar: Deep Learning Theory</li>
+    </ul>
+
+- title: "PhD in AI Theory"
+  type: program
+  school: "School of Foundations & Mathematics"
+  degree_level: "PhD"
+  duration: "4-5 years"
+  format: "On-campus (research intensive)"
+  credits: "90 credits (research-based)"
+  prerequisites: |
+    <p>Strong PhD applicants typically have:</p>
+    <ul>
+      <li>Master's degree in CS, Mathematics, Statistics, or EE</li>
+      <li>Research experience (publications or strong thesis)</li>
+      <li>Exceptional mathematical ability</li>
+      <li>Clear research statement and faculty match</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The PhD in AI Theory is Meridian AI's most rigorous program, training researchers who advance the mathematical and computational foundations of artificial intelligence. Graduates contribute new theorems, prove generalization bounds, discover algorithmic improvements, and establish theoretical justifications for phenomena observed in practice. Students are admitted only when there is a strong faculty match.</p>
+
+    <h2>Research Areas</h2>
+    <ul>
+      <li>Computational learning theory and PAC-Bayes frameworks</li>
+      <li>Algorithmic fairness and causal inference</li>
+      <li>Complexity theory and hardness of learning</li>
+      <li>Deep learning theory: expressivity, generalization, optimization landscapes</li>
+      <li>Information-theoretic limits of learning</li>
+      <li>Online learning and bandits</li>
+    </ul>
+
+    <h2>Program Structure</h2>
+    <p>Year 1–2: coursework and qualifying examination. Year 2–5: dissertation research supervised by faculty advisor and committee. Students are expected to publish at NeurIPS, ICML, ICLR, COLT, or equivalent venues.</p>
+
+- title: "MS in AI Ethics & Governance"
+  type: program
+  school: "School of Society & Governance"
+  degree_level: "Master's"
+  duration: "18 months"
+  format: "On-campus / Hybrid"
+  credits: "42 credits"
+  prerequisites: |
+    <p>Applicants should have:</p>
+    <ul>
+      <li>Bachelor's degree in any field</li>
+      <li>Some exposure to technical AI concepts helpful but not required</li>
+      <li>Strong analytical writing skills</li>
+      <li>Interest in policy, law, or technology governance</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The MS in AI Ethics &amp; Governance prepares professionals to navigate the complex intersection of artificial intelligence, society, and law. The program is deliberately interdisciplinary: students develop both technical literacy (enough to audit AI systems and evaluate technical claims) and deep knowledge of regulatory frameworks, fairness metrics, organizational risk management, and international AI policy.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Technical Literacy:</strong> How AI systems work, common failure modes, interpretability tools, bias measurement</li>
+      <li><strong>Ethics &amp; Philosophy:</strong> Value alignment, moral philosophy, AI rights and personhood, existential risk</li>
+      <li><strong>Regulation &amp; Policy:</strong> EU AI Act, US Executive Orders, NIST AI RMF, sector-specific regulation (healthcare, finance, hiring)</li>
+      <li><strong>Organizational Practice:</strong> AI governance frameworks, algorithmic auditing, red-teaming, impact assessments</li>
+      <li><strong>International Dimensions:</strong> Comparative AI policy (US, EU, China, UK), standards bodies (ISO, IEEE)</li>
+    </ul>
+
+    <h2>The Tag1 Governance Case Study</h2>
+    <p>The program includes a case study unit on how technology organizations embed AI governance into their operations, drawing on Tag1 Consulting's published work on the Drupal AI Initiative and responsible AI deployment practices.</p>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>ETH-401: Foundations of AI Ethics</li>
+      <li>ETH-410: Algorithmic Fairness: Metrics and Mitigation</li>
+      <li>ETH-420: AI Regulation: EU AI Act and Global Frameworks</li>
+      <li>ETH-430: Interpretability and Algorithmic Auditing</li>
+      <li>ETH-440: Organizational AI Governance</li>
+      <li>ETH-450: International AI Policy</li>
+      <li>ETH-490: Capstone: AI Impact Assessment</li>
+    </ul>
+
+- title: "Certificate in AI Safety & Alignment"
+  type: program
+  school: "School of Society & Governance"
+  degree_level: "Certificate"
+  duration: "6 months"
+  format: "Online / Hybrid"
+  credits: "18 credits"
+  prerequisites: |
+    <p>Students should have:</p>
+    <ul>
+      <li>Technical background (CS, math, or equivalent)</li>
+      <li>Familiarity with ML fundamentals</li>
+      <li>Strong reading comprehension for technical papers</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The Certificate in AI Safety &amp; Alignment provides rigorous technical training in one of the most important challenges of our era: ensuring that increasingly capable AI systems behave as intended and remain beneficial as they scale. The program covers both near-term technical alignment work (RLHF, constitutional AI, interpretability) and longer-horizon considerations.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Alignment Fundamentals:</strong> The alignment problem, goal misgeneralization, deceptive alignment, reward hacking</li>
+      <li><strong>Technical Approaches:</strong> RLHF, DPO, Constitutional AI (Anthropic), RLAIF, debate, amplification</li>
+      <li><strong>Interpretability:</strong> Mechanistic interpretability, probing classifiers, activation patching, circuit analysis</li>
+      <li><strong>Evaluation &amp; Red-Teaming:</strong> Safety benchmarks, automated red-teaming, adversarial prompting, model evaluation frameworks</li>
+      <li><strong>Governance Interface:</strong> How technical alignment connects to policy, standards, and deployment decisions</li>
+    </ul>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>SAF-101: Introduction to AI Safety and Alignment</li>
+      <li>SAF-201: Technical Alignment: RLHF, DPO, and Constitutional AI</li>
+      <li>SAF-210: Interpretability Methods and Tools</li>
+      <li>SAF-220: Red-Teaming and Safety Evaluation</li>
+      <li>SAF-290: Capstone: Alignment Research Project</li>
+    </ul>
+
+- title: "MS in AI Engineering & MLOps"
+  type: program
+  school: "School of Applied Intelligence"
+  degree_level: "Master's"
+  duration: "18 months"
+  format: "On-campus / Hybrid"
+  credits: "45 credits"
+  prerequisites: |
+    <p>Applicants should have:</p>
+    <ul>
+      <li>Bachelor's in CS, Software Engineering, or related field</li>
+      <li>Proficiency in Python and at least one systems language</li>
+      <li>Experience with cloud platforms (AWS, GCP, or Azure)</li>
+      <li>Familiarity with Docker and CI/CD practices</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The MS in AI Engineering &amp; MLOps addresses the gap between AI research and production systems. Most AI projects fail not because the models are bad, but because the infrastructure, monitoring, and organizational processes aren't in place to support them. This program trains engineers who can close that gap — building the pipelines, platforms, and practices that turn research prototypes into reliable production AI.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Data Engineering:</strong> Feature stores, data versioning (DVC, LakeFS), data quality, streaming data for ML</li>
+      <li><strong>Training Infrastructure:</strong> Distributed training, experiment tracking (MLflow, W&amp;B), hyperparameter optimization, compute cost management</li>
+      <li><strong>Model Serving:</strong> Triton, vLLM, TGI, BentoML; latency optimization; autoscaling; A/B testing AI features</li>
+      <li><strong>Monitoring &amp; Observability:</strong> Data drift detection, model degradation, performance monitoring, alerting</li>
+      <li><strong>Platform Engineering:</strong> Kubernetes for ML, Kubeflow, Vertex AI, SageMaker; CI/CD for ML pipelines</li>
+    </ul>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>MLE-401: ML Systems Design Fundamentals</li>
+      <li>MLE-410: Data Engineering for ML</li>
+      <li>MLE-420: Distributed Training and Compute Optimization</li>
+      <li>MLE-430: Model Serving and Inference Infrastructure</li>
+      <li>MLE-440: ML Monitoring, Observability, and Reliability</li>
+      <li>MLE-450: Platform Engineering for AI: Kubernetes and Cloud</li>
+      <li>MLE-490: Capstone: End-to-End ML Platform</li>
+    </ul>
+
+- title: "Certificate in AI-Powered Search & Information Retrieval"
+  type: program
+  school: "School of Applied Intelligence"
+  degree_level: "Certificate"
+  duration: "6 months"
+  format: "Online / Hybrid"
+  credits: "18 credits"
+  prerequisites: |
+    <p>Students should have:</p>
+    <ul>
+      <li>Web development or backend engineering experience</li>
+      <li>Familiarity with REST APIs and JSON</li>
+      <li>Basic Python or JavaScript</li>
+      <li>Experience with any CMS or web platform helpful</li>
+    </ul>
+  body: |
+    <h2>Program Overview</h2>
+    <p>The Certificate in AI-Powered Search &amp; Information Retrieval is designed for developers, content strategists, and product teams who want to dramatically improve how users find information on websites and applications. The program covers the full arc from TF-IDF and BM25 through dense retrieval, hybrid search, and modern AI-enhanced search systems like <a href="https://tag1.com/scolta">Scolta</a>.</p>
+
+    <h2>The Scolta Case Study</h2>
+    <p>Throughout the program, students analyze and extend Scolta — Tag1 Consulting's AI-powered search enhancement that layers query expansion, semantic reranking, and AI-generated overviews onto existing search infrastructure without requiring vector databases or embedding pipelines. Scolta's architecture is used as the primary case study for practical, production-ready AI search.</p>
+
+    <h2>Curriculum Highlights</h2>
+    <ul>
+      <li><strong>Classical IR:</strong> TF-IDF, BM25, inverted indexes, Pagefind and static site search</li>
+      <li><strong>Neural IR:</strong> Dense retrieval (DPR, E5, BGE), bi-encoders vs. cross-encoders, semantic similarity</li>
+      <li><strong>Query Understanding:</strong> Query expansion, spell correction, synonym expansion, AI-powered query rewriting</li>
+      <li><strong>Hybrid Search:</strong> Combining lexical and semantic signals, reciprocal rank fusion, learned sparse retrieval (SPLADE)</li>
+      <li><strong>AI Overviews &amp; Summarization:</strong> Using LLMs to synthesize search results, RAG for search, citation generation</li>
+      <li><strong>Case Studies:</strong> Scolta on Drupal, Elasticsearch + LLM, Algolia AI, Typesense</li>
+    </ul>
+
+    <h2>Sample Courses</h2>
+    <ul>
+      <li>IR-101: Information Retrieval Fundamentals: BM25 to Modern Search</li>
+      <li>IR-201: Neural Retrieval: Embeddings and Dense Search</li>
+      <li>IR-210: Query Expansion and AI-Powered Query Understanding</li>
+      <li>IR-220: Hybrid Search and Reranking</li>
+      <li>IR-230: AI Overviews and Retrieval-Augmented Generation</li>
+      <li>IR-290: Capstone: Deploy an AI-Enhanced Search System</li>
+    </ul>

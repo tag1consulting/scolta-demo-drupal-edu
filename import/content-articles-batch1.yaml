@@ -1,0 +1,588 @@
+# Meridian AI — Resource Articles Batch 1
+# School of Language & Reasoning (SLR) — Articles 1-13
+
+- title: "How Tokenization Shapes What an LLM Can Learn"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  related_program_title: "MS in Large Language Model Engineering"
+  topics:
+    - "Large Language Models"
+    - "Natural Language Processing"
+  body: |
+    <h2>The Invisible Foundation</h2>
+    <p>Before a large language model processes a single word, it processes tokens. Tokenization — the process of splitting text into chunks a model can work with — is among the most consequential and least-discussed decisions in LLM design. The way a tokenizer carves up language shapes what arithmetic the model can perform, which languages it handles gracefully, whether it can spell, and even how it reasons about code.</p>
+    <p>Most practitioners use a pre-trained tokenizer without much thought. But if you want to understand why GPT-3 can't reliably count characters, why some models handle Japanese better than others, or why coding models often tokenize differently from chat models, you need to understand how tokenization works and what it constrains.</p>
+
+    <h2>What a Token Is (and Isn't)</h2>
+    <p>A token is not a word. It is not a character. It is a unit determined by the tokenizer's training process — typically a subword unit that appears frequently enough in the training corpus to earn its own entry in the vocabulary.</p>
+    <p>In GPT-2's vocabulary (50,257 tokens), common English words like "the", "of", and "and" are single tokens. Less common words are split into multiple tokens: "tokenization" becomes ["token", "ization"]. Very rare words fragment further: "Φωτιά" (Greek for fire) might become 7 or 8 tokens using a tokenizer trained primarily on English text.</p>
+    <p>The vocabulary size matters enormously. A vocabulary of 32,000 tokens (like Llama 2) uses 16-bit token IDs. A vocabulary of 100,000+ tokens (like some multilingual models) requires more memory per token but can represent more content with fewer tokens. The sweet spot depends on the target language distribution.</p>
+
+    <h2>Byte-Pair Encoding: How Vocabularies Are Built</h2>
+    <p>The most widely used tokenization algorithm is Byte-Pair Encoding (BPE), originally developed for data compression and adapted for NLP in 2016. The algorithm starts with individual bytes (or characters) and iteratively merges the most frequent adjacent pair until the desired vocabulary size is reached.</p>
+    <p>Starting vocabulary: {h, e, l, o, w, r, d}</p>
+    <p>After learning "el" is frequent: {h, el, l, o, w, r, d, el}</p>
+    <p>After learning "ello" is frequent: {h, ello, l, o, w, r, d, ello}</p>
+    <p>After learning "hello" is frequent: {hello, h, ello, l, o, w, r, d}</p>
+    <p>The merge rules, applied in order, constitute the tokenizer. Encoding new text means applying these rules left-to-right to find the longest match at each position. The Tag1 Feste LLM engine (documented at tag1.com/how-to/, Part 1) includes a detailed Rust implementation of BPE that demonstrates exactly how these merge rules work in practice.</p>
+
+    <h2>The Fertility Problem</h2>
+    <p>Tokenizer "fertility" measures how many tokens a given amount of text requires. For English text, a well-trained BPE tokenizer typically produces about 4 characters per token. For Spanish, it's similar. For Arabic, Hebrew, or Chinese, the ratio is often much worse — 1.5–2.5 characters per token — because these languages are underrepresented in training corpora, so their subwords don't appear frequently enough to earn their own vocabulary entries.</p>
+    <p>High fertility has three downstream consequences: higher inference cost (more tokens = more compute), shorter effective context length (a context window that holds 4,000 English words might hold only 2,000 Arabic words), and worse model performance (the model is asked to do more with less information per token).</p>
+    <p>This is a concrete way that the choice of tokenizer encodes a choice about which languages get high-quality service. Multilingual models like mBERT, XLM-R, and the Llama 3 family use expanded vocabularies and balanced training corpora to improve fertility across languages.</p>
+
+    <h2>Tokenization and Arithmetic</h2>
+    <p>LLMs famously struggle with arithmetic. Part of why is tokenization. Consider: "1234" might be tokenized as a single token. "12345" might be tokenized as ["123", "45"]. "999 + 1" might tokenize as ["999", " +", " 1"]. The model has no way to reliably "see" the individual digits that arithmetic requires unless they're separate tokens.</p>
+    <p>Models trained heavily on code (like DeepSeek Coder) often tokenize numbers digit-by-digit for exactly this reason. Language-focused models may not. The practical takeaway: if you're building a system that requires arithmetic reasoning, examine how your tokenizer handles numbers.</p>
+
+    <h2>Tokenization and Spelling</h2>
+    <p>Ask GPT-3 to count the letters in "strawberry" and it will often get it wrong. Why? Because "strawberry" is typically a single token, and the model never "sees" the individual letters during processing. It learns statistical patterns about what follows "strawberry" in text, not what letters compose it. For the same reason, LLMs struggle to reverse strings, identify the third letter of a word, or perform any character-level operation — these tasks require access to information that tokenization discards.</p>
+    <p>This is a fundamental limitation, not a quirk. It explains why newer models that tokenize at the character or byte level, or that use special tokenization schemes for letter-level tasks, perform dramatically better on these benchmarks.</p>
+
+    <h2>SentencePiece and WordPiece</h2>
+    <p>BPE is not the only game in town. SentencePiece (used by T5, ALBERT, and many multilingual models) implements BPE and Unigram Language Model tokenization in a single framework. It treats the input as a byte stream rather than Unicode code points, avoiding the need for language-specific pre-tokenization rules. This makes it more portable across writing systems.</p>
+    <p>WordPiece (used in BERT and early Google models) is similar to BPE but uses a likelihood-based merge criterion rather than frequency-based. In practice, the differences in downstream performance are modest for English but can be significant for morphologically complex languages.</p>
+
+    <h2>Practical Implications for Engineers</h2>
+    <p>If you're building with LLMs, the tokenizer matters in several practical ways:</p>
+    <ul>
+      <li><strong>Cost:</strong> Token count = API cost. For multilingual use cases, measure the token-to-character ratio in your actual content. It may be much higher than you expect.</li>
+      <li><strong>Context:</strong> A 128K context window's effective capacity depends heavily on language. Budget accordingly.</li>
+      <li><strong>Prompt design:</strong> Some prompt patterns require token efficiency. Others need specific tokens to be atomic (not split). Understanding your tokenizer lets you optimize for both.</li>
+      <li><strong>Special tokens:</strong> Every model has special tokens ([CLS], [SEP], &lt;|endoftext|&gt;, &lt;|im_start|&gt;, etc.) that affect how prompts are parsed. Know your tokenizer's special tokens before building production systems.</li>
+    </ul>
+
+    <h2>Further Reading</h2>
+    <p>For a complete implementation walkthrough, see the Feste blog series at tag1.com/how-to/ (Part 1 covers tokenizer implementation in Rust). For the original SentencePiece paper, see Kudo &amp; Richardson (2018). For multilingual tokenization analysis, see the XTREME benchmark paper and analyses of fertility across languages.</p>
+
+- title: "Attention Is All You Need: A Practical Walkthrough"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  related_program_title: "MS in Large Language Model Engineering"
+  topics:
+    - "Transformers"
+    - "Large Language Models"
+  body: |
+    <h2>The Paper That Changed Everything</h2>
+    <p>The 2017 paper "Attention Is All You Need" by Vaswani et al. introduced the transformer architecture, which has become the foundation of virtually every state-of-the-art model in NLP, computer vision, audio processing, and beyond. Understanding the original transformer — not just using it — is essential for anyone working in modern AI.</p>
+    <p>This article walks through the transformer's key innovations, explains why they work, and connects the mathematical formulation to intuitive understanding. We'll use the original Seq2Seq machine translation task as context.</p>
+
+    <h2>The Problem with Recurrent Networks</h2>
+    <p>Before transformers, sequence modeling used recurrent neural networks (RNNs), particularly LSTMs and GRUs. These process sequences token by token, maintaining a hidden state that theoretically captures all past context. The problem: in practice, information from the beginning of a long sequence often degrades by the time it reaches the end — the "vanishing gradient" problem. RNNs also can't be parallelized during training because each step depends on the previous one.</p>
+    <p>Attention mechanisms (first proposed for machine translation by Bahdanau et al. in 2015) allowed models to "look back" at previous tokens directly. The transformer discarded the recurrence entirely, relying wholly on attention. Hence: "attention is all you need."</p>
+
+    <h2>Scaled Dot-Product Attention</h2>
+    <p>The core operation of a transformer is scaled dot-product attention:</p>
+    <pre><code>Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V</code></pre>
+    <p>Unpacking this:</p>
+    <ul>
+      <li><strong>Q (queries):</strong> What is this token looking for?</li>
+      <li><strong>K (keys):</strong> What does each token offer?</li>
+      <li><strong>V (values):</strong> What information does each token carry?</li>
+    </ul>
+    <p>The dot product Q·K^T measures compatibility: how relevant is each key to each query? We scale by sqrt(d_k) to prevent dot products from growing too large in high dimensions (which would push softmax into saturation). The softmax produces a probability distribution over values. The output is a weighted sum: for each query position, collect information from all value positions, weighted by how compatible their keys were.</p>
+    <p>This is attention as information retrieval: you have a query, you look up which keys match, and you retrieve the associated values.</p>
+
+    <h2>Multi-Head Attention</h2>
+    <p>A single attention operation captures one "type" of relationship between tokens. Multi-head attention runs h independent attention operations in parallel (the "heads"), each with different learned projection matrices W_Q, W_K, W_V. The outputs are concatenated and projected:</p>
+    <pre><code>MultiHead(Q,K,V) = Concat(head_1, ..., head_h) W_O
+where head_i = Attention(Q W_Qi, K W_Ki, V W_Vi)</code></pre>
+    <p>Different heads learn to attend to different relationships: syntax, coreference, positional proximity, semantic similarity. A transformer with 12 heads can simultaneously track 12 different types of token relationships.</p>
+
+    <h2>Positional Encoding</h2>
+    <p>Attention is permutation-invariant: if you shuffle the tokens, the attention scores change but nothing in the mechanism itself knows positions. To give the model positional information, the original transformer adds sinusoidal position encodings to the input embeddings:</p>
+    <pre><code>PE(pos, 2i)   = sin(pos / 10000^(2i/d_model))
+PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</code></pre>
+    <p>Modern LLMs use learned positional encodings (GPT-2), relative position encodings (T5, Transformer-XL), or rotary position embeddings (RoPE, used in Llama, GPT-NeoX, and most modern LLMs). RoPE has the advantage of generalizing to longer contexts than seen during training.</p>
+
+    <h2>Feed-Forward Networks and Layer Normalization</h2>
+    <p>Each transformer layer has two sub-layers: multi-head attention and a position-wise feed-forward network (FFN):</p>
+    <pre><code>FFN(x) = max(0, x W_1 + b_1) W_2 + b_2</code></pre>
+    <p>The FFN expands the representation to a higher dimension (typically 4× the model dimension), applies a nonlinearity, then projects back down. Modern models use SwiGLU or GELU instead of ReLU. Residual connections and layer normalization (pre-norm in modern models) stabilize training.</p>
+
+    <h2>The Encoder-Decoder Architecture</h2>
+    <p>The original transformer had both encoder and decoder. The encoder processes the input sequence with self-attention; the decoder generates the output sequence with masked self-attention (can't look at future tokens) and cross-attention (attends to encoder output). This architecture works well for translation, summarization, and other Seq2Seq tasks.</p>
+    <p>Modern LLMs are predominantly decoder-only (GPT family), which uses only the masked decoder stack. BERT uses encoder-only. T5 uses the original encoder-decoder. Each has different inductive biases suited to different tasks.</p>
+
+    <h2>Why It Works</h2>
+    <p>Transformers succeed for three reasons. First, they're highly parallelizable: all attention operations can run simultaneously across the sequence, enabling efficient GPU utilization during training. Second, they capture long-range dependencies directly: a token can attend to any other token with equal ease regardless of distance. Third, they scale: transformer performance continues to improve with more data and parameters in a remarkably predictable way, as documented by the scaling laws literature.</p>
+    <p>The attention mechanism specifically excels at tasks requiring flexible information routing — deciding on the fly which previous context is relevant to the current computation. This is the key capability that makes transformers so general.</p>
+
+- title: "Training a GPT-2 From Scratch in Rust: What We Learned"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Advanced"
+  related_program_title: "MS in Large Language Model Engineering"
+  topics:
+    - "Large Language Models"
+    - "Transformers"
+  body: |
+    <h2>The Case for Training From Scratch</h2>
+    <p>Most engineers who work with LLMs never train one from scratch. Why would you? Pretraining a useful model costs millions in compute. But there are important reasons to understand what pretraining actually involves — and the best way to understand it is to do it on a small model where the cost is tractable.</p>
+    <p>This article summarizes the Feste blog series from Tag1 Consulting (tag1.com/how-to/), which documents training a GPT-2–scale model entirely in Rust. The series covers tokenizer implementation, architecture design, training loop, and optimization — the full stack, in a language without the neural network sugar of PyTorch. Working through it teaches you things you won't get from fine-tuning tutorials.</p>
+
+    <h2>Why Rust?</h2>
+    <p>Rust seems like an unlikely choice for ML. The ecosystem — at the time the Feste series was written — lacked the mature autograd and GPU abstractions of Python. So why do it?</p>
+    <p>The answer is that the constraints are pedagogically valuable. Without PyTorch's automatic differentiation, you implement backpropagation yourself, which forces a depth of understanding that torch.autograd() hides. Without a high-level training loop, you implement the optimizer, gradient accumulation, learning rate scheduling, and checkpointing explicitly. The result is a full understanding of what actually happens during training.</p>
+    <p>Practically, Rust's performance characteristics also make it competitive with Python for CPU-bound inference. Projects like candle (HuggingFace's Rust ML framework) and burn demonstrate that Rust-based ML is increasingly viable, and Feste is in the tradition of those explorations.</p>
+
+    <h2>The Tokenizer (Feste Part 1)</h2>
+    <p>Part 1 of the Feste series implements BPE from scratch. The implementation covers: reading a text corpus, computing initial character-level statistics, implementing the merge algorithm, writing the tokenizer's vocabulary to disk, and implementing encode/decode. The Rust implementation is notable for its clarity: the code makes the algorithm's logic visible in a way that NumPy-optimized Python implementations sometimes obscure.</p>
+    <p>Key insight from the implementation: the merge rules file is the tokenizer. There is no magic — the tokenizer is a sequence of find-and-replace rules applied greedily, plus a special-token table. Understanding this demystifies tokenization completely.</p>
+
+    <h2>The Transformer Architecture (Feste Part 2)</h2>
+    <p>Part 2 builds the transformer architecture in Rust without autograd. This means implementing forward passes for embeddings, layer normalization, multi-head self-attention, feed-forward networks, and the final language model head — and then implementing the corresponding backward passes by hand.</p>
+    <p>Implementing backpropagation for the attention mechanism by hand is illuminating. The gradients flow through the softmax, the dot products, and the value weighting in a specific way. Understanding this flow helps explain why gradient clipping is necessary (the softmax saturation region produces large gradients) and why residual connections are so important for stable training.</p>
+
+    <h2>The Training Loop (Feste Part 3)</h2>
+    <p>Part 3 covers the training infrastructure: data loading, batching, the forward-backward-update cycle, AdamW optimizer implementation, learning rate scheduling (cosine with warmup), gradient clipping, and checkpointing. This is where the engineering complexity lives — and where most introductory ML courses skip the details.</p>
+    <p>The implementation reveals something important: training stability is not automatic. It requires careful initialization, appropriate learning rates, gradient clipping thresholds, and warm-up periods. Running without these safeguards produces diverging loss curves. The Feste implementation includes detailed commentary on why each parameter was chosen.</p>
+
+    <h2>What We Learned</h2>
+    <p>Several lessons stand out from the Feste series:</p>
+    <ul>
+      <li><strong>Initialization matters enormously.</strong> Xavier and Kaiming initialization, applied correctly to different layer types, is the difference between training that converges and training that diverges from the first step.</li>
+      <li><strong>The optimizer is load-bearing.</strong> AdamW — not Adam — is critical for large models. The weight decay in AdamW (applied to parameters, not accumulated gradients) prevents the gradient accumulation pathology that Adam develops on long training runs.</li>
+      <li><strong>Tokenization quality shows up in training loss.</strong> A poor tokenizer produces a floor on cross-entropy that a good tokenizer doesn't hit. The gap between GPT-2's tokenizer and a poorly designed BPE tokenizer is visible in the training curves within 1,000 steps.</li>
+      <li><strong>Data quality trumps data quantity</strong> at GPT-2 scale. A carefully filtered 10GB dataset outperforms a noisy 100GB dataset by a substantial margin on downstream evaluation.</li>
+    </ul>
+    <p>The full Feste series is required reading in Meridian AI's MS in LLM Engineering program and is freely available at tag1.com/how-to/.</p>
+
+- title: "The Practical Path to AI-Powered Search"
+  type: resource_article
+  school: "School of Applied Intelligence"
+  difficulty: "Introductory"
+  related_program_title: "Certificate in AI-Powered Search & Information Retrieval"
+  topics:
+    - "Search & Information Retrieval"
+    - "Large Language Models"
+  body: |
+    <h2>Why Search Is Broken (and How AI Fixes It)</h2>
+    <p>Most website search is frustrating. Users search for "how to cancel my subscription" and get articles titled "Subscription Plans." They search for "the thing that holds the door open" and get nothing. The gap between what users mean and what search systems understand is one of the oldest unsolved problems in information retrieval.</p>
+    <p>AI is closing this gap — not through magic, but through specific, well-understood techniques that can be added to existing search infrastructure. This article walks through the practical path from keyword search to AI-enhanced search, explaining what each improvement buys and what it costs.</p>
+
+    <h2>Where Traditional Search Fails</h2>
+    <p>BM25 (and its predecessors) works by matching query terms to document terms. It's good at exact matching and surprisingly robust to noise. It fails at:</p>
+    <ul>
+      <li><strong>Vocabulary mismatch:</strong> User says "cancel subscription," document says "terminate membership"</li>
+      <li><strong>Conceptual queries:</strong> "What are the risks of this medication?" won't match a document that says "contraindications and side effects"</li>
+      <li><strong>Implicit intent:</strong> "I want to build a chatbot" — the user needs resources, not a definition of chatbots</li>
+      <li><strong>Natural language:</strong> Questions and conversational queries perform worse than keyword-style queries</li>
+    </ul>
+
+    <h2>The Three AI Enhancements That Matter</h2>
+    <p>Modern AI-enhanced search typically involves three techniques, each addressing a different part of the failure taxonomy:</p>
+
+    <h3>1. Query Expansion</h3>
+    <p>Query expansion uses an LLM to broaden the query before it hits the search index. Given "cancel subscription," the LLM generates: "cancel membership, terminate account, stop payments, unsubscribe, deactivate account, end renewal." All of these expanded terms get sent to BM25, dramatically improving recall.</p>
+    <p>The key insight: you don't need vector search to get semantic search benefits. LLM-powered query expansion improves the recall of your existing BM25 index by translating user language into document language. The cost is one LLM API call per query.</p>
+
+    <h3>2. AI Overviews</h3>
+    <p>Once you have search results, an LLM can synthesize them into a direct answer to the user's question — an "AI overview" similar to what Google and Bing now show. The LLM reads the top N results, extracts relevant information, and writes a paragraph-length response that cites specific documents.</p>
+    <p>Done well, AI overviews dramatically improve the search experience for informational queries. Users who would otherwise have to read 5 articles to find their answer get it in a sentence. The AI overview also signals which documents contain relevant information, helping users decide whether to dig deeper.</p>
+
+    <h3>3. Semantic Reranking</h3>
+    <p>BM25 retrieves documents that contain query terms; a cross-encoder reranker re-scores the top-K results based on semantic relevance. Cross-encoders read both the query and document together, enabling much more nuanced relevance judgments than BM25's term-matching.</p>
+    <p>The practical workflow: BM25 retrieves 100 candidates quickly; the cross-encoder reranks the top 20 for quality. This hybrid approach gets the speed of lexical retrieval with near-vector-search quality.</p>
+
+    <h2>Scolta: These Three Techniques in Production</h2>
+    <p>Scolta, developed by Tag1 Consulting, implements all three techniques for Drupal websites (and can be adapted for other CMS platforms). The architecture uses Pagefind for static site search — fast, client-side, no server required — plus the Anthropic Claude API for query expansion and AI overview generation.</p>
+    <p>What makes Scolta notable is what it doesn't require: no vector database, no embedding infrastructure, no GPU serving, no semantic search overhaul. It layers AI capabilities onto existing BM25 search, making it practical for organizations with existing content infrastructure. The full approach is detailed in the tag1.com/how-to/ "Practical Path to AI Search" series.</p>
+    <p>The Certificate in AI-Powered Search at Meridian AI uses Scolta as a primary case study throughout the curriculum, examining its architecture as an example of pragmatic AI system design that prioritizes production readiness over theoretical elegance.</p>
+
+    <h2>When to Go Further: Vector Search</h2>
+    <p>Query expansion + reranking handles the vast majority of search quality improvements for content-heavy websites. But some use cases genuinely benefit from dense retrieval (vector search): very large corpora with high vocabulary diversity, multimodal search (images + text), or applications requiring semantic clustering. For those cases, the Certificate program covers Pinecone, Weaviate, pgvector, and the full RAG stack.</p>
+    <p>The key decision criterion: if your search is working reasonably well and you need to make it better, start with AI query expansion. It costs one LLM API call per query and can double recall. If you've exhausted what query expansion can do, then consider the much heavier investment in vector infrastructure.</p>
+
+- title: "RLHF vs DPO: Aligning Language Models with Human Preferences"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Advanced"
+  related_program_title: "MS in Large Language Model Engineering"
+  topics:
+    - "Large Language Models"
+    - "AI Safety & Alignment"
+  body: |
+    <h2>The Alignment Tax</h2>
+    <p>A pretrained language model is a powerful but wild thing: it will complete any text, whether the completion is helpful, harmful, or nonsensical. To make it useful, you have to align it — train it to be helpful and to avoid harmful outputs. The two dominant methods for doing this are Reinforcement Learning from Human Feedback (RLHF) and Direct Preference Optimization (DPO). Understanding both — when each works, why they differ, and what they share — is essential for anyone building or evaluating production AI systems.</p>
+
+    <h2>RLHF: The Three-Stage Pipeline</h2>
+    <p>RLHF consists of three stages:</p>
+    <ol>
+      <li><strong>Supervised Fine-Tuning (SFT):</strong> Train the model on a curated set of (prompt, high-quality response) pairs to establish a baseline of good behavior.</li>
+      <li><strong>Reward Model Training:</strong> Collect human preference data: for the same prompt, present two model outputs and ask which is better. Train a separate reward model to predict human preferences from (prompt, response) pairs.</li>
+      <li><strong>RL Training:</strong> Use the reward model as a reward signal to fine-tune the SFT model via reinforcement learning (typically PPO). The policy (language model) learns to generate outputs that the reward model scores highly, while a KL divergence penalty prevents it from drifting too far from the SFT model.</li>
+    </ol>
+    <p>RLHF's appeal is that it trains directly on human preferences, not on human demonstrations. This allows the model to discover outputs better than anything in the training data — a model trained with RLHF can theoretically learn to write better than its best training examples if the reward model's judgments are accurate.</p>
+
+    <h2>RLHF's Problems</h2>
+    <p>Despite its successes (ChatGPT, Claude), RLHF has significant practical challenges:</p>
+    <ul>
+      <li><strong>Reward hacking:</strong> The policy learns to game the reward model rather than truly satisfy human preferences. Sycophancy — agreeing with the user regardless of accuracy — is a classic example. The reward model likes confident, agreeable responses; the policy learns to produce them.</li>
+      <li><strong>Instability:</strong> PPO is finicky. Hyperparameter sensitivity is high; KL coefficient must be tuned carefully; training can collapse or diverge.</li>
+      <li><strong>Cost:</strong> Three separate training stages, plus the overhead of running the reward model during PPO training, makes RLHF expensive compared to supervised learning.</li>
+      <li><strong>Off-policy issues:</strong> As the policy drifts during training, the reward model is increasingly asked to score outputs from a distribution it wasn't trained on.</li>
+    </ul>
+
+    <h2>DPO: Solving the Preference Problem Directly</h2>
+    <p>Direct Preference Optimization (Rafailov et al., 2023) achieves comparable alignment quality to RLHF without the RL stage. The key insight: there is a closed-form relationship between the reward model and the optimal policy in RLHF. Given that relationship, you can directly optimize the policy to satisfy the preference data, bypassing the need to explicitly train a reward model or run PPO.</p>
+    <p>The DPO loss for a preference pair (chosen, rejected) is:</p>
+    <pre><code>L_DPO = -log sigmoid(β (log π_θ(y_w|x)/π_ref(y_w|x) - log π_θ(y_l|x)/π_ref(y_l|x)))</code></pre>
+    <p>Where π_θ is the policy being trained, π_ref is the reference model, y_w is the preferred ("won") response, y_l is the dispreferred ("lost") response, and β controls the KL penalty. This is a standard supervised classification loss on preference pairs — no RL required.</p>
+
+    <h2>DPO's Tradeoffs</h2>
+    <p>DPO is simpler and more stable than RLHF. It trains in one stage (assuming SFT is already done), requires only one model in memory at training time, and is far less sensitive to hyperparameters. It has become the default alignment method for open-source model fine-tuning.</p>
+    <p>Where DPO falls short: it cannot discover better responses than those in the training data. RLHF's reward model can evaluate novel generations; DPO only learns from the preference pairs you provide. This means DPO is better suited to improving an already-reasonable model than to transforming a poor one into a great one.</p>
+    <p>Several DPO variants address specific limitations: IPO (Identity Preference Optimization) for out-of-distribution stability; KTO for unpaired preferences; SimPO for simplified reference-free training. The alignment field is moving fast; expect new variants regularly.</p>
+
+    <h2>Constitutional AI and RLAIF</h2>
+    <p>Anthropic's Constitutional AI (CAI) approach replaces human preference labelers with AI feedback. A "constitution" — a set of principles like "be helpful, harmless, and honest" — is used to generate AI preference judgments at scale, which are then used in RLAIF (Reinforcement Learning from AI Feedback). CAI scales preference data collection dramatically and addresses labeler fatigue and value drift, at the cost of inheriting any biases in the AI judge.</p>
+
+    <h2>Choosing in Practice</h2>
+    <p>For most practitioners: start with DPO. It's simpler, more stable, and produces good results for most alignment tasks. Use RLHF (or its modern successors) when you need the model to discover outputs better than your training data, or when you have the resources to run the full pipeline and benefit from online preference collection.</p>
+
+- title: "Prompt Engineering Is Software Engineering: Patterns That Work"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Introductory"
+  topics:
+    - "Large Language Models"
+    - "AI Agents"
+  body: |
+    <h2>Why "Just Ask It" Is Not a Strategy</h2>
+    <p>When LLMs first became accessible to developers, many assumed the interface was simple: write a question, get an answer. This worked for demos but fails in production. Building reliable LLM-powered applications requires systematic prompt engineering — the art and science of writing instructions that consistently elicit the behavior you want.</p>
+    <p>Prompt engineering is software engineering. It has idioms, patterns, anti-patterns, and testing methodologies. The gap between an amateur's prompt and a professional's prompt can be the difference between a system that works 60% of the time and one that works 95% of the time.</p>
+
+    <h2>The System Prompt Is Your API Contract</h2>
+    <p>Every production LLM application has a system prompt — the persistent instruction set that frames every user interaction. Think of it as the constructor for your LLM object. A good system prompt:</p>
+    <ul>
+      <li>Defines the model's role and persona precisely: "You are a customer service agent for Acme Corp. You help customers with billing, shipping, and returns. You do not provide technical support."</li>
+      <li>Specifies the output format: "Always respond in JSON with keys: {answer: string, confidence: 'high'|'medium'|'low', sources: string[]}"</li>
+      <li>Establishes constraints: "Do not speculate about matters not in the provided context. If you don't know, say so."</li>
+      <li>Provides relevant context: background information, terminology, tone guidelines</li>
+    </ul>
+    <p>A weak system prompt produces inconsistent behavior. A strong one creates a reliable interface.</p>
+
+    <h2>Chain-of-Thought: Show Your Work</h2>
+    <p>Chain-of-thought (CoT) prompting instructs the model to reason step by step before producing a final answer. The two canonical approaches:</p>
+    <ul>
+      <li><strong>Zero-shot CoT:</strong> "Think step by step." — simply appending this instruction to a prompt dramatically improves performance on reasoning tasks.</li>
+      <li><strong>Few-shot CoT:</strong> Provide examples of step-by-step reasoning before the actual question. The model learns the desired reasoning style from examples.</li>
+    </ul>
+    <p>CoT works because it forces the model to allocate computation to intermediate reasoning steps rather than jumping directly to an output. The scratchpad improves accuracy on arithmetic, logic, and multi-step inference tasks. The tradeoff: CoT uses more tokens (and therefore costs more).</p>
+
+    <h2>Structured Output: JSON Mode and Schema Validation</h2>
+    <p>If your application needs to parse the model's output programmatically, you need structured output. The naive approach (asking for JSON and hoping) fails too often. The robust approaches:</p>
+    <ul>
+      <li><strong>JSON mode:</strong> Most major APIs (OpenAI, Anthropic, Google) support forcing JSON output. Enable it.</li>
+      <li><strong>Schema in the prompt:</strong> Include an explicit JSON schema in your prompt. "Respond with JSON matching this schema: {name: string, score: number, reasons: string[]}"</li>
+      <li><strong>Pydantic/structured extraction:</strong> Libraries like instructor and outlines constrain model output to match a Pydantic schema, using constrained decoding or retry loops.</li>
+      <li><strong>Validation + retry:</strong> Validate parsed output against your schema; if validation fails, retry with the error message in the prompt.</li>
+    </ul>
+
+    <h2>Retrieval Augmentation: Giving the Model Facts</h2>
+    <p>LLMs have training data cutoffs and no access to your proprietary information. RAG (Retrieval-Augmented Generation) solves this by retrieving relevant documents and including them in the prompt context. The pattern:</p>
+    <pre><code>system: You are a helpful assistant. Use the provided documents to answer questions.
+user: [retrieved documents]
+---
+Question: {user_question}</code></pre>
+    <p>Key prompt engineering considerations for RAG: tell the model explicitly to only use the provided context; instruct it to say "I don't know" when the context doesn't answer the question; include citation instructions if attribution is important.</p>
+
+    <h2>Few-Shot Examples: The Most Underused Technique</h2>
+    <p>Providing 3-5 examples of the input-output mapping you want is often the single most effective prompt improvement. Few-shot examples teach the model your format, style, and edge case handling in a way that instructions alone often can't. Guidelines: use diverse examples that cover different cases; use your actual data (not synthetic examples); include at least one "hard" example where the correct behavior is non-obvious.</p>
+
+    <h2>Anti-Patterns to Avoid</h2>
+    <ul>
+      <li><strong>Vague instructions:</strong> "Be professional" is meaningless. "Use formal language, avoid contractions, respond in 2-3 sentences" is actionable.</li>
+      <li><strong>Overloaded prompts:</strong> Asking the model to do 12 things simultaneously reduces performance on each. Break complex tasks into steps.</li>
+      <li><strong>No output format specification:</strong> If you don't specify format, you'll get unpredictable format.</li>
+      <li><strong>Testing on two examples:</strong> A prompt that works on your two test cases may fail on production inputs. Evaluate on at least 50 diverse examples before shipping.</li>
+      <li><strong>Treating prompts as write-once:</strong> Production prompts need version control, testing, and iteration. Treat them like code.</li>
+    </ul>
+
+    <h2>Testing Your Prompts</h2>
+    <p>The professional approach to prompt engineering treats prompts as code that requires testing:</p>
+    <ol>
+      <li>Build an eval suite of 50-200 input examples with expected outputs</li>
+      <li>Score each output (exact match, LLM-as-judge, or human review depending on the task)</li>
+      <li>Run the eval suite before and after every prompt change</li>
+      <li>Track scores over time; treat prompt regressions as bugs</li>
+    </ol>
+
+- title: "RAG Architecture: When to Retrieve, When to Generate"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  topics:
+    - "Large Language Models"
+    - "Search & Information Retrieval"
+  body: |
+    <h2>The Knowledge Problem</h2>
+    <p>Every LLM has a knowledge cutoff: it knows what was in its training data, nothing more. For many applications, this is fine — you're asking about general knowledge that doesn't change. But for applications involving current events, proprietary information, personal data, or rapidly changing domains, static training knowledge isn't enough.</p>
+    <p>Retrieval-Augmented Generation (RAG) solves the knowledge problem by giving the model access to a document store that can be queried at inference time. Rather than training the knowledge into the model's weights, you retrieve it on demand and include it in the prompt context. This is the dominant architecture for enterprise AI applications.</p>
+
+    <h2>Basic RAG Architecture</h2>
+    <p>The simplest RAG system has four components:</p>
+    <ol>
+      <li><strong>Document store:</strong> A collection of documents (PDFs, web pages, database records) chunked into segments of appropriate size (typically 200-500 tokens).</li>
+      <li><strong>Retriever:</strong> A component that, given a user query, returns the most relevant document chunks. Can be BM25, dense retrieval (vector search), or hybrid.</li>
+      <li><strong>Prompt assembler:</strong> Combines retrieved chunks with the user query into an LLM prompt.</li>
+      <li><strong>Generator:</strong> The LLM that produces the final response from the assembled prompt.</li>
+    </ol>
+
+    <h2>Chunking Strategy: The Hidden Complexity</h2>
+    <p>How you chunk your documents profoundly affects RAG quality. The basic tradeoff: small chunks are more precise (easier to match a specific query) but may lack the context the LLM needs to answer. Large chunks provide more context but are harder to retrieve precisely and quickly exceed context window budgets.</p>
+    <p>Common strategies:</p>
+    <ul>
+      <li><strong>Fixed-size:</strong> Chunk every 512 tokens with 50-token overlap. Simple, but ignores document structure.</li>
+      <li><strong>Semantic:</strong> Chunk at paragraph or section boundaries. Preserves context but produces variable-size chunks.</li>
+      <li><strong>Hierarchical:</strong> Index both summaries (for retrieval) and full sections (for context), retrieving at the summary level but feeding the full section to the LLM. Works well for long documents.</li>
+      <li><strong>Sentence window:</strong> Retrieve at the sentence level (precise), but feed neighboring sentences as context. Good for dense reference material.</li>
+    </ul>
+
+    <h2>Retrieval Quality: The Bottleneck</h2>
+    <p>A RAG system is only as good as its retrieval. If the retriever fails to return documents relevant to the user's query, the LLM has nothing to work with. The quality failure modes:</p>
+    <ul>
+      <li>BM25 misses conceptually related documents that use different vocabulary</li>
+      <li>Dense retrieval (vector search) misses exact matches for technical terms</li>
+      <li>Both fail when the question is vague or under-specified</li>
+    </ul>
+    <p>Hybrid retrieval — combining BM25 and dense retrieval via reciprocal rank fusion — outperforms either alone on most realistic query distributions. Query expansion (using an LLM to generate related terms or sub-questions) further improves recall. The Certificate in AI-Powered Search at Meridian covers these techniques in depth.</p>
+
+    <h2>Advanced RAG: When Simple Isn't Enough</h2>
+    <p>Basic RAG fails for complex questions that require reasoning across multiple documents, synthesis of conflicting information, or multi-hop inference (A → B → C). Advanced patterns:</p>
+    <ul>
+      <li><strong>Multi-query RAG:</strong> Decompose complex questions into sub-questions, retrieve for each, then synthesize.</li>
+      <li><strong>Iterative retrieval:</strong> The LLM decides when it needs more information and requests additional retrieval rounds.</li>
+      <li><strong>Graph RAG:</strong> Build a knowledge graph over the document set; traverse it for multi-hop queries.</li>
+      <li><strong>Self-consistency:</strong> Run multiple retrieval-generation cycles and check agreement.</li>
+    </ul>
+
+    <h2>When to Use Context Window vs. RAG</h2>
+    <p>With million-token context windows, is RAG even necessary? The answer is nuanced. For small document sets (under ~50 pages), stuffing everything into context is simpler and often performs better. For larger corpora, context costs become prohibitive and retrieval is necessary for cost control. The decision matrix:</p>
+    <ul>
+      <li><strong>Under 100 pages, high-priority queries:</strong> Full context. Cost is manageable and precision is maximum.</li>
+      <li><strong>100-10,000 pages:</strong> Hybrid RAG. Retrieve top-K then synthesize.</li>
+      <li><strong>Over 10,000 pages:</strong> RAG is necessary. Vector search with hierarchical indexing.</li>
+      <li><strong>Need for citations:</strong> RAG, always. Context-stuffing makes attribution impossible.</li>
+    </ul>
+
+- title: "Context Windows: From 4K to 1M Tokens and What It Changes"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  topics:
+    - "Large Language Models"
+    - "Transformers"
+  body: |
+    <h2>The Length Obsession</h2>
+    <p>In 2020, GPT-3 had a context window of 2,048 tokens — enough for a few paragraphs. In 2023, Claude 2 announced 100,000 tokens. In 2024, Gemini 1.5 Pro demonstrated 1 million tokens. Context length has become one of the primary competitive dimensions in LLM development, and understanding what these numbers mean — and don't mean — is important for anyone building with these systems.</p>
+
+    <h2>What a Context Window Is</h2>
+    <p>The context window is the maximum amount of text a model can consider at once. Everything the model "knows" about the current interaction — system prompt, conversation history, retrieved documents, user input — must fit within this window. Text outside the window is invisible to the model.</p>
+    <p>Context length is measured in tokens, not words or characters. At typical tokenizer rates for English, 1,000 tokens ≈ 750 words ≈ 3-4 pages of text. So 128K tokens ≈ 96,000 words ≈ a long novel.</p>
+
+    <h2>The Quadratic Attention Problem</h2>
+    <p>Standard self-attention is O(n²) in sequence length: computing attention scores for n tokens requires n² comparisons. This was the primary constraint on context length until recently. A 32K context window requires 16× more attention compute than an 8K window, and a 128K window requires 256× more compute.</p>
+    <p>Several techniques address this: Flash Attention (computes attention in memory-efficient blocks without materializing the full attention matrix), grouped-query attention (GQA, reduces KV cache memory), sliding window attention (attend only to local context), and streaming LLM (keep only the first few tokens plus recent tokens in KV cache). These optimizations made long contexts economically viable.</p>
+
+    <h2>Long-Context Evaluation: The "Lost in the Middle" Problem</h2>
+    <p>Having a 1M token context window doesn't mean the model uses all 1M tokens equally. Research (Liu et al., 2023: "Lost in the Middle") showed that LLMs tend to use information at the beginning and end of the context much more effectively than information in the middle. For very long contexts, relevant information buried in the middle may effectively be invisible to the model.</p>
+    <p>Practical implication: when constructing prompts with long retrieved context, put the most important information first and last. If you need the model to attend to specific middle content, use explicit "look at document 3" instructions.</p>
+
+    <h2>What Long Context Actually Enables</h2>
+    <p>Practically useful applications of long-context LLMs:</p>
+    <ul>
+      <li><strong>Whole-document analysis:</strong> Analyze a 200-page report or a complete software repository without chunking</li>
+      <li><strong>Long conversation history:</strong> Maintain context across an entire day's or week's conversation without summarization</li>
+      <li><strong>In-context learning:</strong> Provide dozens or hundreds of few-shot examples rather than the typical 3-5</li>
+      <li><strong>Full codebase context:</strong> Include an entire medium-sized codebase when answering development questions</li>
+      <li><strong>Legal and medical document analysis:</strong> Process complete contracts, medical records, or clinical trial reports</li>
+    </ul>
+
+    <h2>Long Context vs. RAG: A Real Tradeoff</h2>
+    <p>The key tension: long contexts are expensive and may not use middle content effectively; RAG retrieves relevant chunks but may miss relevant information not retrieved. The optimal architecture depends on the application:</p>
+    <ul>
+      <li>If you can afford to stuff the full document set into context and still stay under budget: do it. Quality is typically higher.</li>
+      <li>If documents are too large or numerous: use RAG with good retrieval.</li>
+      <li>Hybrid: retrieve candidate chunks with RAG, then use a longer context to re-read them together with broader document context.</li>
+    </ul>
+    <p>Cost matters. A single query with a 1M token context to Claude 3.5 Sonnet costs ~$3. A RAG-based equivalent with 10K tokens retrieved costs ~$0.03. For high-volume applications, the 100× cost difference dominates the quality comparison.</p>
+
+- title: "LoRA, QLoRA, and the Art of Efficient Fine-Tuning"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Advanced"
+  related_program_title: "MS in Large Language Model Engineering"
+  topics:
+    - "Large Language Models"
+  body: |
+    <h2>The Parameter Explosion Problem</h2>
+    <p>A 7B parameter model has 7 billion parameters. Fine-tuning all of them requires storing 7B gradients plus optimizer states — Adam typically requires 3 copies of each parameter. A full fine-tuning run on a 70B model in 16-bit precision requires ~420GB of GPU memory. Most researchers and companies don't have 8 H100s dedicated to a single training job.</p>
+    <p>Parameter-efficient fine-tuning (PEFT) methods adapt large models to new tasks by training only a small fraction of their parameters. LoRA and QLoRA are the dominant PEFT methods, responsible for the explosion of task-specific open-source model adaptations available on HuggingFace.</p>
+
+    <h2>LoRA: Low-Rank Adaptation</h2>
+    <p>LoRA (Hu et al., 2021) is based on a key observation: fine-tuning updates to a large weight matrix W tend to be low-rank. If the update ΔW has rank r ≪ min(d, k), we can decompose it:</p>
+    <pre><code>ΔW = BA   where B ∈ R^(d×r), A ∈ R^(r×k)</code></pre>
+    <p>Instead of updating the full W (d×k parameters), we train only B and A (d·r + r·k parameters). For a 4096×4096 weight matrix with r=8, LoRA reduces the trainable parameters from 16.7M to 65K — a 256× reduction.</p>
+    <p>During training, the original weights W are frozen; only A and B are trained. During inference, the adapted weight is W + BA (or equivalently, BA can be absorbed into W). At typical ranks (r=4 to r=64), LoRA recovers 90-99% of full fine-tuning quality on most tasks.</p>
+
+    <h2>Practical LoRA Configuration</h2>
+    <p>Key hyperparameters:</p>
+    <ul>
+      <li><strong>Rank (r):</strong> Lower rank = fewer parameters = less capacity. r=8 works for most tasks; use r=32 or r=64 for complex reasoning. Start with r=16.</li>
+      <li><strong>Alpha (α):</strong> Scaling factor for the LoRA update. The effective scaling is α/r. Common convention: set α = 2r (so effective scale = 2).</li>
+      <li><strong>Target modules:</strong> Which matrices to apply LoRA to. Typically query and value projections in attention layers; sometimes all linear layers including MLP.</li>
+      <li><strong>Dropout:</strong> Applied between A and B for regularization. Default 0.05.</li>
+    </ul>
+
+    <h2>QLoRA: Adding Quantization</h2>
+    <p>QLoRA (Dettmers et al., 2023) combines LoRA with 4-bit quantization of the base model. The insight: during fine-tuning, we only need the base model to compute activations and gradients. If we store it in 4-bit (NF4) format, we dramatically reduce memory — and LoRA adapters are still trained in 16-bit, so gradient quality is preserved.</p>
+    <p>QLoRA memory requirements: a 7B model in 4-bit requires ~4GB. A 70B model in 4-bit requires ~40GB. With LoRA adapters (small, in 16-bit), the total typically adds 1-4GB. This means a 70B model can be fine-tuned on 2 A100s rather than 16.</p>
+    <p>QLoRA quality is usually within 1-2% of full-precision LoRA. For most applications, this is acceptable. It has made 70B-scale fine-tuning accessible to individual researchers and small companies.</p>
+
+    <h2>Practical Recommendations</h2>
+    <ul>
+      <li>Use QLoRA for 7B–70B models when you have limited GPU memory.</li>
+      <li>Use full LoRA (no quantization) for 1B–7B models where memory permits.</li>
+      <li>Use full fine-tuning only when you need to modify all model behavior (large domain adaptation, structural changes).</li>
+      <li>The peft library (HuggingFace) provides production-ready LoRA/QLoRA implementations.</li>
+      <li>Monitor training loss curves: LoRA training should converge similarly to full fine-tuning; significantly worse convergence suggests the rank is too low or the learning rate too high.</li>
+    </ul>
+
+- title: "The Open-Source LLM Landscape in 2026"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Introductory"
+  topics:
+    - "Large Language Models"
+  body: |
+    <h2>Why Open-Source LLMs Changed Everything</h2>
+    <p>Until March 2023, building with large language models meant using proprietary APIs. Then Meta released Llama, and the dynamics changed. An open-weight model could be downloaded, modified, fine-tuned, and deployed without API costs or data sharing concerns. The release triggered a Cambrian explosion of model development that has produced dozens of competitive open-weight models.</p>
+    <p>As of mid-2026, open-weight models have closed most of the quality gap with frontier closed models for many tasks, while offering advantages in privacy, cost (at scale), customization, and deployability. Understanding the landscape is essential for anyone choosing between open and closed models for a production application.</p>
+
+    <h2>The Llama Family</h2>
+    <p>Meta's Llama series remains the most influential open-weight LLM family. Llama 2 (2023) normalized the release of instruction-tuned models with permissive licenses. Llama 3 (2024) improved significantly on multilingual capability, context length (128K tokens), and coding. Llama 3.3 (late 2024) and Llama 4 (2025) continued this trajectory, with the 70B model approaching GPT-4-level performance on most academic benchmarks.</p>
+    <p>Llama models have spawned hundreds of fine-tuned derivatives: Nous Hermes, OpenHermes, WizardLM, and dozens more, each optimized for specific tasks or audiences.</p>
+
+    <h2>Qwen and the Chinese Model Wave</h2>
+    <p>Alibaba's Qwen series (Qwen 1.5, Qwen 2, Qwen 2.5, Qwen 3) has emerged as one of the strongest open-weight model families globally. Qwen 2.5 72B competitive with GPT-4o on many benchmarks. Qwen models are particularly strong on Chinese, coding, and mathematical reasoning — reflecting Alibaba's domain expertise and training data access. The Qwen series includes models from 0.5B to 110B parameters, making it highly versatile.</p>
+
+    <h2>Mistral and Efficiency</h2>
+    <p>Mistral AI pioneered several architectural innovations in the open-weight space. Mistral 7B (2023) demonstrated that a carefully trained 7B model could outperform much larger models from earlier generations. Mistral's use of grouped-query attention (GQA) and sliding window attention made it highly efficient for inference. The Mixtral 8×7B model popularized Mixture of Experts (MoE) in the open-source ecosystem, offering 70B-scale performance with 7B-scale inference cost.</p>
+
+    <h2>DeepSeek: Challenging the Compute Assumptions</h2>
+    <p>DeepSeek's releases (V2, V3, R1) challenged assumptions about how much compute is needed to train competitive models. DeepSeek V3 matched or exceeded GPT-4 on coding benchmarks while being trained at a fraction of the reported cost of comparable frontier models. DeepSeek R1 demonstrated strong chain-of-thought reasoning through reinforcement learning, producing a thinking model competitive with OpenAI's o1.</p>
+
+    <h2>Choosing in 2026</h2>
+    <p>Practical guidance for model selection:</p>
+    <ul>
+      <li><strong>General-purpose, on-premises deployment:</strong> Llama 3.3 70B or Qwen 2.5 72B. Both are competitive with GPT-4o on most tasks at zero API cost after deployment.</li>
+      <li><strong>Small device/edge deployment:</strong> Llama 3.2 3B, Qwen 2.5 3B, or Mistral 7B quantized to GGUF. Run on consumer hardware.</li>
+      <li><strong>Coding tasks:</strong> DeepSeek Coder V3, Qwen 2.5 Coder. Specific training focus shows in results.</li>
+      <li><strong>Reasoning/math:</strong> DeepSeek R1, Qwen QwQ. Chain-of-thought specialized models outperform general models on reasoning benchmarks.</li>
+      <li><strong>Multilingual:</strong> Qwen 2.5 (Chinese), Aya 23 (multilingual), LLaMA 3 with multilingual fine-tunes.</li>
+    </ul>
+    <p>The open-source ecosystem moves fast. Benchmark scores from six months ago are often out of date. LMSYS Chatbot Arena leaderboard and Hugging Face Open LLM Leaderboard provide continuously updated comparative evaluations.</p>
+
+- title: "Agent Memory: Short-Term, Long-Term, and Episodic"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  related_program_title: "Certificate in AI Agent Development"
+  topics:
+    - "AI Agents"
+    - "Large Language Models"
+  body: |
+    <h2>The Memory Problem</h2>
+    <p>An AI agent without persistent memory is like a person with severe amnesia: capable in the moment but unable to learn from experience, maintain context across sessions, or build up the accumulated knowledge that expertise requires. Memory architecture is one of the most important design decisions in building capable agents.</p>
+    <p>Memory in AI agents maps loosely onto memory psychology: short-term (working memory), long-term (semantic and declarative), and episodic (autobiographical). Each plays a different role in agent cognition, and effective agents typically use all three.</p>
+
+    <h2>Short-Term Memory: The Context Window</h2>
+    <p>Short-term memory is simply the LLM's context window. Everything currently in context is "remembered" with perfect fidelity. The conversation history, retrieved documents, current task state, tool outputs — all live in context.</p>
+    <p>Short-term memory has two major limitations: it's bounded (large context windows cost money; at some point the window fills) and it's transient (it disappears when the session ends). For single-session tasks on small context sets, context-as-memory is sufficient. For long-running agents or multi-session applications, you need more.</p>
+
+    <h2>Long-Term Memory: External Storage</h2>
+    <p>Long-term memory is information stored outside the context window that can be retrieved on demand. The primary implementations:</p>
+    <ul>
+      <li><strong>Vector stores:</strong> Embed and store text snippets; retrieve by semantic similarity. Good for unstructured information: notes, facts, conversation summaries. Popular stores: Pinecone, Weaviate, Chroma, pgvector.</li>
+      <li><strong>Structured databases:</strong> SQL or NoSQL databases for structured information. Better for facts with known schema: user preferences, task status, configuration.</li>
+      <li><strong>Key-value stores:</strong> Redis or similar for fast retrieval of specific items. Good for cache-like patterns: recent user actions, frequently accessed facts.</li>
+    </ul>
+    <p>The retrieval mechanism is as important as the storage mechanism. A common pattern: store everything, retrieve the top-K most relevant items based on embedding similarity to the current query, then inject them into context.</p>
+
+    <h2>Episodic Memory: Learning from Experience</h2>
+    <p>Episodic memory stores records of past experiences — what happened, when, and with what outcome. In agents, this typically means recording past task attempts, successes, and failures, along with what approaches were tried.</p>
+    <p>Well-implemented episodic memory allows agents to improve over time: "Last time I tried to book a flight using search_flights with vague destination, it failed. This time I'll use a more specific query." This is a primitive form of learning-from-experience that doesn't require model fine-tuning.</p>
+    <p>The MemGPT paper demonstrated episodic memory architectures for very long conversations; the "memory palaces" approach in Claude's extended thinking mode is a related idea.</p>
+
+    <h2>Memory Management: What to Store, What to Forget</h2>
+    <p>A common mistake is storing everything and retrieving nothing useful. Effective memory management requires:</p>
+    <ul>
+      <li><strong>Selective storage:</strong> Not every piece of information deserves to be stored. Store facts, preferences, outcomes, and important context; don't store intermediate computation or temporary state.</li>
+      <li><strong>Memory consolidation:</strong> Summarize and compress long conversations before storing. A 100-message conversation can often be compressed to 500 words without losing important context.</li>
+      <li><strong>Memory pruning:</strong> Old information becomes stale. Implement TTL (time-to-live) for time-sensitive information and prioritization schemes for relevant vs. irrelevant history.</li>
+      <li><strong>Relevance filtering:</strong> During retrieval, a second LLM call can filter retrieved memories for actual relevance to the current query — expensive but improves precision.</li>
+    </ul>
+
+    <h2>Memory in the Claude Agent SDK</h2>
+    <p>Claude's native context management handles short-term memory automatically. For long-term memory, the Claude Agent SDK supports integration with any external storage system. The recommended pattern: a memory module that intercepts each turn, stores relevant information, and retrieves relevant memories at the start of each turn. The AGT-101 course at Meridian AI covers this pattern in detail.</p>
+
+- title: "Tool Use in LLMs: Function Calling, MCP, and the Agentic Future"
+  type: resource_article
+  school: "School of Language & Reasoning"
+  difficulty: "Intermediate"
+  related_program_title: "Certificate in AI Agent Development"
+  topics:
+    - "AI Agents"
+    - "Large Language Models"
+  body: |
+    <h2>Beyond Text Generation</h2>
+    <p>A language model that can only generate text is limited. Real-world tasks often require actions: searching the web, querying a database, calling an API, executing code, reading a file. Tool use — the ability to invoke external functions and use their results — is what transforms a language model from a conversational toy into a capable AI agent.</p>
+
+    <h2>Function Calling: The Foundation</h2>
+    <p>OpenAI introduced "function calling" in June 2023, and it quickly became an industry standard (now also called "tool use" in Anthropic's API). The mechanism is straightforward: the developer provides a list of functions the model can call, each with a JSON schema describing parameters. The model outputs a structured JSON call instead of natural language when it determines a tool is needed. The developer executes the tool, returns the result, and the model continues.</p>
+    <pre><code>tools = [{
+  "name": "search_web",
+  "description": "Search the web for current information",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "query": {"type": "string", "description": "Search query"},
+      "n_results": {"type": "integer", "default": 5}
+    },
+    "required": ["query"]
+  }
+}]</code></pre>
+    <p>Function calling enables models to ground their responses in real-time information, perform computations, access databases, and interact with external services.</p>
+
+    <h2>Parallel Tool Use</h2>
+    <p>Modern models (Claude 3+, GPT-4o) support parallel tool calls: the model can decide to call multiple tools simultaneously in a single turn, reducing the number of round trips needed to complete a task. For tasks that require multiple independent lookups — "get the weather in three cities simultaneously" — parallel tool use can reduce latency by 3× or more.</p>
+
+    <h2>Model Context Protocol (MCP)</h2>
+    <p>Function calling solves the individual tool invocation problem but doesn't address the broader question: how do AI applications discover, connect to, and securely use tools and data sources at scale? The Model Context Protocol (MCP), developed by Anthropic and released as an open standard in late 2024, addresses this.</p>
+    <p>MCP defines a standard client-server protocol for connecting AI applications to "MCP servers" — lightweight services that expose tools, resources (readable content), and prompts through a standardized interface. An MCP server for GitHub exposes tools for reading and writing code; an MCP server for a database exposes query and update operations. An LLM application connects to multiple MCP servers and uses their tools transparently.</p>
+    <p>The key advantages of MCP over ad-hoc function definitions:</p>
+    <ul>
+      <li><strong>Discoverability:</strong> Tools are described in a machine-readable format that can be used to automatically configure the AI client.</li>
+      <li><strong>Reusability:</strong> An MCP server for a database works with any MCP-compatible AI client — you build it once.</li>
+      <li><strong>Security:</strong> MCP's authorization model (OAuth 2.1-based) enables secure access control without building custom auth for each integration.</li>
+      <li><strong>Ecosystem:</strong> The MCP ecosystem had over 500 public MCP servers by mid-2025, covering most major services.</li>
+    </ul>
+
+    <h2>The Agentic Loop</h2>
+    <p>Tool use turns a single-turn model call into a multi-step agentic loop:</p>
+    <ol>
+      <li>User provides a task</li>
+      <li>Model decides which tool(s) to call</li>
+      <li>Developer executes tool(s), returns results</li>
+      <li>Model incorporates results and decides: is the task complete? If not, go to 2.</li>
+      <li>Model generates final response</li>
+    </ol>
+    <p>This loop is the foundation of autonomous AI agents. The sophistication of the agent is determined by the quality of the model's planning (when to use which tool), the breadth of available tools, and the model's ability to synthesize tool outputs into coherent actions.</p>
+
+    <h2>Reliability Challenges</h2>
+    <p>Tool use introduces reliability challenges not present in plain text generation. The model must correctly parse tool schemas, provide valid arguments, and handle tool failures gracefully. Common failure modes: calling non-existent tools (hallucinating tool names), providing arguments that fail schema validation, and getting stuck in loops when tools return unexpected results.</p>
+    <p>Best practices for robust tool use: validate all tool calls before execution; return structured error messages (not just exceptions) when tools fail; implement maximum iteration limits to prevent infinite loops; log all tool calls for debugging.</p>

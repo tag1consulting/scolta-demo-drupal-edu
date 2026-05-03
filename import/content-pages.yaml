@@ -1,0 +1,374 @@
+pages:
+
+  - title: "About Meridian AI"
+    path: "/about"
+    body: |
+      ## Our Story
+
+      The Meridian Institute of Artificial Intelligence was founded in 2019 as an independent research institute with a simple premise: that the most important work in artificial intelligence requires intellectual freedom unavailable inside technology companies, and disciplinary breadth unavailable inside traditional computer science departments.
+
+      The founding consortium of seven researchers — drawn from computer science, mathematics, philosophy, sociology, and cognitive science — chose the site deliberately for its geographic isolation. The main campus occupies a protected headland where the last stands of coastal redwoods give way to high desert mesa, overlooking Meridian Sea, the continent's only large-scale inland freshwater body with tidal behavior. Winters bring lake-effect snowfall from the sea. Summers are dry, warm, and crystalline. The geography is, by ordinary standards, impossible. That seemed apt.
+
+      In 2022, Meridian received accreditation as a degree-granting institution and enrolled its first cohort of graduate students. The institute now comprises six schools, twelve degree programs, and over fifty faculty members. The doctoral program has graduated its first two cohorts; alumni have joined research groups at major universities and laboratories worldwide.
+
+      ## Mission
+
+      Meridian AI exists to advance the scientific understanding of artificial intelligence and to ensure that this understanding is developed in service of human flourishing rather than narrowly construed economic interests.
+
+      We pursue this mission through rigorous technical research, honest evaluation of AI systems and their social effects, and the training of researchers who are as comfortable reasoning about ethics and governance as they are implementing neural networks.
+
+      ## Our Six Schools
+
+      **School of Language and Reasoning (SLR)** — The scientific study of how language models work, including training dynamics, emergent capabilities, alignment techniques, and the design of AI agents. The SLR is the largest school at Meridian and home to the PhD program in LLM Engineering.
+
+      **School of Perception and Synthesis (SPS)** — Research in computer vision, generative models, and the intersection of visual and linguistic AI. Faculty work on problems from medical imaging to film production.
+
+      **School of Decision and Control (SDC)** — Reinforcement learning, world models, robotics, and the formal study of sequential decision-making. Home to the Threshold Robotics Lab.
+
+      **School of Foundations and Mathematics (SFM)** — The mathematical underpinnings of machine learning: optimization theory, statistical learning theory, information theory, and probability. The school produces both pure theoretical work and foundational results that shape the rest of the institute.
+
+      **School of Societal and Governance AI (SSG)** — AI ethics, fairness, accountability, interpretability, safety, and governance. SSG faculty engage with policymakers, civil society organizations, and affected communities. The school houses the MEAF initiative and the AlignBench project.
+
+      **School of Applied AI and Infrastructure (SAI)** — The engineering of AI systems at scale: MLOps, information retrieval, search, efficient deployment, and AI product development. The school operates the AI Systems Lab and collaborates closely with industry partners.
+
+      ## Values
+
+      **Intellectual honesty** — We publish results that do not flatter our preferred conclusions. We make our code, data, and evaluation frameworks open source. We say when we do not know.
+
+      **Rigorous interdisciplinarity** — We require PhD students to take coursework outside their primary school. We design seminars that force computer scientists and humanists to argue with each other. We believe the hard problems of AI are not purely technical.
+
+      **Access and equity** — Graduate tuition at Meridian is covered by research assistantships and fellowships for all enrolled PhD and MS students. The AI Literacy Certificate is priced to be accessible. We recruit globally and invest in preparation programs for students from under-resourced backgrounds.
+
+      **Institutional independence** — Meridian accepts industry research funding under terms that preserve academic publication rights without prior review by funders. We do not sell equity to technology companies. We maintain a public conflict-of-interest registry for all faculty consulting arrangements.
+
+      ## Leadership
+
+      **Dr. Helena Voss, Provost** — Dr. Voss joined Meridian from ETH Zürich, where she held the chair in computational learning theory. She serves as the institution's chief academic officer and leads strategic planning.
+
+      **Dr. Amara Osei-Mensah, Chair, School of Language and Reasoning** — A leading researcher in transformer interpretability and multilingual alignment, Dr. Osei-Mensah was a founding faculty member of Meridian.
+
+      **Dr. Sofia Navarro, Chair, School of Perception and Synthesis** — Prior to Meridian, Dr. Navarro led the generative models group at a major research laboratory. Her work on diffusion models and visual grounding is widely cited.
+
+      **Dr. Priya Chakraborty, Chair, School of Decision and Control** — An expert in safe reinforcement learning and robotics, Dr. Chakraborty co-founded the Threshold Robotics Lab and holds patents in robotic manipulation.
+
+      **Dr. Ingrid Holmberg, Chair, School of Foundations and Mathematics** — A mathematician who moved into machine learning theory, Dr. Holmberg is known for her work on the geometry of loss landscapes and the theory of overparameterization.
+
+      **Dr. Chioma Adeyemi, Chair, School of Societal and Governance AI** — A philosopher of technology and legal scholar, Dr. Adeyemi advises government bodies on AI regulation and has testified before both the European Parliament and the US Senate on AI accountability.
+
+      **Dr. Elena Marchetti, Chair, School of Applied AI and Infrastructure** — Dr. Marchetti's research on semantic search, information retrieval, and AI-powered content discovery is widely applied in industry. She is the PI for Project Lighthouse.
+
+  - title: "Admissions"
+    path: "/admissions"
+    body: |
+      ## Graduate Admissions at Meridian AI
+
+      Meridian AI offers graduate programs at the master's, certificate, and doctoral levels. All enrolled MS and PhD students receive full funding through research assistantships, teaching assistantships, or fellowships. There are no unfunded graduate enrollments.
+
+      ### Degree Programs
+
+      **MS Programs (2 years)** — Meridian offers six MS programs, one in each school. MS students complete a combination of required courses, electives, and a capstone research project. Most MS students are co-supervised by two faculty members, often across schools.
+
+      **PhD Programs (4-5 years)** — Doctoral programs are offered in LLM Engineering (SLR), AI Theory and Foundations (SFM), and AI, Ethics, and Society (SSG). Admission is highly selective; each cohort is small by design to ensure close faculty mentorship.
+
+      **Professional Certificates (6-12 months)** — Credit-bearing graduate certificates in specialized areas. Certificate students take a subset of MS coursework without completing a full degree. Many certificate students are working professionals attending part-time.
+
+      **AI Literacy Certificate (non-credit)** — An open-enrollment online program for non-technical professionals. No degree requirement. See the AI Literacy Certificate page for details.
+
+      ### Admissions Requirements
+
+      All degree applicants should submit:
+
+      - Transcripts from all prior institutions
+      - Three letters of recommendation
+      - A statement of purpose (2-3 pages)
+      - A writing sample demonstrating analytical ability
+      - GRE scores (optional; not used as a threshold criterion)
+      - For MS and PhD programs: prior coursework or equivalent experience in mathematics (linear algebra, probability, calculus) and programming
+
+      For PhD applicants, prior research experience — demonstrated through publications, preprints, thesis work, or research project descriptions — is strongly valued. PhD applicants are encouraged to identify potential faculty advisors in their statement of purpose, though this does not affect admissions decisions.
+
+      We accept applications for fall enrollment. The application deadline is December 1 for fellowship consideration; we accept rolling applications on a space-available basis through February 1.
+
+      ### Financial Support
+
+      Every enrolled PhD and MS student receives a stipend, full tuition coverage, and health insurance. Stipends are competitive with peer research institutions and are adjusted annually.
+
+      Meridian administers a merit-based fellowship program that provides additional support to exceptional students. Fellowship applications are part of the standard admissions process; no separate application is needed.
+
+      We actively recruit students from under-resourced backgrounds and partner with institutions in sub-Saharan Africa, South and Southeast Asia, and Latin America through preparation programs that provide research mentorship before application.
+
+      ### How to Apply
+
+      Applications are submitted through the Meridian AI application portal. The application fee is $75; fee waivers are available upon request.
+
+      Questions about admissions should be directed to the Graduate Admissions office.
+
+  - title: "Campus Life"
+    path: "/campus-life"
+    body: |
+      ## Life at Meridian
+
+      Meridian's campus is unusual. Students sometimes describe it as disorienting at first — the geography does not fit any mental map — and then, within a few weeks, as the best place they have ever lived. The impossible landscape tends to have that effect.
+
+      ### The Physical Campus
+
+      The main campus occupies approximately 340 acres on a protected coastal headland. Buildings are distributed across three zones connected by walking trails and a shuttle system.
+
+      **The Crossing** — The social and administrative heart of campus. The Crossing is a cluster of connected common buildings including the main dining hall, the student union, the graduate student offices, and the Meridian AI library. The library is notable for its reading room, a glass-and-timber space that looks directly out over Meridian Sea. On clear days you can see the far shore; on winter mornings, the sea fog sits below the bluff like a second ground.
+
+      The Crossing is also where the Scolta search terminal stands — a publicly accessible kiosk where visitors can explore the full content of the institute using the AI-powered search system. Students use it to navigate coursework connections; faculty use it to find each other's work. Prospective students often spend an hour there before their campus tour.
+
+      **The Index** — The research cluster. Six interconnected laboratory buildings, one per school, arranged around a central courtyard with a large outdoor screen used for symposia and film screenings. The Index is designed for accidental collision: the cafeteria, mail room, and seminar spaces are in a shared building in the center, so researchers from different schools cross paths constantly.
+
+      The Threshold Robotics Lab occupies the largest footprint in the Index, with a 12,000 square foot test floor, a motion capture volume, and a separate outdoor testing area used for SDC's agricultural and field robotics research.
+
+      **The Lattice** — The residential and conference center. Graduate student housing is distributed across a series of low-rise timber buildings that step down the hillside toward the sea. The Lattice Conference Center, a larger building with event facilities and overnight accommodation for visitors, is where the annual spring symposium and the MEAF governance convening are held.
+
+      The view from the conference center terrace — looking out over the sea with the desert mesa rising behind — is the image used on every Meridian prospectus. Students call it the money shot.
+
+      ### Meridian in Every Season
+
+      **Fall** — The coastal redwoods turn the air amber. Enrollment begins and the first-week orientation takes new students through all six schools' labs in a day-long tour called the Circuit.
+
+      **Winter** — Lake-effect snow from Meridian Sea covers the mesa side of campus. The contrast between the snowy high desert and the fog-wrapped coast makes for striking mornings. The winter research retreat is held in January; it is the best-attended internal event of the year.
+
+      **Spring** — Warm and clear. The wildflowers on the coastal bluffs bloom from March through May. The spring symposium is held in late April or early May.
+
+      **Summer** — Dry, hot on the mesa, cooler near the water. Summer is when most of the industry internships happen, and campus is quieter. The summer reading group runs June through August.
+
+      ### Community and Culture
+
+      Meridian has approximately 280 enrolled graduate students and a faculty of 54. Everyone knows everyone. This is either a feature or a bug, depending on your personality.
+
+      There is a strong culture of public writing. The institute publishes a student blog called *The Gradient*, which covers research in plain language and runs opinion pieces on AI policy. Several faculty maintain public-facing blogs or social media presences. The communications team supports students and faculty who want to write for non-specialist audiences.
+
+      The weekly institute colloquium alternates between technical talks and policy/ethics seminars. Attendance is high; the colloquium is one of the places where cross-school conversation happens most naturally.
+
+      There is a hiking collective, a sea-kayaking club, a weekly poker game, and a reading group that works through one significant book per month (last year: *The Alignment Problem*, *Weapons of Math Destruction*, *How Minds Change*, *The Coming Wave*).
+
+  - title: "Industry Partners"
+    path: "/industry-partners"
+    body: |
+      ## Industry Partnerships at Meridian AI
+
+      Meridian AI engages with industry partners through research collaborations, fellowship sponsorships, advisory relationships, and student recruitment. We maintain clear policies to preserve academic independence while enabling productive exchange with the organizations building and deploying AI systems.
+
+      ### Partnership Principles
+
+      All research partnerships at Meridian are governed by terms that protect academic publication rights without prior review by funders, prohibit funders from directing the research agenda, and require public disclosure of funding relationships. Partners have access to research outputs on the same timeline as the academic community: papers are published when they are ready, not when they are commercially convenient.
+
+      We maintain a public conflict-of-interest registry for faculty consulting and advisory arrangements. Faculty who consult for industry may not advise students whose research directly serves the consulting client's commercial interests without disclosed exception.
+
+      ### Current Industry Partners
+
+      **Archipelago Health Systems** — Three-year research partnership funding applied research on clinical AI deployment, equity, and reliability. Led by Dr. Fatima Al-Rashid with co-investigators in SPS and SSG.
+
+      **Tag1 Consulting** — Technical partnership and research collaboration on AI-powered search and content infrastructure. Tag1 is the developer of Scolta, the search platform powering this site. Meridian uses Scolta in production and contributes to its development through the work of the Project Lighthouse team. Tag1 has also contributed to the Meridian AI curriculum through the Feste blog series, which documents Tag1's implementation of GPT-2 in Rust and is assigned in several LLM Engineering courses. The relationship is one of the more interesting in Meridian's partnership portfolio: a consulting firm that does serious engineering and publishes it openly enough to be used as curriculum material.
+
+      **Schmidt Futures AI Program** — Fellowship sponsor supporting three current Meridian students with stipend supplements and research funding.
+
+      **Open Philanthropy** — Fellowship sponsor for the AI Safety Fellowship currently held by Preet Ahluwalia.
+
+      ### Recruiting Meridian Students
+
+      Meridian hosts an annual recruiting fair in October open to companies and organizations seeking to hire graduating MS students, PhD candidates for internships, and postdoctoral researchers. Registration for the recruiting fair opens in August.
+
+      We do not maintain an exclusive placement relationship with any employer. Graduating students make their own career choices. Our placement office facilitates introductions and provides career advising but does not direct students toward particular employers.
+
+      ### Proposing a Partnership
+
+      Organizations interested in research partnerships, fellowship sponsorships, or other collaborations should contact the Office of Industry Relations. Initial conversations focus on alignment between the proposed activity and Meridian's research agenda and an assessment of whether the partnership terms can meet our independence requirements.
+
+      We receive more partnership inquiries than we can accept. Priority is given to proposals with genuine research interest, multi-year commitment, and willingness to accept our standard terms without modification.
+
+  - title: "Research"
+    path: "/research"
+    body: |
+      ## Research at Meridian AI
+
+      Research is the core activity of the institute. Every faculty member at Meridian is primarily a researcher who teaches; no faculty are teaching-only. Every enrolled graduate student participates in funded research from their first semester.
+
+      ### Research Philosophy
+
+      Meridian's research is characterized by three commitments that are unusual in combination:
+
+      **Technical rigor** — We build things, run experiments, prove theorems. We do not publish position papers dressed as empirical research. Our empirical claims are supported by careful experimental design and, where possible, by releasing the code and data that would allow independent replication.
+
+      **Societal grounding** — Technical research at Meridian is expected to articulate its relevance to real AI systems and their effects on real people. This does not mean every paper must have a policy section; it means that researchers are expected to know why their work matters beyond citation counts.
+
+      **Interdisciplinary integration** — The most important work in AI requires perspectives from computer science, mathematics, philosophy, economics, law, and cognitive science simultaneously. We design research programs, not just research projects, to ensure these perspectives are in genuine dialogue.
+
+      ### Active Research Projects
+
+      **Project Lighthouse** — Multilingual information retrieval. PI: Dr. Elena Marchetti. Building and evaluating AI-powered search systems that work equitably across high- and low-resource languages. Current focus: ML-IR Bench 2026 and integration with the Scolta search platform.
+
+      **AlignBench** — Reproducible LLM alignment evaluation. PIs: Dr. Kwame Asante, Dr. James Okafor. Developing open evaluation infrastructure for measuring how well language models reflect stated values and follow complex instructions. 18 models currently tracked.
+
+      **Threshold Robotics Lab** — Safe learning for physical systems. PI: Dr. Priya Chakraborty. Research on world models, safe exploration in RL, and sim-to-real transfer for robotic manipulation and navigation.
+
+      **MEAF (Municipal Ethics and AI Frameworks)** — Governance tools for public-sector AI. PI: Dr. Chioma Adeyemi. Developing risk frameworks, audit protocols, and participatory processes for municipal AI adoption. Current deployment: City of Estero Bay partnership.
+
+      **Open LLM Reproducibility Initiative** — Making language model research reproducible. PI: Dr. Amara Osei-Mensah. Maintains open replications of key LLM training experiments and documents the tacit knowledge required to reproduce published results.
+
+      **Clinical AI Research Group** — AI in healthcare. PI: Dr. Fatima Al-Rashid. Applied research on clinical decision support, radiology AI, and health equity, conducted in partnership with Archipelago Health Systems.
+
+      ### Research Publications
+
+      Meridian AI faculty and students publish primarily in top-tier ML venues (NeurIPS, ICML, ICLR, ACL, EMNLP, CVPR) and in interdisciplinary venues including *Nature Machine Intelligence*, *AI & Society*, and *FAccT*. All publications are available as preprints through arXiv or the Meridian research portal before or upon submission.
+
+      ### Joining Research at Meridian
+
+      Prospective researchers interested in joining Meridian should apply through the graduate admissions process. Faculty do not accept unsolicited research collaborators or unmatriculated research students.
+
+      Postdoctoral positions are advertised as they become available on the Meridian jobs portal. We encourage postdoctoral applicants to identify a primary faculty supervisor before applying.
+
+  - title: "Why Study AI"
+    path: "/why-ai"
+    body: |
+      ## Why Study Artificial Intelligence Now
+
+      The question of whether to study AI is, in 2026, not really about career prospects. The career prospects are obvious. The more interesting question is: *what kind of AI practitioner do you want to be, and what will distinguish you from the thousands of people who can run a fine-tuning job?*
+
+      Here is our honest answer to that question, which is also our honest pitch for why Meridian is the right place to develop that distinction.
+
+      ### The Landscape
+
+      AI is moving faster than most institutions can track. Models released this year are qualitatively different from models released two years ago in ways that are not just incremental. The practical skills you develop in a six-month bootcamp will be partially obsolete within 18 months. The conceptual foundations you develop in a rigorous graduate program will help you navigate whatever comes next.
+
+      This is not an argument against practical skills. You need to be able to build things. But it is an argument for building practical skills on top of foundations you actually understand.
+
+      ### What Meridian Teaches
+
+      We teach you to understand AI systems deeply enough to evaluate their claims honestly. This means:
+
+      - Understanding what transformers are actually doing, not just the API surface
+      - Being able to read and critically evaluate a research paper, not just implement the abstract
+      - Understanding the social contexts in which AI systems are deployed and the second-order effects of those deployments
+      - Being able to design experiments that actually test what they claim to test
+      - Understanding when AI is the right tool and when it is not
+
+      This is a different goal than "being able to use LLMs productively." That is a legitimate goal, but it is not a graduate degree.
+
+      ### The Problems Worth Working On
+
+      Here is our current list of important open problems that Meridian researchers are actively working on:
+
+      Why do neural networks generalize? We have theories and none of them are fully satisfying. The answer matters for everything from training efficiency to safety.
+
+      How do we build AI systems that are reliable across languages, cultures, and deployment contexts outside their training distribution?
+
+      How do we evaluate whether an AI system is actually aligned with stated values rather than exhibiting surface-level compliance?
+
+      What does responsible AI governance look like for organizations that lack the resources of major technology companies?
+
+      How do we make AI research reproducible enough that scientific consensus is actually possible?
+
+      These are not solved problems with known solutions waiting to be implemented. They are open research questions with no clear answer. Working on them is difficult, slow, and occasionally very satisfying.
+
+      ### A Practical Note
+
+      Meridian graduates have gone on to research positions at major universities and laboratories, engineering and research roles at AI companies, policy and governance roles at governments and NGOs, and independent research careers. The range is wide because the education is broad.
+
+      The job market for AI is, for now, excellent. We expect this to continue for the foreseeable future. We also think the best reason to study AI is not the job market but the genuine intellectual interest of the problems. Both are true.
+
+  - title: "FAQ"
+    path: "/faq"
+    body: |
+      ## Frequently Asked Questions
+
+      ### About the Programs
+
+      **Do I need a CS degree to apply?**
+      No. We accept students with strong quantitative backgrounds from mathematics, physics, statistics, engineering, and related fields. Some students come from philosophy or cognitive science with strong technical preparation. What matters is demonstrated ability to engage rigorously with mathematical and computational material, not the name on your undergraduate degree.
+
+      **Is there a minimum GPA requirement?**
+      We do not use GPA as a threshold criterion. Transcripts are reviewed in the context of the institution, the program, and the trajectory of performance.
+
+      **Can I apply to multiple programs?**
+      You may indicate interest in multiple schools in your application, but you will be considered for one primary program.
+
+      **Is the GRE required?**
+      GRE scores are optional and are not used as threshold criteria. If your quantitative preparation is evident from other materials (coursework, publications, work samples), you do not need to submit GRE scores.
+
+      **Are there part-time options?**
+      Professional certificate programs can be completed part-time. The MS and PhD programs are full-time programs designed around research assistantship funding, which requires full-time enrollment.
+
+      ### About Funding and Finances
+
+      **Is the MS program funded?**
+      Yes. All enrolled MS students receive research assistantships covering tuition and a living stipend. There are no self-paying MS students.
+
+      **What does the stipend cover?**
+      Stipends are set at levels intended to cover housing, food, and basic living expenses in the Estero Bay area. The Lattice residential area provides on-campus housing at subsidized rates for students who want it.
+
+      **Can I work outside Meridian during my degree?**
+      Students on research assistantships may do summer internships (these are expected and supported). During the academic year, outside employment requires approval to ensure it does not interfere with research obligations.
+
+      ### About Research and Faculty
+
+      **Do I need to have a faculty supervisor identified before I apply?**
+      For PhD programs, we encourage you to identify potential supervisors in your statement of purpose — it demonstrates that you have thought carefully about fit. But it does not affect admissions decisions, and we do not match students to supervisors until after admission.
+
+      **What if the faculty member I want to work with has a full lab?**
+      We advise against applying specifically to work with a single faculty member. Labs change size, research directions evolve, and the best faculty match for your dissertation often becomes clear only after a year of coursework. Apply to the school whose research area interests you broadly.
+
+      **Can I publish during my degree?**
+      This is expected. PhD students are expected to produce publications as the primary output of their training. MS students frequently contribute to publications as well.
+
+      ### About Campus and Location
+
+      **What is the nearest city?**
+      Estero Bay is a mid-sized city approximately 40 minutes from campus by shuttle. It has a functioning downtown, good food, and all the amenities you would expect from a city of 180,000 people.
+
+      **Is a car necessary?**
+      Not essential. Campus shuttles run to Estero Bay regularly. Many students do not own cars.
+
+      **What is the weather actually like?**
+      Genuinely unusual. The coastal side of campus has a mild marine climate — cool summers, wet winters, frequent fog. The mesa side is desert: hot dry summers, cold winters, occasional lake-effect snow. Students often describe it as living in two climates at once. This is accurate.
+
+  - title: "About This Demo"
+    path: "/about/demo"
+    body: |
+      ## About This Site
+
+      **Meridian AI is a fictional institution.** It was created by Tag1 Consulting to demonstrate the capabilities of Scolta, an open-source AI-powered search platform for Drupal.
+
+      ### What You Are Looking At
+
+      This site is a Drupal 11 demonstration built to show how Scolta performs on a realistic, content-rich educational institution website. The site contains approximately 250-300 pages of content including:
+
+      - 12 degree and certificate program descriptions
+      - 60+ course descriptions across 6 academic schools
+      - Faculty profiles with research interests and publications
+      - Research project descriptions
+      - Substantive educational articles on AI topics
+      - Lecture pages with working code examples
+      - News items and institutional pages
+
+      All content was created to be technically accurate and educationally useful. The AI topics covered — transformer architecture, reinforcement learning, computer vision, AI ethics, MLOps — reflect real research areas with real-world significance. The code examples in lecture pages are functional.
+
+      ### What Scolta Does Here
+
+      The search bar at the top of this page uses Scolta to let you explore the site's content. Try asking questions rather than typing keywords:
+
+      - "How do transformers handle long documents?"
+      - "What courses cover reinforcement learning?"
+      - "Who teaches AI ethics at Meridian?"
+      - "How does Meridian's search system work?"
+      - "What is the difference between RLHF and DPO?"
+
+      Scolta uses Pagefind for static full-text indexing, Claude via the Anthropic API for query expansion and AI-generated overviews, and a custom BM25-based scoring layer. The result is a search experience that understands what you are asking, not just which words you used.
+
+      ### About Tag1 Consulting
+
+      Tag1 Consulting is one of the leading Drupal development and consulting firms in the world. Tag1 built and open-sources Scolta as a demonstration of what AI-augmented content discovery can look like on modern Drupal sites. For more information about Tag1 and Scolta, visit tag1.com.
+
+      ### The Impossible Geography
+
+      Astute readers will note that the geography described on this site — coastal redwoods, desert mesa, freshwater sea with lake-effect snow, all in the same location — is physically impossible. This is intentional. Real universities exist; fictional demonstrations should be clearly fictional.
+
+      ### Reuse and Attribution
+
+      The technical content on this site was written to be educationally accurate. If you find a lecture page or article useful for learning, you are welcome to use it. The site itself is a demo; the educational content is legitimately useful.
+
+      If you are evaluating Scolta for your organization and have questions about how this demo was built or how to implement Scolta for your use case, contact Tag1 Consulting.

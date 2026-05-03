@@ -1,0 +1,575 @@
+# Meridian AI — Course Catalog (~72 courses across 12 programs)
+
+# ============================================================
+# SCHOOL OF LANGUAGE & REASONING (SLR)
+# ============================================================
+
+- title: "LLM-401: Transformer Architecture and Attention Mechanisms"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Graduate (400-level)"
+  course_number: "LLM-401"
+  credits: "4"
+  semester: "Fall, Spring"
+  topics:
+    - "Transformers"
+    - "Large Language Models"
+  program_title: "MS in Large Language Model Engineering"
+  syllabus_summary: |
+    <p>Mathematical foundations of the transformer: self-attention, multi-head attention, positional encoding. Implementation of scaled dot-product attention from scratch. Analysis of GPT-2, BERT, and T5 architectures. Flash Attention optimization. Efficient attention variants: sliding window, sparse, linear attention.</p>
+  body: |
+    <h2>Course Description</h2>
+    <p>This foundational course covers the transformer architecture in depth, from mathematical first principles through efficient implementation. Students gain the understanding needed to read and extend modern LLM codebases, not just use them. Weekly labs implement key components from scratch in PyTorch.</p>
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Derive scaled dot-product attention from information retrieval first principles</li>
+      <li>Implement multi-head attention, residual connections, and layer normalization</li>
+      <li>Analyze the computational complexity of attention and its practical implications</li>
+      <li>Compare architectural variants: encoder-only (BERT), decoder-only (GPT), encoder-decoder (T5)</li>
+      <li>Understand Flash Attention, grouped query attention, and memory-efficient implementations</li>
+    </ul>
+
+- title: "LLM-402: Tokenization, Vocabulary, and Encoding Schemes"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Graduate (400-level)"
+  course_number: "LLM-402"
+  credits: "3"
+  semester: "Fall"
+  topics:
+    - "Large Language Models"
+    - "Natural Language Processing"
+  program_title: "MS in Large Language Model Engineering"
+  syllabus_summary: |
+    <p>Byte-Pair Encoding (BPE), WordPiece, and SentencePiece algorithms. Tokenizer training and vocabulary size tradeoffs. Multilingual tokenization challenges. Influence of tokenization on model capabilities and arithmetic reasoning. Character-level vs. subword vs. word-level representations. Lab: build a BPE tokenizer from scratch in Python and in Rust (referencing Tag1's Feste implementation).</p>
+  body: |
+    <h2>Course Description</h2>
+    <p>Tokenization is the first and often most overlooked decision in building a language model. This course examines how tokenization shapes what an LLM can learn, what arithmetic it can perform, and how well it handles multilingual text. Students implement BPE from scratch, analyze tokenizer behavior across languages, and understand the direct connection between vocabulary choice and model capabilities.</p>
+    <h2>Key Topics</h2>
+    <ul>
+      <li>BPE algorithm: merge rules, vocabulary construction, encoding and decoding</li>
+      <li>WordPiece and SentencePiece: differences and use cases</li>
+      <li>Tokenization in Llama, GPT-4, and multilingual models</li>
+      <li>Tokenizer fertility: how tokenizer choice affects different languages</li>
+      <li>The Feste tokenizer (Rust implementation): a walkthrough of production-quality BPE</li>
+    </ul>
+
+- title: "LLM-410: Large-Scale Pretraining: Data, Compute, and Infrastructure"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Graduate (400-level)"
+  course_number: "LLM-410"
+  credits: "4"
+  semester: "Spring"
+  topics:
+    - "Large Language Models"
+    - "MLOps & Infrastructure"
+  program_title: "MS in Large Language Model Engineering"
+  syllabus_summary: |
+    <p>Dataset curation at scale: Common Crawl, The Pile, FineWeb, DCLM. Data quality filtering, deduplication, contamination detection. Compute budgets and the Chinchilla scaling laws. Distributed training: data parallelism, model parallelism, pipeline parallelism, ZeRO (FSDP, DeepSpeed). Mixed precision training (BF16, FP8). Training stability: loss spikes, learning rate schedules, warmup strategies.</p>
+  body: |
+    <h2>Course Description</h2>
+    <p>Training a large language model from scratch requires coordination across data engineering, distributed systems, and optimization. This course covers the full pretraining workflow: from assembling a high-quality dataset through designing the training run and diagnosing instabilities. Students analyze real pretraining logs from open-source models and work through case studies of successful and failed runs.</p>
+
+- title: "LLM-420: Fine-Tuning and Parameter-Efficient Adaptation"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Graduate (400-level)"
+  course_number: "LLM-420"
+  credits: "4"
+  semester: "Fall, Spring"
+  topics:
+    - "Large Language Models"
+  program_title: "MS in Large Language Model Engineering"
+  syllabus_summary: |
+    <p>Full fine-tuning vs. parameter-efficient methods. LoRA: low-rank decomposition, rank selection, alpha tuning. QLoRA: 4-bit quantization + LoRA for consumer hardware. Prefix tuning, prompt tuning, adapter layers. Instruction tuning datasets: Alpaca, FLAN, OpenAssistant. Catastrophic forgetting and continual learning. Multi-task fine-tuning and task mixture strategies.</p>
+  body: |
+    <h2>Course Description</h2>
+    <p>Most practitioners never train a model from scratch — but almost everyone fine-tunes. This course covers the spectrum of adaptation methods from full fine-tuning through highly parameter-efficient approaches, with emphasis on practical tradeoffs: compute cost, memory, downstream performance, and catastrophic forgetting. Students fine-tune models ranging from 7B to 70B parameters using LoRA and QLoRA.</p>
+
+- title: "LLM-430: Alignment: RLHF, DPO, and Constitutional AI"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Graduate (400-level)"
+  course_number: "LLM-430"
+  credits: "4"
+  semester: "Spring"
+  topics:
+    - "Large Language Models"
+    - "AI Safety & Alignment"
+  program_title: "MS in Large Language Model Engineering"
+  syllabus_summary: |
+    <p>Why alignment is necessary and hard. RLHF pipeline: supervised fine-tuning, reward model training, PPO. DPO: direct preference optimization as a simpler alternative. Constitutional AI and RLAIF (Anthropic). Reward hacking and Goodhart's law. Synthetic data generation for alignment. Automated red-teaming. Evaluation metrics for aligned models.</p>
+  body: |
+    <h2>Course Description</h2>
+    <p>Alignment transforms a capable language model into one that is helpful, harmless, and honest. This course examines the technical mechanisms behind modern alignment: RLHF, its practical challenges, and newer approaches like DPO that achieve similar results more efficiently. Students implement a full RLHF pipeline on a small model and analyze alignment failures in case studies.</p>
+
+- title: "LLM-440: Inference Optimization and Deployment"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Graduate (400-level)"
+  course_number: "LLM-440"
+  credits: "3"
+  semester: "Fall"
+  topics:
+    - "Large Language Models"
+    - "MLOps & Infrastructure"
+  program_title: "MS in Large Language Model Engineering"
+  syllabus_summary: |
+    <p>Quantization: GPTQ, AWQ, GGUF/llama.cpp, FP8, NF4. KV-cache management and paged attention. Speculative decoding: draft models, acceptance rates, speedup analysis. Continuous batching and throughput optimization. Serving frameworks: vLLM, TGI, Ollama, TensorRT-LLM. Cost modeling: GPU-hours, API costs, build vs. buy decisions. Latency vs. throughput tradeoffs.</p>
+  body: |
+    <h2>Course Description</h2>
+    <p>Getting an LLM into production efficiently requires understanding the full inference stack: from quantization and caching to serving frameworks and cost management. This course equips students to make informed engineering decisions about LLM deployment — achieving target latency and cost goals while maintaining acceptable quality degradation.</p>
+
+- title: "LLM-450: Agentic Systems and Multi-Agent Orchestration"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Graduate (400-level)"
+  course_number: "LLM-450"
+  credits: "4"
+  semester: "Spring"
+  topics:
+    - "AI Agents"
+    - "Large Language Models"
+  program_title: "MS in Large Language Model Engineering"
+  syllabus_summary: |
+    <p>Agent architectures: ReAct, Plan-and-Execute, Reflexion. Tool use and function calling. Model Context Protocol (MCP): servers, transports, authorization. Memory: in-context, external (vector stores), episodic. Multi-agent patterns: supervisor, peer, hierarchical. Claude Agent SDK deep dive. Error handling, monitoring, and human-in-the-loop design. Cost and latency at agent scale.</p>
+  body: |
+    <h2>Course Description</h2>
+    <p>Agentic AI systems are transforming software engineering. This course covers the full engineering stack for building autonomous agents that use tools, maintain state, plan multi-step tasks, and collaborate with other agents. Students build three complete agent applications over the semester, culminating in a multi-agent system capable of completing complex, open-ended tasks.</p>
+
+# AGT Certificate courses
+
+- title: "AGT-101: Foundations of AI Agents: Tools, Memory, Planning"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Introductory (100-level)"
+  course_number: "AGT-101"
+  credits: "3"
+  semester: "Fall, Spring, Summer"
+  topics:
+    - "AI Agents"
+    - "Large Language Models"
+  program_title: "Certificate in AI Agent Development"
+  body: |
+    <h2>Course Description</h2>
+    <p>An introduction to autonomous AI agents. Covers the conceptual architecture: what makes a system an "agent" rather than a simple LLM call, how tools extend what agents can do, how memory allows agents to operate beyond their context window, and how planning enables multi-step tasks. Students build their first agent applications using the OpenAI and Anthropic APIs.</p>
+
+- title: "AGT-201: Building with the Claude Agent SDK"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Intermediate (200-level)"
+  course_number: "AGT-201"
+  credits: "3"
+  semester: "Fall, Spring"
+  topics:
+    - "AI Agents"
+  program_title: "Certificate in AI Agent Development"
+  body: |
+    <h2>Course Description</h2>
+    <p>A deep-dive into Anthropic's Claude Agent SDK. Covers tool definition, context management, streaming, structured output, and production patterns for building Claude-powered agents. Students build progressively more complex agents: a document Q&A agent, a web research agent, and a multi-step task automation agent.</p>
+
+- title: "AGT-210: Model Context Protocol: Building and Consuming MCP Servers"
+  type: course
+  school: "School of Language & Reasoning"
+  course_level: "Intermediate (200-level)"
+  course_number: "AGT-210"
+  credits: "3"
+  semester: "Spring"
+  topics:
+    - "AI Agents"
+  program_title: "Certificate in AI Agent Development"
+  body: |
+    <h2>Course Description</h2>
+    <p>The Model Context Protocol (MCP) is an emerging open standard for connecting AI agents to tools and data sources. This course covers MCP architecture: servers, transports (stdio and SSE), resource and tool definitions, authentication, and the Claude Desktop integration. Students build MCP servers for databases, APIs, and file systems, and consume MCP in agent applications.</p>
+
+# ============================================================
+# SCHOOL OF PERCEPTION & SYNTHESIS (SPS)
+# ============================================================
+
+- title: "CV-401: Image Formation and Classical Computer Vision"
+  type: course
+  school: "School of Perception & Synthesis"
+  course_level: "Graduate (400-level)"
+  course_number: "CV-401"
+  credits: "3"
+  semester: "Fall"
+  topics:
+    - "Computer Vision"
+  program_title: "MS in Computer Vision & Visual AI"
+  body: |
+    <h2>Course Description</h2>
+    <p>Foundations of image formation: camera models, perspective projection, lens distortion. Classical image processing: filtering, edge detection (Sobel, Canny), corner detection (Harris, FAST). Feature descriptors: SIFT, SURF, ORB. Optical flow: Lucas-Kanade and Farneback methods. Stereo vision and disparity. The course provides essential background for understanding why deep learning methods work the way they do.</p>
+
+- title: "CV-410: Convolutional Neural Networks for Vision"
+  type: course
+  school: "School of Perception & Synthesis"
+  course_level: "Graduate (400-level)"
+  course_number: "CV-410"
+  credits: "4"
+  semester: "Fall, Spring"
+  topics:
+    - "Computer Vision"
+  program_title: "MS in Computer Vision & Visual AI"
+  body: |
+    <h2>Course Description</h2>
+    <p>Deep learning for image understanding. CNN architectures: AlexNet through EfficientNet and ConvNeXt. Object detection: YOLO family, Faster R-CNN, DETR. Image segmentation: FCN, U-Net, Mask R-CNN. Transfer learning and domain adaptation. Data augmentation strategies. The shift from CNNs to ViTs and hybrid architectures. Students implement and train detection models on custom datasets.</p>
+
+- title: "CV-420: Vision Transformers and Foundation Models"
+  type: course
+  school: "School of Perception & Synthesis"
+  course_level: "Graduate (400-level)"
+  course_number: "CV-420"
+  credits: "4"
+  semester: "Spring"
+  topics:
+    - "Computer Vision"
+    - "Transformers"
+  program_title: "MS in Computer Vision & Visual AI"
+  body: |
+    <h2>Course Description</h2>
+    <p>The vision transformer revolution. ViT, DeiT, Swin Transformer: patch embedding, positional encoding for 2D, hierarchical designs. CLIP: contrastive pretraining, zero-shot classification, image-text alignment. DINO and DINOv2: self-supervised learning with distillation. Segment Anything Model (SAM): promptable segmentation, architecture, zero-shot transfer. Florence, InternViT, and other vision foundation models.</p>
+
+- title: "CV-460: Vision-Language Models and Multimodal AI"
+  type: course
+  school: "School of Perception & Synthesis"
+  course_level: "Graduate (400-level)"
+  course_number: "CV-460"
+  credits: "4"
+  semester: "Spring"
+  topics:
+    - "Computer Vision"
+    - "Multimodal AI"
+  program_title: "MS in Computer Vision & Visual AI"
+  body: |
+    <h2>Course Description</h2>
+    <p>Multimodal systems that process both images and text. CLIP, ALIGN, and contrastive VLMs. LLaVA, InstructBLIP, and instruction-following VLMs. GPT-4V, Claude 3, and commercial multimodal APIs. Architecture patterns: early vs. late fusion, cross-attention, projection layers. Applications: visual QA, document understanding, image captioning, chart analysis. Evaluating multimodal models: benchmarks and failure modes.</p>
+
+- title: "GEN-101: Diffusion Models: Theory and Practice"
+  type: course
+  school: "School of Perception & Synthesis"
+  course_level: "Introductory (100-level)"
+  course_number: "GEN-101"
+  credits: "3"
+  semester: "Fall, Spring"
+  topics:
+    - "Generative AI"
+  program_title: "Certificate in Generative Media"
+  body: |
+    <h2>Course Description</h2>
+    <p>From first principles to working image generation. The forward diffusion process (adding noise), reverse denoising, DDPM, DDIM sampling. The score function and score matching. Latent diffusion: encoding to latent space, UNet denoising, decoding. CLIP text conditioning. Classifier-free guidance: intuition and implementation. FLUX architecture: flow matching and improved efficiency. Students generate their first images and analyze quality metrics.</p>
+
+- title: "GEN-201: Advanced Image Generation and ControlNet"
+  type: course
+  school: "School of Perception & Synthesis"
+  course_level: "Intermediate (200-level)"
+  course_number: "GEN-201"
+  credits: "3"
+  semester: "Spring"
+  topics:
+    - "Generative AI"
+  program_title: "Certificate in Generative Media"
+  body: |
+    <h2>Course Description</h2>
+    <p>Beyond simple text-to-image. ControlNet: conditioning on edges, depth maps, poses, segmentation maps. LoRA for image generation: concept fine-tuning, style transfer, character consistency. IP-Adapter and image-conditioned generation. Inpainting, outpainting, and img2img workflows. ComfyUI node-based pipelines. Quality evaluation: FID, CLIP score, human preference models. Students build complete production generation pipelines.</p>
+
+# ============================================================
+# SCHOOL OF DECISION & CONTROL (SDC)
+# ============================================================
+
+- title: "RL-401: Markov Decision Processes and Dynamic Programming"
+  type: course
+  school: "School of Decision & Control"
+  course_level: "Graduate (400-level)"
+  course_number: "RL-401"
+  credits: "4"
+  semester: "Fall"
+  topics:
+    - "Reinforcement Learning"
+  program_title: "MS in Reinforcement Learning & Autonomous Systems"
+  body: |
+    <h2>Course Description</h2>
+    <p>Mathematical foundations of sequential decision-making. MDPs: states, actions, rewards, transition dynamics, discount factor. Bellman equations: optimality conditions for value and Q functions. Dynamic programming: policy evaluation, policy iteration, value iteration. Finite vs. infinite horizon problems. Partial observability (POMDPs). Grid world and inventory control case studies. Students implement all DP algorithms from scratch.</p>
+
+- title: "RL-420: Deep Reinforcement Learning"
+  type: course
+  school: "School of Decision & Control"
+  course_level: "Graduate (400-level)"
+  course_number: "RL-420"
+  credits: "4"
+  semester: "Spring"
+  topics:
+    - "Reinforcement Learning"
+  program_title: "MS in Reinforcement Learning & Autonomous Systems"
+  body: |
+    <h2>Course Description</h2>
+    <p>Neural network function approximation for RL. DQN: experience replay, target networks, Atari results. Rainbow: double DQN, dueling networks, prioritized replay, distributional RL, noisy nets. Policy gradient theorem, REINFORCE, baseline variance reduction. Actor-critic: A3C, A2C, PPO, SAC. Offline RL: IQL, CQL, TD3+BC. Multi-agent RL: independent Q-learning, QMIX, MAPPO. OpenAI Gym, Gymnasium, and Brax environments.</p>
+
+- title: "RL-430: Model-Based RL and World Models"
+  type: course
+  school: "School of Decision & Control"
+  course_level: "Graduate (400-level)"
+  course_number: "RL-430"
+  credits: "4"
+  semester: "Fall"
+  topics:
+    - "Reinforcement Learning"
+  program_title: "MS in Reinforcement Learning & Autonomous Systems"
+  body: |
+    <h2>Course Description</h2>
+    <p>Learning and using models of the environment. Dyna architecture. World models: WM2, DreamerV3. MBPO and model rollouts for sample efficiency. Neural network dynamics models: aleatoric vs. epistemic uncertainty. Planning in latent space. MuZero: learning to plan without hand-crafted rules. RSSM (Recurrent State Space Model) for partially observable environments. Students implement DreamerV3 on standard benchmarks.</p>
+
+- title: "ROB-201: Robot Perception and Sensor Fusion"
+  type: course
+  school: "School of Decision & Control"
+  course_level: "Intermediate (200-level)"
+  course_number: "ROB-201"
+  credits: "4"
+  semester: "Fall"
+  topics:
+    - "Robotics"
+    - "Computer Vision"
+  program_title: "Certificate in AI for Robotics"
+  body: |
+    <h2>Course Description</h2>
+    <p>Sensing and understanding the robot's environment. Camera models (monocular, stereo, RGB-D). LiDAR point cloud processing: filtering, registration, object detection. IMU integration and state estimation. Sensor fusion: extended Kalman filter, unscented Kalman filter, particle filter. Simultaneous Localization and Mapping (SLAM): GMapping, Cartographer, ORB-SLAM3, LIO-SAM. 3D object detection: PointPillars, VoxelNet. Lab work on physical robots in the Threshold Robotics Lab.</p>
+
+# ============================================================
+# SCHOOL OF FOUNDATIONS & MATHEMATICS (SFM)
+# ============================================================
+
+- title: "MATH-401: Real Analysis for Machine Learning"
+  type: course
+  school: "School of Foundations & Mathematics"
+  course_level: "Graduate (400-level)"
+  course_number: "MATH-401"
+  credits: "4"
+  semester: "Fall"
+  topics:
+    - "Mathematics & Foundations"
+  program_title: "MS in Mathematical Foundations of AI"
+  body: |
+    <h2>Course Description</h2>
+    <p>Rigorous foundations for understanding convergence, continuity, and approximation in machine learning. Metric spaces, topology, and compactness. Sequences and series: convergence criteria, dominated convergence. Differentiation and integration in multiple dimensions. Measure theory introduction: sigma-algebras, Lebesgue measure, measurable functions. Probability as measure theory. Applications: convergence of gradient descent, universal approximation theorem proofs.</p>
+
+- title: "MATH-430: Optimization for Machine Learning"
+  type: course
+  school: "School of Foundations & Mathematics"
+  course_level: "Graduate (400-level)"
+  course_number: "MATH-430"
+  credits: "4"
+  semester: "Fall, Spring"
+  topics:
+    - "Mathematics & Foundations"
+  program_title: "MS in Mathematical Foundations of AI"
+  body: |
+    <h2>Course Description</h2>
+    <p>Optimization theory for deep learning. Convex optimization: definitions, gradient inequalities, convergence rates. First-order methods: gradient descent, projected gradient, proximal gradient. Stochastic gradient descent: convergence, learning rate schedules, noise as regularization. Adaptive methods: AdaGrad, RMSprop, Adam, AdamW — derivation and analysis. Non-convex optimization: saddle points, local minima, loss landscape visualization. Second-order methods and why they're mostly impractical at scale.</p>
+
+- title: "MATH-440: Statistical Learning Theory"
+  type: course
+  school: "School of Foundations & Mathematics"
+  course_level: "Graduate (400-level)"
+  course_number: "MATH-440"
+  credits: "4"
+  semester: "Spring"
+  topics:
+    - "Mathematics & Foundations"
+  program_title: "MS in Mathematical Foundations of AI"
+  body: |
+    <h2>Course Description</h2>
+    <p>Theoretical foundations of generalization. PAC learning framework: probably approximately correct guarantees. VC dimension: definition, examples, fundamental theorem of learning. Rademacher complexity: data-dependent generalization bounds. PAC-Bayes bounds and their connection to Bayesian methods. Double descent and the interpolation threshold. Overparameterization and implicit regularization in neural networks. Connections to information theory: MDL principle.</p>
+
+- title: "MATH-490: Seminar: Deep Learning Theory"
+  type: course
+  school: "School of Foundations & Mathematics"
+  course_level: "Seminar (500-level)"
+  course_number: "MATH-490"
+  credits: "3"
+  semester: "Spring"
+  topics:
+    - "Mathematics & Foundations"
+    - "Large Language Models"
+  program_title: "MS in Mathematical Foundations of AI"
+  body: |
+    <h2>Course Description</h2>
+    <p>Reading seminar covering active research in deep learning theory. Topics change annually. Recent years: neural tangent kernel regime and its breakdown for finite-width networks; feature learning vs. lazy training; in-context learning as implicit Bayesian inference; mechanistic interpretability of circuits; emergent capabilities and phase transitions; grokking and delayed generalization. Students present papers and contribute original research directions.</p>
+
+# ============================================================
+# SCHOOL OF SOCIETY & GOVERNANCE (SSG)
+# ============================================================
+
+- title: "ETH-401: Foundations of AI Ethics"
+  type: course
+  school: "School of Society & Governance"
+  course_level: "Graduate (400-level)"
+  course_number: "ETH-401"
+  credits: "3"
+  semester: "Fall, Spring"
+  topics:
+    - "Ethics & Governance"
+  program_title: "MS in AI Ethics & Governance"
+  body: |
+    <h2>Course Description</h2>
+    <p>Philosophical and practical foundations of AI ethics. Value alignment as a technical and social problem. Moral frameworks: utilitarian, deontological, virtue ethics applied to AI systems. AI rights, moral status, and personhood debates. Historical parallels: prior technology transitions and their social consequences. Stakeholder analysis in AI systems. The difference between AI safety (alignment) and AI ethics (societal impact). Case studies: facial recognition, predictive policing, content moderation, hiring algorithms.</p>
+
+- title: "ETH-410: Algorithmic Fairness: Metrics and Mitigation"
+  type: course
+  school: "School of Society & Governance"
+  course_level: "Graduate (400-level)"
+  course_number: "ETH-410"
+  credits: "4"
+  semester: "Fall"
+  topics:
+    - "Ethics & Governance"
+  program_title: "MS in AI Ethics & Governance"
+  body: |
+    <h2>Course Description</h2>
+    <p>Technical approaches to fairness in machine learning. Protected attributes and anti-classification. Statistical fairness definitions: demographic parity, equalized odds, equal opportunity, calibration. The impossibility theorems: why you can't satisfy all definitions simultaneously. Group vs. individual fairness. Fairness through unawareness and why it fails. Pre-processing, in-processing, and post-processing mitigation techniques. Fairness in foundation models and LLMs. Lab: audit a real credit scoring model using fairness metrics.</p>
+
+- title: "ETH-420: AI Regulation: EU AI Act and Global Frameworks"
+  type: course
+  school: "School of Society & Governance"
+  course_level: "Graduate (400-level)"
+  course_number: "ETH-420"
+  credits: "3"
+  semester: "Spring"
+  topics:
+    - "Ethics & Governance"
+  program_title: "MS in AI Ethics & Governance"
+  body: |
+    <h2>Course Description</h2>
+    <p>The global landscape of AI regulation. EU AI Act: risk-based classification, prohibited AI practices, high-risk requirements, GPAI model obligations, enforcement timelines. US Executive Orders and NIST AI RMF. UK pro-innovation approach and AI Safety Institute. China's generative AI regulations and algorithmic recommendation rules. Sector-specific regulation: FDA guidance on AI medical devices, CFPB on credit algorithms, EEOC on hiring AI. Students analyze compliance requirements for a case-study AI product across jurisdictions.</p>
+
+- title: "ETH-430: Interpretability and Algorithmic Auditing"
+  type: course
+  school: "School of Society & Governance"
+  course_level: "Graduate (400-level)"
+  course_number: "ETH-430"
+  credits: "4"
+  semester: "Fall"
+  topics:
+    - "Ethics & Governance"
+    - "AI Safety & Alignment"
+  program_title: "MS in AI Ethics & Governance"
+  body: |
+    <h2>Course Description</h2>
+    <p>Technical methods for understanding AI system behavior. Feature importance: SHAP, LIME, gradient-based attribution. Mechanistic interpretability: circuits, attention head analysis, activation patching. Probing classifiers. Concept activation vectors (TCAV). Auditing methodologies: internal audits, third-party audits, regulatory audits. How to audit an LLM: behavioral testing, red-teaming, capability elicitation. Documentation standards: model cards, datasheets for datasets, transparency reports.</p>
+
+- title: "SAF-201: Technical Alignment: RLHF, DPO, and Constitutional AI"
+  type: course
+  school: "School of Society & Governance"
+  course_level: "Intermediate (200-level)"
+  course_number: "SAF-201"
+  credits: "3"
+  semester: "Fall, Spring"
+  topics:
+    - "AI Safety & Alignment"
+  program_title: "Certificate in AI Safety & Alignment"
+  body: |
+    <h2>Course Description</h2>
+    <p>Technical methods for aligning language models with human values. RLHF pipeline: SFT, reward model training, PPO alignment. DPO (Direct Preference Optimization): derivation from RLHF, advantages, and limitations. Constitutional AI: Anthropic's approach to scalable oversight via AI feedback (RLAIF). Reward hacking examples and how to detect them. Scalable oversight: debate and amplification. Students run a DPO fine-tuning experiment and analyze alignment failures in public models.</p>
+
+# ============================================================
+# SCHOOL OF APPLIED INTELLIGENCE (SAI)
+# ============================================================
+
+- title: "MLE-401: ML Systems Design Fundamentals"
+  type: course
+  school: "School of Applied Intelligence"
+  course_level: "Graduate (400-level)"
+  course_number: "MLE-401"
+  credits: "4"
+  semester: "Fall"
+  topics:
+    - "MLOps & Infrastructure"
+  program_title: "MS in AI Engineering & MLOps"
+  body: |
+    <h2>Course Description</h2>
+    <p>System design for production machine learning. The ML project lifecycle: problem framing, data collection, modeling, evaluation, deployment, monitoring. Common failure modes: training-serving skew, data drift, concept drift, silent failures. System design interviews for ML roles. Case studies: recommendation systems, search ranking, fraud detection, content moderation. Trade-offs: online vs. batch inference, model complexity vs. latency, precision vs. recall. Students design the architecture for a complete ML system end-to-end.</p>
+
+- title: "MLE-430: Model Serving and Inference Infrastructure"
+  type: course
+  school: "School of Applied Intelligence"
+  course_level: "Graduate (400-level)"
+  course_number: "MLE-430"
+  credits: "4"
+  semester: "Spring"
+  topics:
+    - "MLOps & Infrastructure"
+  program_title: "MS in AI Engineering & MLOps"
+  body: |
+    <h2>Course Description</h2>
+    <p>Production inference for ML models. ONNX and model export. NVIDIA Triton Inference Server: model repository, batching, concurrency. vLLM for LLM serving: continuous batching, paged attention, quantization support. TGI (Text Generation Inference) by HuggingFace. BentoML for lightweight serving. Autoscaling: Kubernetes HPA, KEDA, GPU autoscaling. Latency optimization: caching, request batching, model distillation. Cost modeling and ROI calculations for inference infrastructure.</p>
+
+- title: "MLE-440: ML Monitoring, Observability, and Reliability"
+  type: course
+  school: "School of Applied Intelligence"
+  course_level: "Graduate (400-level)"
+  course_number: "MLE-440"
+  credits: "3"
+  semester: "Fall"
+  topics:
+    - "MLOps & Infrastructure"
+  program_title: "MS in AI Engineering & MLOps"
+  body: |
+    <h2>Course Description</h2>
+    <p>Keeping ML systems healthy in production. Data drift: covariate shift, label shift, concept drift — detection with PSI, KL divergence, maximum mean discrepancy. Model degradation: performance metrics over time, shadow deployments, A/B testing. Logging: what to log, log aggregation (ELK stack, CloudWatch), structured logging for ML. Alerting strategies: avoid alert fatigue while catching real issues. Observability tools: Arize AI, Evidently AI, Fiddler, WhyLabs. LLM-specific monitoring: response quality, latency, token usage, hallucination detection.</p>
+
+- title: "IR-101: Information Retrieval Fundamentals: BM25 to Modern Search"
+  type: course
+  school: "School of Applied Intelligence"
+  course_level: "Introductory (100-level)"
+  course_number: "IR-101"
+  credits: "3"
+  semester: "Fall, Spring, Summer"
+  topics:
+    - "Search & Information Retrieval"
+  program_title: "Certificate in AI-Powered Search & Information Retrieval"
+  body: |
+    <h2>Course Description</h2>
+    <p>Foundations of information retrieval from first principles. The Boolean retrieval model and its limitations. TF-IDF: term frequency, inverse document frequency, and their variants. BM25: the probabilistic model that powers most search engines today. Inverted indexes: construction, compression, intersection algorithms. Evaluation metrics: precision, recall, NDCG, MRR. Static site search with Pagefind. Elasticsearch and Solr: practical configuration for content search. Students build a complete search system for a document corpus.</p>
+
+- title: "IR-210: Query Expansion and AI-Powered Query Understanding"
+  type: course
+  school: "School of Applied Intelligence"
+  course_level: "Intermediate (200-level)"
+  course_number: "IR-210"
+  credits: "3"
+  semester: "Spring"
+  topics:
+    - "Search & Information Retrieval"
+    - "Natural Language Processing"
+  program_title: "Certificate in AI-Powered Search & Information Retrieval"
+  body: |
+    <h2>Course Description</h2>
+    <p>Understanding and improving user queries. Classic query expansion: pseudo-relevance feedback, thesaurus expansion, WordNet. Neural query expansion: using LLMs to generate synonyms, related terms, and alternative phrasings. The Scolta approach: LLM-based query expansion that improves BM25 recall without vector infrastructure. Query classification: navigational, informational, transactional. Spelling correction and fuzzy matching. Query suggestion and autocomplete. Students implement and evaluate a query expansion system, comparing classic and neural approaches on the same query set.</p>
+
+- title: "IR-230: AI Overviews and Retrieval-Augmented Generation"
+  type: course
+  school: "School of Applied Intelligence"
+  course_level: "Intermediate (200-level)"
+  course_number: "IR-230"
+  credits: "3"
+  semester: "Spring"
+  topics:
+    - "Search & Information Retrieval"
+    - "Large Language Models"
+  program_title: "Certificate in AI-Powered Search & Information Retrieval"
+  body: |
+    <h2>Course Description</h2>
+    <p>Using LLMs to synthesize search results and answer user questions. AI Overviews (formerly Google SGE): architecture and user experience. RAG for search: retrieve-then-generate, citations, grounding. Scolta's AI overview feature: implementation deep-dive, prompt design, caching strategy. Hallucination in search contexts: detection and mitigation. Attribution and citation generation. Evaluating AI-generated summaries: faithfulness, relevance, coherence. Streaming responses for low-perceived latency. Students implement an AI overview system for a content corpus.</p>
+
+- title: "IR-290: Capstone: Deploy an AI-Enhanced Search System"
+  type: course
+  school: "School of Applied Intelligence"
+  course_level: "Intermediate (200-level)"
+  course_number: "IR-290"
+  credits: "4"
+  semester: "Fall, Spring"
+  topics:
+    - "Search & Information Retrieval"
+  program_title: "Certificate in AI-Powered Search & Information Retrieval"
+  body: |
+    <h2>Course Description</h2>
+    <p>The capstone course for the Certificate in AI-Powered Search. Students design and deploy a complete AI-enhanced search system for a real or realistic content corpus. Requirements: query expansion (LLM-based), semantic reranking (cross-encoder), and AI overview generation. Students choose their stack: Scolta on Drupal/WordPress, Elasticsearch + LLM layer, or a custom build. Final deliverable: a working system with evaluation report comparing baseline BM25 search against the AI-enhanced system on a curated query set.</p>

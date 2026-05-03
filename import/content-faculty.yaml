@@ -1,0 +1,376 @@
+# Meridian AI — Faculty Profiles (22 faculty members)
+
+- title: "Dr. Amara Osei-Mensah"
+  type: faculty
+  school: "School of Language & Reasoning"
+  title_role: "Professor and Chair, School of Language & Reasoning"
+  specialization: "Large Language Models, Training Dynamics, Multilingual NLP"
+  bio: |
+    <p>Dr. Osei-Mensah joined Meridian AI at its founding in 2019 after leading the language model research team at a major AI laboratory in the Bay Area. Her doctoral work at the University of Edinburgh on cross-lingual representation learning anticipated many of the multilingual capabilities now found in production LLMs.</p>
+    <p>Her current research focuses on training dynamics: the complex behaviors that emerge during large-scale pretraining, including loss spikes, phase transitions, and emergent capabilities. Her lab maintains one of the few academic clusters capable of training 70B+ parameter models, supported by a grant from the Meridian AI Research Endowment.</p>
+    <p>Dr. Osei-Mensah is a co-inventor on four patents related to efficient multilingual tokenization, one of which influenced the vocabulary design of several publicly released open-source models. She chairs the program committee for the Annual Workshop on Multilingual Language Models (WMLM) and serves on the editorial board of the Journal of Machine Learning Research.</p>
+    <p>Outside research, she teaches LLM-401 (Transformer Architecture) and mentors a cohort of PhD students working on interpretability and training dynamics. She was recognized in MIT Technology Review's list of AI researchers to watch in 2024.</p>
+  publications: |
+    <ul>
+      <li>"Cross-Lingual Representation Alignment Without Parallel Data" — Transactions of the ACL, 2021</li>
+      <li>"Phase Transitions in Large-Scale Language Model Training" — NeurIPS, 2023</li>
+      <li>"Tokenizer Design for Low-Resource Languages: A Systematic Study" — ACL, 2022</li>
+      <li>"Emergent Multilingual Capabilities in Monolingual Pretraining" — ICLR, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Osei-Mensah</h2>
+    <p>Professor Amara Osei-Mensah is the founding Chair of the School of Language &amp; Reasoning at Meridian AI. Her research on multilingual LLMs and training dynamics has shaped both the academic literature and the practical design of production language models.</p>
+    <p>She holds a BSc in Mathematics from the University of Ghana, an MSc in Computational Linguistics from the University of Edinburgh, and a PhD in Machine Learning from CMU (Carnegie-Meridian joint program, 2016).</p>
+
+- title: "Dr. Kwame Asante"
+  type: faculty
+  school: "School of Language & Reasoning"
+  title_role: "Associate Professor"
+  specialization: "Alignment, RLHF, Constitutional AI"
+  bio: |
+    <p>Dr. Asante's research focuses on the technical problem of aligning language models with human values — making them helpful, honest, and harmless at scale. He was among the first researchers to independently replicate and extend the RLHF results from InstructGPT, publishing a comprehensive analysis of reward model dynamics that became a standard reference in the alignment community.</p>
+    <p>Before Meridian AI, Dr. Asante spent three years as a research scientist at a safety-focused AI lab, where he contributed to the development of evaluation methodologies for aligned models. He is an outspoken advocate for transparency in alignment research and regularly publishes technical commentary on alignment approaches as they emerge from major labs.</p>
+    <p>He teaches LLM-430 (Alignment) and leads the Meridian AI Safety &amp; Alignment reading group, which meets weekly and is open to all students and faculty.</p>
+  publications: |
+    <ul>
+      <li>"Reward Model Dynamics in RLHF: What Shapes the Learned Preferences" — ICML, 2023</li>
+      <li>"DPO vs. RLHF: A Comprehensive Empirical Comparison" — NeurIPS, 2023</li>
+      <li>"Evaluating Alignment: Beyond Winrate and Human Preference" — ICLR, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Asante</h2>
+    <p>Associate Professor Kwame Asante studies AI alignment — the technical challenge of ensuring language models do what we actually want them to do. His work bridges the gap between theoretical alignment proposals and practical implementation.</p>
+
+- title: "Dr. Yuki Tanaka"
+  type: faculty
+  school: "School of Language & Reasoning"
+  title_role: "Assistant Professor"
+  specialization: "AI Agents, Multi-Agent Systems, Tool Use"
+  bio: |
+    <p>Dr. Tanaka joined Meridian AI in 2023 after completing her postdoc at Stanford's AI Lab. Her research investigates how language models can be designed to reliably use tools, maintain state across long tasks, and collaborate with other agents without compounding errors. Her dissertation introduced the concept of "agent observability" — the property that makes agent failures debuggable in production systems.</p>
+    <p>She is the lead designer of the Meridian AI Agent Evaluation Suite, a benchmark for measuring agent capabilities across planning, tool use, error recovery, and long-horizon tasks. The suite has been adopted by several major AI labs as a standard evaluation framework.</p>
+    <p>Dr. Tanaka teaches AGT-201 (Building with the Claude Agent SDK) and advises the Meridian AI student Hackathon team, which has placed in the top 3 at the NeurIPS AI agents competition for two consecutive years.</p>
+  publications: |
+    <ul>
+      <li>"Agent Observability: Making Multi-Step LLM Pipelines Debuggable" — ICML, 2023</li>
+      <li>"Tool Selection Under Uncertainty: How Language Models Choose What to Use" — ACL, 2024</li>
+      <li>"Meridian Agent Evaluation Suite: A Benchmark for Agentic AI" — arXiv, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Tanaka</h2>
+    <p>Assistant Professor Yuki Tanaka focuses on making AI agents reliable enough to deploy in production. Her research addresses the practical engineering challenges that separate research agents from systems people actually use.</p>
+
+- title: "Dr. Sofia Navarro"
+  type: faculty
+  school: "School of Perception & Synthesis"
+  title_role: "Professor and Chair, School of Perception & Synthesis"
+  specialization: "Generative Models, Diffusion Models, Video Synthesis"
+  bio: |
+    <p>Dr. Navarro was an early researcher in denoising diffusion probabilistic models, contributing theoretical analysis of the score function connection that helped unify the field around a common mathematical framework. Her 2021 paper on latent diffusion (co-authored with three colleagues at a European research lab) was cited over 3,000 times and directly influenced the latent diffusion architecture used in Stable Diffusion.</p>
+    <p>At Meridian AI, she leads the Synthesis &amp; Perception Lab, where current projects include multi-frame video diffusion, consistent character generation, and real-time image generation on edge hardware. She teaches GEN-101 and runs the school's annual Generative Art showcase, a student competition that draws submissions from practitioners worldwide.</p>
+    <p>Her research is supported by grants from the National Science Foundation and two industry partnerships. She holds a PhD from ETH Zürich and was a Fulbright Scholar at MIT before joining Meridian AI at its founding.</p>
+  publications: |
+    <ul>
+      <li>"Latent Diffusion: Compressing the Generative Process to a Compact Latent Space" — CVPR, 2022</li>
+      <li>"Score Function Unification for Diffusion and Score-Based Models" — NeurIPS, 2021</li>
+      <li>"Temporal Consistency in Video Diffusion Through Attention Factorization" — ICLR, 2024</li>
+      <li>"Real-Time Image Generation: Distilling Diffusion Models for Edge Deployment" — arXiv, 2025</li>
+    </ul>
+  body: |
+    <h2>About Dr. Navarro</h2>
+    <p>Professor Sofia Navarro is one of the pioneers of latent diffusion modeling, now the dominant paradigm for image generation. As chair of the School of Perception &amp; Synthesis, she brings both theoretical depth and practical engineering insight to the program.</p>
+
+- title: "Dr. Marcus Webb"
+  type: faculty
+  school: "School of Perception & Synthesis"
+  title_role: "Associate Professor"
+  specialization: "Vision Transformers, Foundation Models, Zero-Shot Learning"
+  bio: |
+    <p>Dr. Webb's research focuses on vision foundation models — large-scale visual systems that generalize across tasks without task-specific fine-tuning. His lab made early contributions to the data engine behind SAM (Segment Anything Model), developing the annotation strategies that enabled the SA-1B dataset. His current work investigates compositional visual reasoning and the limits of zero-shot generalization in VLMs.</p>
+    <p>He joined Meridian AI in 2022 after five years as a research engineer at a computer vision startup (acquired by a major technology company). Dr. Webb teaches CV-420 (Vision Transformers) and holds an adjunct appointment at the Threshold Observatory, where the team is developing AI-assisted sky survey analysis tools.</p>
+  publications: |
+    <ul>
+      <li>"Compositional Visual Reasoning in Vision-Language Models: A Stress Test" — CVPR, 2024</li>
+      <li>"Data Engine Design for Billion-Scale Segmentation" — ICCV, 2023</li>
+      <li>"Zero-Shot Segmentation with Promptable SAM-Family Models" — arXiv, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Webb</h2>
+    <p>Associate Professor Marcus Webb studies how visual AI systems generalize — the properties that let a model trained on one task succeed on a completely different one. His work has directly shaped several influential datasets and evaluation protocols in the field.</p>
+
+- title: "Dr. Priya Chakraborty"
+  type: faculty
+  school: "School of Decision & Control"
+  title_role: "Professor and Chair, School of Decision & Control"
+  specialization: "Deep Reinforcement Learning, Robot Learning, Sim-to-Real Transfer"
+  bio: |
+    <p>Dr. Chakraborty is one of the leading researchers in physically grounded reinforcement learning — the challenge of training policies in simulation that transfer successfully to physical robots. Her lab, the Threshold Robotics Lab, operates a fleet of eight robot arms, two quadruped robots, and a full-scale autonomous indoor navigation platform. The lab's work on domain randomization and adaptive sim-to-real transfer has influenced both academic research and deployed robotic systems.</p>
+    <p>She received her PhD from MIT in 2014 and spent four years at DeepMind's robotics team before founding the Threshold Robotics Lab at Meridian AI. Her research has been featured in Science Robotics, and she is a frequent invited speaker at ICRA, IROS, and CoRL.</p>
+    <p>Dr. Chakraborty is particularly interested in making robot learning accessible: her group maintains open-source implementations of their sim-to-real methods and contributed to the IsaacLab open simulation platform.</p>
+  publications: |
+    <ul>
+      <li>"Adaptive Domain Randomization for Robust Sim-to-Real Transfer" — Science Robotics, 2022</li>
+      <li>"World Models for Contact-Rich Manipulation" — NeurIPS, 2023</li>
+      <li>"Rapid Motor Adaptation Enables Physical Robot Locomotion on Diverse Terrain" — CoRL, 2023</li>
+      <li>"Open-Source Sim-to-Real: A Reproducibility Study" — ICRA, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Chakraborty</h2>
+    <p>Professor Priya Chakraborty leads the Threshold Robotics Lab and chairs the School of Decision &amp; Control. Her research on sim-to-real transfer has made physically capable robots learnable with dramatically less real-world data.</p>
+
+- title: "Dr. Elias Müller"
+  type: faculty
+  school: "School of Decision & Control"
+  title_role: "Associate Professor"
+  specialization: "Reinforcement Learning Theory, Multi-Agent Systems, Game Theory"
+  bio: |
+    <p>Dr. Müller's research lies at the intersection of reinforcement learning theory and multi-agent systems. He proved several foundational results on convergence of decentralized reinforcement learning algorithms and has contributed to understanding when and why multi-agent RL systems reach equilibrium — or fail to. Before Meridian AI, he was a postdoctoral researcher at the Max Planck Institute for Intelligent Systems in Tübingen.</p>
+    <p>He teaches RL-440 (Multi-Agent RL) and is known for his unusually rigorous treatment of game theory in the ML context, drawing on connections between Nash equilibria, regret minimization, and online learning. His "Multi-Agent RL" course notes have been downloaded over 40,000 times and are used in graduate courses at a dozen universities.</p>
+  publications: |
+    <ul>
+      <li>"Convergence of Independent Q-Learning in Zero-Sum Matrix Games" — COLT, 2021</li>
+      <li>"MAPPO with Communication: Cooperative Policy Gradients in Partial Observability" — ICML, 2022</li>
+      <li>"Regret Minimization in Multi-Agent Reinforcement Learning" — Journal of ML Research, 2023</li>
+    </ul>
+  body: |
+    <h2>About Dr. Müller</h2>
+    <p>Associate Professor Elias Müller works on the theoretical foundations of reinforcement learning in multi-agent settings. His rigorous approach bridges game theory and modern deep RL, answering questions practitioners need answered before deploying multi-agent systems.</p>
+
+- title: "Dr. Ingrid Holmberg"
+  type: faculty
+  school: "School of Foundations & Mathematics"
+  title_role: "Professor and Chair, School of Foundations & Mathematics"
+  specialization: "Statistical Learning Theory, Information Theory, Deep Learning Theory"
+  bio: |
+    <p>Dr. Holmberg is one of the world's leading experts on the theoretical foundations of deep learning — the mathematical principles that explain why overparameterized networks generalize, why double descent occurs, and what neural tangent kernel theory does and doesn't predict. Her 2023 paper on feature learning versus lazy training in transformers settled a long-standing debate in the field and won the NeurIPS Outstanding Paper Award.</p>
+    <p>She joined Meridian AI in 2021 from KTH Royal Institute of Technology in Stockholm, where she held the Chair of Mathematical Statistics for eight years. Her teaching style — rigorous but never unnecessarily obscure — has made her courses among the most popular at Meridian AI, despite their demanding prerequisites.</p>
+    <p>Dr. Holmberg is a member of the Royal Swedish Academy of Sciences and a fellow of the Institute of Mathematical Statistics. She serves as co-editor of the Annals of Statistics.</p>
+  publications: |
+    <ul>
+      <li>"Feature Learning vs. Lazy Training in Transformers: A Separation Result" — NeurIPS, 2023 (Outstanding Paper)</li>
+      <li>"The Double Descent Curve in Neural Networks: A Bias-Variance Decomposition" — ICML, 2022</li>
+      <li>"PAC-Bayes Bounds for Deep Networks with Non-Vacuous Guarantees" — ICLR, 2021</li>
+      <li>"Information-Theoretic Limits of Deep Learning" — IEEE Transactions on Information Theory, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Holmberg</h2>
+    <p>Professor Ingrid Holmberg is the theoretical conscience of Meridian AI. Her research answers the hardest questions in deep learning theory: why do overparameterized networks generalize? What do we actually know about the optimization landscape? Her courses attract students who want to understand, not just use.</p>
+
+- title: "Dr. Ravi Shankar"
+  type: faculty
+  school: "School of Foundations & Mathematics"
+  title_role: "Associate Professor"
+  specialization: "Optimization Theory, Stochastic Methods, Convergence Analysis"
+  bio: |
+    <p>Dr. Shankar's research focuses on optimization algorithms for machine learning — proving convergence rates, explaining the surprising effectiveness of Adam, and developing new methods for specific ML optimization problems. His analysis of the Adam optimizer's convergence behavior under non-convex loss landscapes provided one of the first rigorous justifications for practices that had been used empirically for years.</p>
+    <p>He joined Meridian AI in 2022 after a faculty position at IIT Bombay. He teaches MATH-430 (Optimization for Machine Learning) and is known for his detailed, example-driven approach to mathematical proofs. His course materials include interactive notebooks that allow students to visualize optimization dynamics in real time.</p>
+  publications: |
+    <ul>
+      <li>"Adam in Non-Convex Settings: When and Why It Works" — ICML, 2022</li>
+      <li>"Stochastic Gradient Methods with Momentum: A Unified Analysis" — JMLR, 2021</li>
+      <li>"AdaGrad Is a Special Case of Mirror Descent: New Insights" — NeurIPS, 2023</li>
+    </ul>
+  body: |
+    <h2>About Dr. Shankar</h2>
+    <p>Associate Professor Ravi Shankar studies optimization — the engine of machine learning. His research provides the theoretical basis for understanding why the optimizers practitioners use actually work, and when they might fail.</p>
+
+- title: "Dr. Chioma Adeyemi"
+  type: faculty
+  school: "School of Society & Governance"
+  title_role: "Professor and Chair, School of Society & Governance"
+  specialization: "AI Policy, Algorithmic Fairness, International AI Governance"
+  bio: |
+    <p>Dr. Adeyemi is a leading voice in international AI governance, advising policymakers at the African Union, European Commission, and United Nations on AI regulation. Before joining Meridian AI, she was a senior researcher at the AI Now Institute at NYU and a visiting scholar at the Oxford Internet Institute.</p>
+    <p>Her work combines technical understanding of AI systems with deep expertise in regulatory theory, international law, and the sociology of technology. Her 2023 book, "The Governance Gap: Why AI Regulation Fails and What to Do About It," is assigned reading in policy schools around the world. She testified before the European Parliament during the EU AI Act deliberations.</p>
+    <p>Dr. Adeyemi is particularly focused on ensuring that AI governance frameworks don't inadvertently disadvantage users and developers in the Global South. She founded the Global AI Governance Network, a consortium of researchers and policymakers from underrepresented countries working on AI policy.</p>
+  publications: |
+    <ul>
+      <li>"The Governance Gap: Why AI Regulation Fails and What to Do About It" — MIT Press, 2023 (book)</li>
+      <li>"Risk-Based AI Regulation: Theory, Practice, and the EU AI Act" — Yale Journal on Regulation, 2023</li>
+      <li>"Digital Colonialism and AI: Governance Failures in the Global South" — Science and Technology Studies, 2022</li>
+    </ul>
+  body: |
+    <h2>About Dr. Adeyemi</h2>
+    <p>Professor Chioma Adeyemi is Meridian AI's most publicly prominent faculty member, advising governments worldwide on AI regulation. Her combination of technical literacy and policy expertise makes her uniquely effective in translating between researchers and regulators.</p>
+
+- title: "Dr. James Okafor"
+  type: faculty
+  school: "School of Society & Governance"
+  title_role: "Associate Professor"
+  specialization: "AI Safety, Interpretability, Red-Teaming"
+  bio: |
+    <p>Dr. Okafor studies AI safety from a technical perspective — building tools and methods to understand, evaluate, and constrain AI system behavior. His work on automated red-teaming developed one of the first systematic frameworks for using AI models to find weaknesses in other AI models, a technique now used by major AI labs in their pre-release evaluation pipelines.</p>
+    <p>He previously worked as a safety researcher at a major AI laboratory, where he contributed to the development of model cards and the evaluation methodology for a widely used foundation model. He joined Meridian AI in 2023 and teaches SAF-220 (Red-Teaming and Safety Evaluation).</p>
+    <p>Dr. Okafor is the faculty advisor for Meridian AI's AI Safety Club, a student organization focused on technical alignment research. The club has contributed open-source tools for automated safety evaluation that are used by researchers worldwide.</p>
+  publications: |
+    <ul>
+      <li>"Automated Red-Teaming: Using AI to Find AI Failures Systematically" — ICML, 2023</li>
+      <li>"Model Cards in Practice: A Survey of Disclosure Quality in Production AI" — FAccT, 2022</li>
+      <li>"Scalable Red-Teaming for Language Model Safety" — arXiv, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Okafor</h2>
+    <p>Associate Professor James Okafor develops technical tools for AI safety evaluation. His automated red-teaming methods have become standard practice at AI laboratories evaluating models before release.</p>
+
+- title: "Dr. Elena Marchetti"
+  type: faculty
+  school: "School of Applied Intelligence"
+  title_role: "Professor and Chair, School of Applied Intelligence"
+  specialization: "Search & Information Retrieval, Production ML Systems, AI for Web"
+  bio: |
+    <p>Dr. Marchetti came to academia after fifteen years in industry, most recently as head of search engineering at a major media company where she led the team that deployed neural search at scale for the first time at that organization. Her practitioner perspective shapes everything about the School of Applied Intelligence: a bias toward what works in production, not what's impressive on benchmarks.</p>
+    <p>Her research focuses on practical AI-enhanced search — the specific combination of classical IR techniques and neural AI methods that delivers the best results for real-world users. She is particularly interested in scenarios where full vector search infrastructure is impractical, and in solutions like Scolta that layer AI capabilities onto existing systems. Her lab collaborates with Tag1 Consulting on research into AI-enhanced search quality for content-heavy websites.</p>
+    <p>Dr. Marchetti teaches IR-101 and MLE-401, and leads the annual Meridian AI Search Challenge, a competition that draws entries from practitioners worldwide. She holds an industry appointment as Search Advisor at a major digital publisher.</p>
+  publications: |
+    <ul>
+      <li>"Neural Reranking at Scale: Lessons from Deploying Cross-Encoders in Production" — SIGIR, 2023</li>
+      <li>"AI-Enhanced Search for Content-Heavy Websites: A Practitioner's Guide" — WWW, 2024</li>
+      <li>"Query Expansion with LLMs: When It Helps and When It Hurts" — ECIR, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Marchetti</h2>
+    <p>Professor Elena Marchetti chairs the School of Applied Intelligence. Her combination of deep industry experience and rigorous research produces graduates who can deploy AI effectively in the real world, not just on benchmarks.</p>
+
+- title: "Dr. Tariq Hassan"
+  type: faculty
+  school: "School of Applied Intelligence"
+  title_role: "Associate Professor"
+  specialization: "MLOps, Distributed Systems, ML Infrastructure"
+  bio: |
+    <p>Dr. Hassan is the practical backbone of the School of Applied Intelligence. A former staff engineer at a cloud computing company and ML infrastructure lead at a fintech startup, he brings deep systems engineering experience to research questions about how to build reliable, scalable ML systems. His academic work focuses on the specific failure modes that emerge when ML meets production infrastructure: training-serving skew, model drift, and the organizational challenges of ML deployment.</p>
+    <p>He joined Meridian AI in 2022 and teaches MLE-420 (Distributed Training) and MLE-440 (Monitoring). He is the faculty director of Meridian AI's Compute Cluster (nicknamed "The Lattice"), a 256-GPU H100 cluster used by students and faculty for research training runs.</p>
+  publications: |
+    <ul>
+      <li>"Training-Serving Skew: Measurement, Causes, and Mitigation at Scale" — SysML, 2023</li>
+      <li>"The ML Infrastructure Maturity Model: A Survey of 47 Organizations" — ICSE, 2022</li>
+      <li>"Cost-Efficient Distributed Training with Dynamic Resource Allocation" — EuroSys, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Hassan</h2>
+    <p>Associate Professor Tariq Hassan ensures that Meridian AI graduates know how to build ML systems that work reliably under real-world conditions. His industry background provides grounding that pure academic research often lacks.</p>
+
+- title: "Dr. Mei Lin"
+  type: faculty
+  school: "School of Language & Reasoning"
+  title_role: "Assistant Professor"
+  specialization: "Efficient LLMs, Quantization, Edge Deployment"
+  bio: |
+    <p>Dr. Lin's research sits at the intersection of model compression and practical deployment — specifically, making large language models small enough to run everywhere, from smartphones to IoT devices. Her work on activation-aware weight quantization contributed to the development of techniques now used in widely distributed quantized models. Her dissertation showed that 4-bit quantization can preserve 98% of model capability on standard benchmarks while reducing memory requirements by 75%.</p>
+    <p>She joined Meridian AI in 2024, fresh from her postdoc at Berkeley. She teaches LLM-440 labs and leads a new research initiative on language models for offline, privacy-preserving applications on edge hardware.</p>
+  publications: |
+    <ul>
+      <li>"Activation-Aware Weight Quantization for Sub-4-bit LLMs" — ICML, 2024</li>
+      <li>"Outlier Suppression in Language Model Quantization" — NeurIPS, 2023</li>
+      <li>"SpecDecode-Edge: Speculative Decoding for Battery-Powered Inference" — arXiv, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Lin</h2>
+    <p>Assistant Professor Mei Lin makes large language models small. Her quantization research enables LLM deployment on devices that cannot run 16-bit models, dramatically expanding the scenarios where AI inference is practical.</p>
+
+- title: "Dr. Oluwaseun Adewale"
+  type: faculty
+  school: "School of Foundations & Mathematics"
+  title_role: "Assistant Professor"
+  specialization: "Computational Learning Theory, Algorithmic Fairness"
+  bio: |
+    <p>Dr. Adewale joined Meridian AI in 2024 after his PhD at Princeton, where his dissertation proved new lower bounds for learning certain function classes under distribution shift. His research bridges computational learning theory and algorithmic fairness: he develops formal guarantees for when fairness-constrained learning algorithms can and cannot produce equitable classifiers, depending on the structure of the data distribution.</p>
+    <p>He is the youngest faculty member at Meridian AI and is already making his mark: his graduate seminar on computational fairness theory is consistently oversubscribed, drawing students from SSG, SFM, and the PhD program. He collaborates with Dr. Adeyemi on the theoretical foundations of the EU AI Act's fairness requirements.</p>
+  publications: |
+    <ul>
+      <li>"Lower Bounds for Fair Classification Under Distribution Shift" — COLT, 2024</li>
+      <li>"Computational Complexity of Achieving Equalized Odds" — NeurIPS, 2023</li>
+      <li>"The Learnability of Fairness Constraints: A PAC-Learning Analysis" — arXiv, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Adewale</h2>
+    <p>Assistant Professor Oluwaseun Adewale provides the mathematical rigor that fairness discussions often lack. His research proves what is and isn't possible in fair machine learning, providing the theoretical foundation for practical governance decisions.</p>
+
+- title: "Dr. Nadia Petrov"
+  type: faculty
+  school: "School of Perception & Synthesis"
+  title_role: "Assistant Professor"
+  specialization: "3D Vision, Neural Radiance Fields, Gaussian Splatting"
+  bio: |
+    <p>Dr. Petrov's research focuses on the problem of 3D world understanding from 2D images — how to infer shape, material, lighting, and geometry from photographs. Her work on dynamic 3D Gaussian splatting extended the Gaussian splatting technique to handle moving objects and changing lighting conditions, enabling real-time rendering of dynamic scenes from sparse camera views.</p>
+    <p>She joined Meridian AI in 2023 from École Polytechnique in Paris. Her lab collaborates with the Threshold Observatory on AI-assisted 3D reconstruction of astronomical objects from telescope imagery. She teaches CV-450 (3D Vision) and an advanced seminar on neural rendering.</p>
+  publications: |
+    <ul>
+      <li>"Dynamic Gaussian Splatting with Deformation Fields" — CVPR, 2024</li>
+      <li>"NeRF to Splat: Efficient Conversion Between Neural Radiance Fields and Gaussian Splatting" — ICCV, 2023</li>
+      <li>"Material Estimation from In-the-Wild Photographs Using Neural Inverse Rendering" — SIGGRAPH, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Petrov</h2>
+    <p>Assistant Professor Nadia Petrov enables computers to see in three dimensions from flat images. Her work on dynamic Gaussian splatting has made real-time 3D reconstruction practical for the first time, with applications from robotics to virtual production.</p>
+
+- title: "Dr. Abraham Kiptoo"
+  type: faculty
+  school: "School of Decision & Control"
+  title_role: "Assistant Professor"
+  specialization: "Safe Reinforcement Learning, Robot Safety, Constraint Satisfaction"
+  bio: |
+    <p>Dr. Kiptoo studies how to train RL agents that stay within safety constraints — a critical requirement for deploying autonomous systems in the real world. His research on constrained policy optimization developed algorithms that guarantee constraint satisfaction during both training and deployment, not just at convergence. This work has direct applications in robotics, autonomous driving, and industrial control systems where unsafe actions are unacceptable.</p>
+    <p>He joined Meridian AI in 2023 from Carnegie Mellon's Robotics Institute. He teaches RL-490 (Safe RL: Constraints, Risk, and Deployment) and collaborates closely with Dr. Chakraborty on applying safe RL to the Threshold Robotics Lab's physical robot platforms.</p>
+  publications: |
+    <ul>
+      <li>"Constrained Policy Optimization with Feasibility Guarantees" — ICML, 2023</li>
+      <li>"Safe Exploration in Reinforcement Learning: A Lyapunov Approach" — NeurIPS, 2022</li>
+      <li>"Constrained Actor-Critic for Physical Robot Control" — CoRL, 2023</li>
+    </ul>
+  body: |
+    <h2>About Dr. Kiptoo</h2>
+    <p>Assistant Professor Abraham Kiptoo works on safe reinforcement learning — ensuring that autonomous systems don't explore their way into catastrophic failures. His constraint-satisfaction algorithms are essential infrastructure for RL in safety-critical applications.</p>
+
+- title: "Dr. Fatima Al-Rashid"
+  type: faculty
+  school: "School of Applied Intelligence"
+  title_role: "Assistant Professor"
+  specialization: "AI in Healthcare, Medical Imaging, Clinical Decision Support"
+  bio: |
+    <p>Dr. Al-Rashid bridges AI research and clinical medicine — a rare combination. She holds both a PhD in Computer Science and an MD, and her research focuses on where these fields productively intersect: AI systems for medical imaging, clinical decision support, and patient outcome prediction. Her work is grounded in clinical reality: she collaborates with hospitals near campus (just visible on the other side of the volcanic range) to deploy and evaluate AI systems in real clinical workflows.</p>
+    <p>Her research on detecting diabetic retinopathy from fundus photographs led to a deployed system that now screens patients at three regional hospitals. She is also a vocal critic of AI systems in healthcare that are deployed without adequate clinical validation — her 2023 paper on "AI-Enabled Medicine vs. Validated Medical AI" is widely cited in the health AI policy literature.</p>
+  publications: |
+    <ul>
+      <li>"Diabetic Retinopathy Detection at Population Scale: A Clinical Deployment Study" — Nature Medicine, 2023</li>
+      <li>"AI-Enabled Medicine vs. Validated Medical AI: Why the Difference Matters" — NEJM AI, 2023</li>
+      <li>"Uncertainty Quantification in Clinical AI: A Framework for Decision Support" — JAMIA, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Al-Rashid</h2>
+    <p>Assistant Professor Fatima Al-Rashid combines an MD and a CS PhD to study AI in healthcare. Her work moves between the laboratory and the clinic, producing research that actually changes how patients are diagnosed and treated.</p>
+
+- title: "Dr. Wei Chen"
+  type: faculty
+  school: "School of Language & Reasoning"
+  title_role: "Associate Professor"
+  specialization: "Information Retrieval, Semantic Search, RAG Systems"
+  bio: |
+    <p>Dr. Chen is Meridian AI's expert on information retrieval, with a career spanning the transition from TF-IDF through BERT-era neural IR to today's LLM-augmented search systems. He spent six years at a major web search company before moving to academia, where he could pursue the research questions that production constraints had left unanswered. His current work focuses on hybrid retrieval — the combination of lexical and semantic signals that outperforms either alone on real-world query distributions.</p>
+    <p>He collaborates with Dr. Marchetti and has published joint work with Tag1 Consulting's engineering team on AI-enhanced search for content management systems. His research on query expansion with LLMs was a precursor to the approach used in Scolta. He teaches LLM-450 labs and the IR-220 (Hybrid Search and Reranking) course.</p>
+  publications: |
+    <ul>
+      <li>"SPLADE++: Improved Learned Sparse Retrieval with Adaptive Regularization" — SIGIR, 2023</li>
+      <li>"LLM Query Expansion for BM25: Better Recall Without Vector Infrastructure" — ECIR, 2024</li>
+      <li>"Hybrid Search at Scale: Reciprocal Rank Fusion vs. Learned Combination" — WWW, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Chen</h2>
+    <p>Associate Professor Wei Chen bridges classical information retrieval and modern neural methods. His research on hybrid search and LLM-based query expansion directly informs the design of practical AI search systems like Scolta.</p>
+
+- title: "Dr. Amelia Torres"
+  type: faculty
+  school: "School of Society & Governance"
+  title_role: "Associate Professor"
+  specialization: "AI and Labor Markets, Technology Policy, Sociotechnical Systems"
+  bio: |
+    <p>Dr. Torres studies how AI and automation reshape work and society — not as futurism, but through empirical research on real firms and workers experiencing these transitions now. Her 2024 study following 400 knowledge workers as AI tools were introduced into their workflows produced some of the field's most cited empirical data on AI's actual effect on productivity, job satisfaction, and skill requirements.</p>
+    <p>She is a frequent commentator in major media outlets on AI and the economy and has testified before Congress on the labor market effects of AI. At Meridian AI, she teaches ETH-450 (International AI Policy) and runs a reading group on technology and society that welcomes students from all schools.</p>
+  publications: |
+    <ul>
+      <li>"AI at Work: A Longitudinal Study of Knowledge Worker Productivity Under AI Augmentation" — NBER Working Paper, 2024</li>
+      <li>"Who Benefits from AI Productivity Gains? A Distributional Analysis" — American Economic Review: Insights, 2023</li>
+      <li>"AI and Occupational Change: Evidence from 10 Million Job Postings" — Quarterly Journal of Economics, 2024</li>
+    </ul>
+  body: |
+    <h2>About Dr. Torres</h2>
+    <p>Associate Professor Amelia Torres provides the empirical grounding for discussions about AI's social impact. Her field research with real workers and firms produces data that cuts through speculation about automation and employment.</p>
