@@ -1120,6 +1120,32 @@ footer .block-system-powered-by-block { display: none !important; }
 }
 
 /* ----------------------------------------------------------------
+   FRONT PAGE OVERRIDES
+   ---------------------------------------------------------------- */
+
+/* Hide the "Home" page title on the front page — content speaks for itself */
+.path-frontpage .block-page-title-block { display: none !important; }
+
+/* On the front page, the Scolta search block gets a larger treatment */
+.path-frontpage .block-scolta-search {
+  padding: 2.5rem 3rem !important;
+}
+
+.path-frontpage .block-scolta-search .scolta-search-form input {
+  font-size: 1.1rem !important;
+  padding: 0.85rem 1.25rem !important;
+}
+
+.path-frontpage .block-scolta-search .scolta-search-form button {
+  font-size: 1rem !important;
+  padding: 0.85rem 1.75rem !important;
+}
+
+/* Hide empty breadcrumb region */
+.region-breadcrumb:empty,
+.region-breadcrumb .region:empty { display: none; }
+
+/* ----------------------------------------------------------------
    ADMIN / TOOLBAR OFFSET
    ---------------------------------------------------------------- */
 body.toolbar-fixed .site-header { top: 39px; }

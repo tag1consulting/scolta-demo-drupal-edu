@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Meridian AI theme functions.
+ */
+
+/**
+ * Remove the Drupal Generator meta tag and other CMS-revealing headers.
+ */
+function meridian_theme_page_attachments_alter(array &$attachments): void {
+  foreach ($attachments['#attached']['html_head'] ?? [] as $key => $item) {
+    if (isset($item[1]) && $item[1] === 'system_meta_generator') {
+      unset($attachments['#attached']['html_head'][$key]);
+    }
+  }
+}
