@@ -1,0 +1,23 @@
+uuid: 319c4534-a20f-4469-923a-9ead86a81d0d
+langcode: en
+status: true
+dependencies:
+  module:
+    - lms
+  theme:
+    - meridian_theme
+id: meridian_theme_course_navigation
+theme: meridian_theme
+region: sidebar
+weight: 0
+provider: null
+plugin: course_steps_block
+settings:
+  id: course_steps_block
+  label: 'Course navigation'
+  label_display: '0'
+  provider: lms
+  context_mapping:
+    user: '@user.current_user_context:current_user'
+    group: '@group.group_route_context:group'
+visibility: {  }

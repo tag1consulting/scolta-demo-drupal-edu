@@ -1,0 +1,10 @@
+uuid: c29691ef-7aa1-4ebc-a3dd-dfce00c2d411
+langcode: en
+status: true
+dependencies: {  }
+id: reading_content
+name: 'Reading Content'
+description: 'Display-only lesson reading material — no student response required.'
+pluginId: no_answer
+pluginConfiguration: {  }
+defaultMaxScore: 0

@@ -1,0 +1,21 @@
+uuid: 99cd2464-c46a-46ba-b4b7-1f7849793e7d
+langcode: en
+status: true
+dependencies:
+  module:
+    - lms
+    - lms_answer_plugins
+_core:
+  default_config_hash: KCSNonzCLxMf4tfcnYW4hIgas8hCAbh6gCaUACgN7BY
+id: lms_activity.answers
+field_name: answers
+entity_type: lms_activity
+type: lms_answer
+settings: {  }
+module: lms_answer_plugins
+locked: true
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

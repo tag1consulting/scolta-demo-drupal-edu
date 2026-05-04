@@ -1,0 +1,23 @@
+uuid: ab216160-1526-4ba1-b579-26d7e3a5f138
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - meridian_theme
+id: meridian_theme_branding
+theme: meridian_theme
+region: header
+weight: -10
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  label_display: '0'
+  provider: system
+  use_site_logo: false
+  use_site_name: true
+  use_site_slogan: false
+visibility: {  }

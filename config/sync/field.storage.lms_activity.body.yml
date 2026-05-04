@@ -1,0 +1,19 @@
+uuid: 01c58101-bdbc-4e0b-bc9d-2a08b5b461de
+langcode: en
+status: true
+dependencies:
+  module:
+    - lms
+    - text
+id: lms_activity.body
+field_name: body
+entity_type: lms_activity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

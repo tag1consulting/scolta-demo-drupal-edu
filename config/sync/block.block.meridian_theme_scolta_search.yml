@@ -1,0 +1,20 @@
+uuid: c8e8cc11-558e-45d4-95e8-470db5277638
+langcode: en
+status: true
+dependencies:
+  module:
+    - scolta
+  theme:
+    - meridian_theme
+id: meridian_theme_scolta_search
+theme: meridian_theme
+region: content_above
+weight: -20
+provider: null
+plugin: scolta_search
+settings:
+  id: scolta_search
+  label: 'Scolta Search'
+  label_display: '0'
+  provider: scolta
+visibility: {  }

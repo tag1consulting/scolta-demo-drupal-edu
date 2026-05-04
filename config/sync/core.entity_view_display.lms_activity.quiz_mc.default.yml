@@ -1,0 +1,33 @@
+uuid: d177ea2d-c2ff-46b5-a8f5-56cc1fe8685e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.lms_activity.quiz_mc.answers
+    - field.field.lms_activity.quiz_mc.feedback_if_correct
+    - field.field.lms_activity.quiz_mc.feedback_if_wrong
+    - field.field.lms_activity.quiz_mc.question
+    - lms.lms_activity_type.quiz_mc
+  module:
+    - text
+_core:
+  default_config_hash: UtdoJqE-oXYdDtU5BPHa04bkl1ffVkmLDlbw-bczNHU
+id: lms_activity.quiz_mc.default
+targetEntityType: lms_activity
+bundle: quiz_mc
+mode: default
+content:
+  question:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  answers: true
+  feedback_if_correct: true
+  feedback_if_wrong: true
+  name: true
+  search_api_excerpt: true
+  uid: true

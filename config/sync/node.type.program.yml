@@ -1,0 +1,11 @@
+uuid: 9f5910a2-f5f6-409a-bfb2-2ab735271ef8
+langcode: en
+status: true
+dependencies: {  }
+name: Program
+type: program
+description: 'A degree program or certificate offered by Meridian AI.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

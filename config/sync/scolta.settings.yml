@@ -1,4 +1,6 @@
-preset: reference
+_core:
+  default_config_hash: PsC0t-Finat8kp-rTiTCSTO-O1GTV7e-H-QdrBKFhU8
+preset: none
 ai_provider: anthropic
 ai_model: claude-sonnet-4-6
 ai_expansion_model: ''

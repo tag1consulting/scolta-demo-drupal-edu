@@ -1,0 +1,24 @@
+uuid: 1ed956d0-7992-4757-a013-524c663164a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.lms_activity.feedback_if_wrong
+    - lms.lms_activity_type.quiz_mc
+  module:
+    - text
+_core:
+  default_config_hash: 6a9hFyXQea82qQcXAB8BQQUO-lFnqUZ6QFJR1KvTJXc
+id: lms_activity.quiz_mc.feedback_if_wrong
+field_name: feedback_if_wrong
+entity_type: lms_activity
+bundle: quiz_mc
+label: 'Answer feedback if wrong'
+description: 'Feedback to give the student when they have selected a wrong answer.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

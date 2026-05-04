@@ -1,0 +1,18 @@
+uuid: 3d74a06c-d935-4e38-a159-0aabdab13749
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.lms_course
+    - user.role.authenticated
+id: lms_course-outsider
+label: Outsider
+weight: -6
+admin: false
+scope: outsider
+global_role: authenticated
+group_type: lms_course
+permissions:
+  - 'join group'
+  - 'take course'
+  - 'view group'

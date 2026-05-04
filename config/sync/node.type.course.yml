@@ -1,0 +1,11 @@
+uuid: 03d33a23-49ca-475b-af8c-8525e34c3a6c
+langcode: en
+status: true
+dependencies: {  }
+name: Course
+type: course
+description: 'An individual course within a program.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

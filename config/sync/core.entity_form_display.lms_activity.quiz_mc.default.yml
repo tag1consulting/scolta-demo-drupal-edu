@@ -1,0 +1,68 @@
+uuid: 61afef20-e911-492b-8da6-9711d7a55ffa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.lms_activity.quiz_mc.answers
+    - field.field.lms_activity.quiz_mc.feedback_if_correct
+    - field.field.lms_activity.quiz_mc.feedback_if_wrong
+    - field.field.lms_activity.quiz_mc.question
+    - lms.lms_activity_type.quiz_mc
+  module:
+    - lms_answer_plugins
+    - text
+_core:
+  default_config_hash: hmJNMhBbJH_7FoCJ7kUSnP9QPsPSXLfVGjWJqq30_P0
+id: lms_activity.quiz_mc.default
+targetEntityType: lms_activity
+bundle: quiz_mc
+mode: default
+content:
+  answers:
+    type: lms_answer
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  feedback_if_correct:
+    type: text_textarea
+    weight: 3
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+  feedback_if_wrong:
+    type: text_textarea
+    weight: 4
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  question:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    region: content
+    weight: 26
+    third_party_settings: {  }
+hidden:
+  created: true
+  uid: true

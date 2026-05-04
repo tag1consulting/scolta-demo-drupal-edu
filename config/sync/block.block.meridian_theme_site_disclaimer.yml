@@ -1,0 +1,23 @@
+uuid: 9e7aa07c-6043-4764-83b1-08cc2f7be0fb
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:80a64e20-9945-4867-ae0d-813662b9a968'
+  module:
+    - block_content
+  theme:
+    - meridian_theme
+id: meridian_theme_site_disclaimer
+theme: meridian_theme
+region: footer_bottom
+weight: 10
+provider: null
+plugin: 'block_content:80a64e20-9945-4867-ae0d-813662b9a968'
+settings:
+  id: 'block_content:80a64e20-9945-4867-ae0d-813662b9a968'
+  label: 'Site Disclaimer'
+  label_display: '0'
+  provider: block_content
+  view_mode: full
+visibility: {  }

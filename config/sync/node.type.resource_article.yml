@@ -1,0 +1,11 @@
+uuid: 57bd48a9-0028-4175-bd2b-9026acd090ff
+langcode: en
+status: true
+dependencies: {  }
+name: 'Resource Article'
+type: resource_article
+description: 'Educational article, tutorial, or explainer.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

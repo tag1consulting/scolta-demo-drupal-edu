@@ -1,0 +1,11 @@
+uuid: f5382635-157e-4f07-85cc-9e8262ee17e6
+langcode: en
+status: true
+dependencies: {  }
+id: quiz_mc
+name: 'Quiz — Multiple Choice'
+description: 'Single-select multiple-choice question with immediate correct-answer feedback.'
+pluginId: select_feedback
+pluginConfiguration:
+  selection_type: single
+defaultMaxScore: 5

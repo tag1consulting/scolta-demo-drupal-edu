@@ -1,0 +1,25 @@
+uuid: 3bba210f-d7bd-484e-9c1f-5e10b566303a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_degree_level
+    - node.type.program
+    - taxonomy.vocabulary.degree_level
+id: node.program.field_degree_level
+field_name: field_degree_level
+entity_type: node
+bundle: program
+label: 'Degree Level'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      degree_level: degree_level
+    auto_create: false
+field_type: entity_reference

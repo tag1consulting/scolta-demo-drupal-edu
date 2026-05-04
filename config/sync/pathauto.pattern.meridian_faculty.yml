@@ -1,0 +1,21 @@
+uuid: 55764c2e-4abc-44a4-be17-011a3334ec42
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: meridian_faculty
+label: Faculty
+type: 'canonical_entities:node'
+pattern: '/faculty/[node:title]'
+selection_criteria:
+  03f1a29e-4aa0-4f85-b88e-c464a8a9668c:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      faculty: faculty
+selection_logic: and
+weight: 0
+relationships: {  }

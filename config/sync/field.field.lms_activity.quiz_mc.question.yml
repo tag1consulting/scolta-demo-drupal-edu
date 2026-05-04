@@ -1,0 +1,24 @@
+uuid: d159c783-98b4-4964-b78d-01e0fcb4e6fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.lms_activity.question
+    - lms.lms_activity_type.quiz_mc
+  module:
+    - text
+_core:
+  default_config_hash: cKqnAQ5jpMPp66Jd0hV-HDgtXhLhcFHXjMNf27QVlyk
+id: lms_activity.quiz_mc.question
+field_name: question
+entity_type: lms_activity
+bundle: quiz_mc
+label: Question
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

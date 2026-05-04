@@ -1,0 +1,11 @@
+uuid: 571c23bb-31d5-4693-90f6-62138431a2ad
+langcode: en
+status: true
+dependencies: {  }
+name: 'Research Project'
+type: research_project
+description: 'An ongoing or completed research project at Meridian AI.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

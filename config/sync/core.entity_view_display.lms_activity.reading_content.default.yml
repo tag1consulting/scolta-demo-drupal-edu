@@ -1,0 +1,39 @@
+uuid: 851f6caf-9ceb-40bf-a0f9-7c5c449b0f38
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.lms_activity.reading_content.body
+    - lms.lms_activity_type.reading_content
+  module:
+    - text
+    - user
+id: lms_activity.reading_content.default
+targetEntityType: lms_activity
+bundle: reading_content
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -4
+    region: content
+  uid:
+    type: author
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

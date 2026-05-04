@@ -1,0 +1,11 @@
+uuid: 3b81b0ed-79a0-41d2-8759-75855b4052c8
+langcode: en
+status: true
+dependencies: {  }
+name: Faculty
+type: faculty
+description: 'A professor or researcher at Meridian AI.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

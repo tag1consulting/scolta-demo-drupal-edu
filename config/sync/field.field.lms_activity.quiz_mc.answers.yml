@@ -1,0 +1,23 @@
+uuid: d7d8d26a-f886-4225-917c-7b4b2f5b72e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.lms_activity.answers
+    - lms.lms_activity_type.quiz_mc
+  module:
+    - lms_answer_plugins
+_core:
+  default_config_hash: OxvsedtuU0lIskwc1z0-i9Vz7Pkdnq4upLREUQYJrdc
+id: lms_activity.quiz_mc.answers
+field_name: answers
+entity_type: lms_activity
+bundle: quiz_mc
+label: Answers
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: lms_answer

@@ -1,0 +1,25 @@
+uuid: febb84d0-1ddb-4cc0-85eb-6038199bccfe
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_level
+    - node.type.course
+    - taxonomy.vocabulary.course_level
+id: node.course.field_course_level
+field_name: field_course_level
+entity_type: node
+bundle: course
+label: 'Course Level'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      course_level: course_level
+    auto_create: false
+field_type: entity_reference

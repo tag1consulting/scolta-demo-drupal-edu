@@ -1,0 +1,20 @@
+uuid: 6d7c8cd8-1523-429c-af5b-9c7e4825eeca
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_difficulty
+field_name: field_difficulty
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

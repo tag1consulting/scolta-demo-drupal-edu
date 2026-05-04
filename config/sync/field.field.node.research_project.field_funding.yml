@@ -1,0 +1,19 @@
+uuid: f799bb42-d0f8-41e8-96df-3a2fb0b7b468
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_funding
+    - node.type.research_project
+id: node.research_project.field_funding
+field_name: field_funding
+entity_type: node
+bundle: research_project
+label: Funding
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

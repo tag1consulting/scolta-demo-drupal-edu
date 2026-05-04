@@ -1,0 +1,24 @@
+uuid: 83e12472-863d-41b8-ba97-955758c25e05
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.lms_activity.body
+    - filter.format.full_html
+    - lms.lms_activity_type.reading_content
+  module:
+    - text
+id: lms_activity.reading_content.body
+field_name: body
+entity_type: lms_activity
+bundle: reading_content
+label: 'Lesson Content'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

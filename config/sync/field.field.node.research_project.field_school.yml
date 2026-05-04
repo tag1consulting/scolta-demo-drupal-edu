@@ -1,0 +1,25 @@
+uuid: db311ffa-6e73-4a71-9e95-b036ccaad9b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_school
+    - node.type.research_project
+    - taxonomy.vocabulary.school
+id: node.research_project.field_school
+field_name: field_school
+entity_type: node
+bundle: research_project
+label: School
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      school: school
+    auto_create: false
+field_type: entity_reference

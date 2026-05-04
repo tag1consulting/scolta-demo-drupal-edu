@@ -1,0 +1,22 @@
+uuid: 6083cdff-e479-4edf-b7c9-5e623b8b794e
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+id: lms_course_group
+label: 'LMS Course'
+type: 'canonical_entities:group'
+pattern: '/learn/[group:label]'
+selection_criteria:
+  412882c7-d7ad-4ca0-8493-ca7fbad711fe:
+    id: 'entity_bundle:group'
+    negate: false
+    uuid: 412882c7-d7ad-4ca0-8493-ca7fbad711fe
+    context_mapping:
+      entity: entity
+    bundles:
+      lms_course: lms_course
+selection_logic: and
+weight: 0
+relationships: {  }

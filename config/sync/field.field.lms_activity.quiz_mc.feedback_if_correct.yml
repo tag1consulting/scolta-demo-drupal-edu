@@ -1,0 +1,24 @@
+uuid: 7cc7e37d-d311-4c8a-b087-7342bc4383f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.lms_activity.feedback_if_correct
+    - lms.lms_activity_type.quiz_mc
+  module:
+    - text
+_core:
+  default_config_hash: OYM3erPCHNmQ-iipoUoonKmytnXUnPqFgU6g-E01gL0
+id: lms_activity.quiz_mc.feedback_if_correct
+field_name: feedback_if_correct
+entity_type: lms_activity
+bundle: quiz_mc
+label: 'Answer feedback if correct'
+description: 'Feedback to give the student when they have selected the correct answer.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

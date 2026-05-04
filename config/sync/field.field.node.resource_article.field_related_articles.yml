@@ -1,0 +1,24 @@
+uuid: 7bdb3f17-736a-4817-aef2-d5dc1b3ddbde
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_articles
+    - node.type.resource_article
+id: node.resource_article.field_related_articles
+field_name: field_related_articles
+entity_type: node
+bundle: resource_article
+label: 'Related Articles'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      resource_article: resource_article
+    auto_create: false
+field_type: entity_reference

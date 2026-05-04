@@ -1,0 +1,11 @@
+uuid: 6ba97397-3ae2-470d-bf5b-a957e03b5d57
+langcode: en
+status: true
+dependencies: {  }
+name: 'Lecture Page'
+type: lecture_page
+description: 'An online lecture or courseware page.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

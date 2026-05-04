@@ -1,0 +1,25 @@
+uuid: 64dafcc5-a120-4952-9a8e-54fc8c39a038
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_difficulty
+    - node.type.resource_article
+    - taxonomy.vocabulary.difficulty
+id: node.resource_article.field_difficulty
+field_name: field_difficulty
+entity_type: node
+bundle: resource_article
+label: Difficulty
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      difficulty: difficulty
+    auto_create: false
+field_type: entity_reference

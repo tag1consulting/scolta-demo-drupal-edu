@@ -1,0 +1,11 @@
+uuid: 5b354ce7-8fc8-4a3e-8f28-e40494c265cf
+langcode: en
+status: true
+dependencies: {  }
+name: News
+type: news
+description: 'Campus announcements, events, and press.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

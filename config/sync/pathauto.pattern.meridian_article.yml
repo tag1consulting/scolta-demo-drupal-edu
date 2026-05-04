@@ -1,0 +1,21 @@
+uuid: 57278e98-24ae-4fed-b55f-99c9c302e139
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: meridian_article
+label: 'Resource Article'
+type: 'canonical_entities:node'
+pattern: '/resources/[node:title]'
+selection_criteria:
+  12ac6a1f-7d14-42f5-aa40-9d61cd4c54c0:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      resource_article: resource_article
+selection_logic: and
+weight: 0
+relationships: {  }

@@ -1,0 +1,26 @@
+uuid: 4d5caf08-561c-4765-9404-b54e434494bd
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.restricted_html
+  module:
+    - comment
+    - filter
+    - group
+    - scolta
+    - search
+    - system
+_core:
+  default_config_hash: xLG41YbRo2NP-0SgRNTkMzLEuaeibanGXgUTbdIcIIg
+id: anonymous
+label: 'Anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access group overview'
+  - 'search content'
+  - 'use scolta ai'
+  - 'use text format restricted_html'

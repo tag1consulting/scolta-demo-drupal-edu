@@ -1,0 +1,19 @@
+uuid: ddeeeded-f4b0-49ea-9aef-f39049a1e67f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_estimated_time
+    - node.type.lecture_page
+id: node.lecture_page.field_estimated_time
+field_name: field_estimated_time
+entity_type: node
+bundle: lecture_page
+label: 'Estimated Time'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

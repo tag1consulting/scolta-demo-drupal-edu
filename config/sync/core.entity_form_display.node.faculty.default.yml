@@ -1,0 +1,75 @@
+uuid: 506d9ae1-a993-4e36-b966-34b44cf0d43b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.faculty.body
+    - field.field.node.faculty.field_bio
+    - field.field.node.faculty.field_publications
+    - field.field.node.faculty.field_school
+    - field.field.node.faculty.field_specialization
+    - field.field.node.faculty.field_title_role
+    - node.type.faculty
+  module:
+    - path
+    - text
+id: node.faculty.default
+targetEntityType: node
+bundle: faculty
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 121
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  field_bio: true
+  field_publications: true
+  field_school: true
+  field_specialization: true
+  field_title_role: true
+  promote: true
+  sticky: true

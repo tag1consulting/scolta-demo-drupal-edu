@@ -1,0 +1,23 @@
+uuid: 71f1f20c-94c8-4bb4-be31-3dec2189de29
+langcode: en
+status: false
+dependencies:
+  module:
+    - search
+  theme:
+    - meridian_theme
+_core:
+  default_config_hash: pbbed0hdqGDF-_QWVVTWRAwgDIotFuAvWH5mWUZu0fA
+id: meridian_theme_search_form_wide
+theme: meridian_theme
+region: header
+weight: -5
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: 'Search form (wide)'
+  label_display: '0'
+  provider: search
+  page_id: null
+visibility: {  }

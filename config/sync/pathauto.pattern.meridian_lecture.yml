@@ -1,0 +1,21 @@
+uuid: 11b4667b-b6e8-4cc2-8359-49d0975e48d8
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: meridian_lecture
+label: 'Lecture Page'
+type: 'canonical_entities:node'
+pattern: '/learn/[node:title]'
+selection_criteria:
+  5ddbe073-09f9-4964-b4f3-3dcba9acd834:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      lecture_page: lecture_page
+selection_logic: and
+weight: 0
+relationships: {  }

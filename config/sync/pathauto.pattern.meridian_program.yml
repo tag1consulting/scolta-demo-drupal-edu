@@ -1,0 +1,21 @@
+uuid: 7b21ba58-753f-4fc7-8466-7bba64f1788b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: meridian_program
+label: Program
+type: 'canonical_entities:node'
+pattern: '/programs/[node:title]'
+selection_criteria:
+  40ccb8c9-6136-4e00-a43e-2f634b50073f:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      program: program
+selection_logic: and
+weight: 0
+relationships: {  }

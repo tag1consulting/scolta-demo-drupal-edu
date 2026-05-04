@@ -1,0 +1,21 @@
+uuid: af35607c-7a00-4dc9-b0a6-63b1a5d82d11
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: meridian_course
+label: Course
+type: 'canonical_entities:node'
+pattern: '/courses/[node:title]'
+selection_criteria:
+  c41839ec-cbce-4e06-99ed-0fcc6ffdd9e0:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      course: course
+selection_logic: and
+weight: 0
+relationships: {  }

@@ -1,0 +1,17 @@
+uuid: 1d58583e-2dd4-49ec-acc5-6d4cdcd8b2b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.lms_course
+    - user.role.anonymous
+id: lms_course-anonymous
+label: Anonymous
+weight: -5
+admin: false
+scope: outsider
+global_role: anonymous
+group_type: lms_course
+permissions:
+  - 'take course'
+  - 'view group'

@@ -1542,3 +1542,189 @@ body.toolbar-fixed.toolbar-tray-open .site-header { top: 79px; }
   height: auto;
   border-radius: 8px;
 }
+
+/* ── LMS integration ─────────────────────────────────────────────────── */
+
+/* Map Meridian palette to LMS CSS custom properties */
+.lms-course-card,
+.lms-course-navigation-container,
+.lms-start-link,
+.lms-action-info,
+.lms-lesson-item,
+.lms-activity-item,
+body {
+  --color-primary: var(--meridian-navy, #1a2744);
+  --color-primary-light: #2d4075;
+  --color-primary-lighter: #e8ecf4;
+  --color-on-primary: #fff;
+  --color-success: #2a7a3b;
+  --color-info: #1475ad;
+  --color-warning: var(--meridian-amber, #d4a843);
+  --color-on-warning: #1a2744;
+  --color-text: #1a2744;
+  --border-radius: 8px;
+}
+
+/* Course listing page — grid of course cards on /learn */
+.view-id-meridian_learn .view-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* LMS course card: navy background for Meridian branding */
+.lms-course-card {
+  background-color: #1a2744;
+  background-image: none;
+  min-height: 240px;
+}
+
+.lms-course-card__title {
+  color: #fff;
+  text-shadow: none;
+  font-size: 1.3rem;
+}
+
+.lms-course-card__description {
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: none;
+}
+
+.lms-course-card__overlay {
+  background-image: linear-gradient(
+    135deg,
+    rgba(212, 168, 67, 0.15) 0%,
+    rgba(26, 39, 68, 0) 60%
+  );
+}
+
+/* Course navigation sidebar */
+.lms-course-navigation-container {
+  font-size: 0.95rem;
+}
+
+.lms-course-navigation-container h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--meridian-navy, #1a2744);
+  border-bottom: 2px solid var(--meridian-amber, #d4a843);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.lms-progress-fill {
+  background-color: var(--meridian-amber, #d4a843);
+}
+
+/* Lesson items in sidebar */
+.lms-lesson-item summary {
+  font-weight: 600;
+  color: var(--meridian-navy, #1a2744);
+  padding: 0.4rem 0;
+  cursor: pointer;
+}
+
+.lms-lesson-item--current summary {
+  color: var(--meridian-amber, #d4a843);
+}
+
+.lms-lesson-item--finished summary::after {
+  content: " ✓";
+  color: var(--color-success, #2a7a3b);
+}
+
+/* Activity items in sidebar */
+.lms-activity-item {
+  padding: 0.2rem 0 0.2rem 0.75rem;
+  font-size: 0.875rem;
+  border-left: 2px solid transparent;
+}
+
+.lms-activity-item--current {
+  border-left-color: var(--meridian-amber, #d4a843);
+  font-weight: 600;
+}
+
+/* Course group page */
+.group--type-lms-course .group__content {
+  max-width: 860px;
+}
+
+.group--type-lms-course .field--name-body {
+  margin-bottom: 2rem;
+}
+
+/* Activity answer form (course learning page) */
+.lms-activity-form {
+  max-width: 860px;
+}
+
+.lms-activity-form .form-actions {
+  margin-top: 2rem;
+}
+
+/* Reading content activity — full prose width */
+.lms-activity--type-reading-content .field--name-body {
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.lms-activity--type-reading-content .field--name-body h2 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  color: var(--meridian-navy, #1a2744);
+  border-bottom: 1px solid rgba(26, 39, 68, 0.15);
+  padding-bottom: 0.3rem;
+}
+
+.lms-activity--type-reading-content .field--name-body h3 {
+  font-size: 1.15rem;
+  margin-top: 1.5rem;
+  color: var(--meridian-navy, #1a2744);
+}
+
+.lms-activity--type-reading-content .field--name-body pre {
+  background: #f5f6fa;
+  border-left: 3px solid var(--meridian-amber, #d4a843);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+}
+
+/* Quiz activity */
+.lms-activity--type-quiz-mc .lms-question {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--meridian-navy, #1a2744);
+}
+
+/* Course overview page — metadata table */
+.lms-course-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.lms-course-meta dt {
+  font-weight: 600;
+  color: var(--meridian-navy, #1a2744);
+}
+
+/* /learn page — section header for full course */
+.learn-course-section {
+  margin: 3rem 0 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--meridian-amber, #d4a843);
+}
+
+.learn-course-section h2 {
+  font-size: 1.6rem;
+  color: var(--meridian-navy, #1a2744);
+  margin-bottom: 0.5rem;
+}

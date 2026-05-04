@@ -1,0 +1,21 @@
+uuid: 50757ee2-94c8-4934-ae6f-3398087c1cf6
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: meridian_research
+label: 'Research Project'
+type: 'canonical_entities:node'
+pattern: '/research/[node:title]'
+selection_criteria:
+  0601ad9e-2b4a-45c0-b9c9-c3b14ad1dd54:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      research_project: research_project
+selection_logic: and
+weight: 0
+relationships: {  }

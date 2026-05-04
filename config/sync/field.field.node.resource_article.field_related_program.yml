@@ -1,0 +1,25 @@
+uuid: 4b338b51-7dee-48cb-ac18-fdb6b1a8711e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_program
+    - node.type.program
+    - node.type.resource_article
+id: node.resource_article.field_related_program
+field_name: field_related_program
+entity_type: node
+bundle: resource_article
+label: 'Related Program'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      program: program
+    auto_create: false
+field_type: entity_reference

@@ -1,0 +1,21 @@
+uuid: 712321d5-687e-4a4c-b3a8-bb7807ecd8fe
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_funding
+field_name: field_funding
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

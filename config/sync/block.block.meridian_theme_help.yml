@@ -1,0 +1,22 @@
+uuid: 37aa8aa1-b179-4645-9c41-2ae2731fab81
+langcode: en
+status: false
+dependencies:
+  module:
+    - help
+  theme:
+    - meridian_theme
+_core:
+  default_config_hash: VfPFqqxfkomud5CO8DUijw85QIl9GIxh_nIxLOYESxg
+id: meridian_theme_help
+theme: meridian_theme
+region: header
+weight: 0
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  label_display: '0'
+  provider: help
+visibility: {  }

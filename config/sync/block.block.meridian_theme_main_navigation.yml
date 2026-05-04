@@ -1,0 +1,25 @@
+uuid: 9aa4cbdf-b885-4591-b29b-d9be9750b3ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+  theme:
+    - meridian_theme
+id: meridian_theme_main_navigation
+theme: meridian_theme
+region: primary_menu
+weight: 0
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

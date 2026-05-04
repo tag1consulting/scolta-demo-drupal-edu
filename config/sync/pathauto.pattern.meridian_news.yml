@@ -1,0 +1,21 @@
+uuid: 177e1261-0d4a-44fb-8de8-d5d940314cb0
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: meridian_news
+label: News
+type: 'canonical_entities:node'
+pattern: '/news/[node:title]'
+selection_criteria:
+  0ec7f8e9-a37b-471a-8080-db69d05b3b5b:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      news: news
+selection_logic: and
+weight: 0
+relationships: {  }
