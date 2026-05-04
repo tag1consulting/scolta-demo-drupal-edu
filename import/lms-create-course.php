@@ -84,10 +84,17 @@ foreach ($lessons as $lesson_num => $lesson) {
       $answers = [];
       foreach ($q['answers'] as $a) {
         $answers[] = [
-          'answer'   => $a['text'],
-          'correct'  => $a['correct'] ? 1 : 0,
-          'feedback' => $a['feedback'] ?? ($a['correct'] ? ($a['explanation'] ?? '') : ''),
+          'answer'  => $a['text'],
+          'correct' => $a['correct'] ? 1 : 0,
         ];
+      }
+      // Shuffle so the correct answer is not always at position 0.
+      // Seed is deterministic so re-runs produce the same order.
+      mt_srand($lesson_num * 1000 + $q_idx);
+      shuffle($answers);
+      if ($answers[0]['correct']) {
+        $first = array_shift($answers);
+        array_push($answers, $first);
       }
 
       $qact = $activity_storage->create([

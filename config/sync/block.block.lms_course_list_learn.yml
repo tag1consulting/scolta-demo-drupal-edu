@@ -1,0 +1,25 @@
+uuid: 23c15896-5bb6-442a-b08a-d4cbabf16204
+langcode: en
+status: true
+dependencies:
+  module:
+    - ai_uni_lms
+    - system
+  theme:
+    - meridian_theme
+id: lms_course_list_learn
+theme: meridian_theme
+region: content
+weight: -10
+provider: null
+plugin: ai_uni_lms_course_list
+settings:
+  id: ai_uni_lms_course_list
+  label: 'Interactive Course'
+  label_display: '0'
+  provider: ai_uni_lms
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /learn

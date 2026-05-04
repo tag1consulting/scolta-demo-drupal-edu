@@ -1,6 +1,17 @@
 <?php
 
 /**
+ * Register theme hooks for ai_uni_lms.
+ */
+function ai_uni_lms_theme(): array {
+  return [
+    'ai_uni_lms_course_list' => [
+      'variables' => ['courses' => []],
+    ],
+  ];
+}
+
+/**
  * Allow anonymous users to start LMS courses without logging in.
  *
  * CourseStartLink::build() hardcodes a login redirect for anonymous visitors

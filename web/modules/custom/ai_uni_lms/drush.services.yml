@@ -1,0 +1,10 @@
+services:
+  ai_uni_lms.commands:
+    class: Drupal\ai_uni_lms\Commands\AiUniCommands
+    arguments:
+      - '@scolta.content_gatherer'
+      - '@config.factory'
+      - '@stream_wrapper_manager'
+      - '@state'
+    tags:
+      - { name: drush.command }

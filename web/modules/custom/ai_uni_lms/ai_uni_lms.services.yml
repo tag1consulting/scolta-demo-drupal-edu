@@ -1,0 +1,7 @@
+services:
+  ai_uni_lms.scolta_content_gatherer_decorator:
+    class: Drupal\ai_uni_lms\Service\ScoltaContentGathererDecorator
+    decorates: scolta.content_gatherer
+    arguments:
+      - '@ai_uni_lms.scolta_content_gatherer_decorator.inner'
+      - '@entity_type.manager'

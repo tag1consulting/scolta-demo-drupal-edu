@@ -1762,6 +1762,100 @@ body {
   color: var(--meridian-navy, #1a2744);
 }
 
+/* /learn page — LMS course block above node listing */
+.lms-course-section {
+  margin: 0 0 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--meridian-amber, #d4a843);
+}
+
+.lms-course-section__heading {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--meridian-amber, #d4a843);
+  margin-bottom: 1.25rem;
+}
+
+.lms-course-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .lms-course-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+.lms-course-card {
+  background: var(--meridian-navy, #1a2744);
+  color: #fff;
+  border-radius: 8px;
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.lms-course-card__badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--meridian-amber, #d4a843);
+}
+
+.lms-course-card__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.lms-course-card__title a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.lms-course-card__title a:hover {
+  color: var(--meridian-amber, #d4a843);
+  text-decoration: underline;
+}
+
+.lms-course-card__body {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.lms-course-card__meta {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.lms-course-card__cta {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  background: var(--meridian-amber, #d4a843);
+  color: var(--meridian-navy, #1a2744) !important;
+  font-weight: 700;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.15s;
+}
+
+.lms-course-card__cta:hover,
+.lms-course-card__cta:focus {
+  background: #e8bc50;
+  color: var(--meridian-navy, #1a2744) !important;
+}
+
 /* /learn page — section header for full course */
 .learn-course-section {
   margin: 3rem 0 1.5rem;

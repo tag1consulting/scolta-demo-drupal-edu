@@ -1,0 +1,31 @@
+{#
+  Renders a list of LMS course cards above the /learn node listing.
+  Variables:
+    courses: array of course data with keys id, title, url, body, lesson_count.
+#}
+{% if courses %}
+<section class="lms-course-section" aria-label="{{ 'Interactive Course'|t }}">
+  <h2 class="lms-course-section__heading">{{ 'Interactive Course'|t }}</h2>
+  <div class="lms-course-cards">
+    {% for course in courses %}
+    <article class="lms-course-card">
+      <div class="lms-course-card__badge">{{ 'Course'|t }}</div>
+      <h3 class="lms-course-card__title">
+        <a href="{{ course.url }}">{{ course.title }}</a>
+      </h3>
+      {% if course.body %}
+      <p class="lms-course-card__body">{{ course.body }}</p>
+      {% endif %}
+      <div class="lms-course-card__meta">
+        {% if course.lesson_count %}
+        <span class="lms-course-card__lessons">{{ course.lesson_count }} {{ 'lessons'|t }}</span>
+        {% endif %}
+      </div>
+      <a href="{{ course.url }}" class="lms-course-card__cta button button--primary">
+        {{ 'Start Course'|t }}
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

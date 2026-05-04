@@ -22,7 +22,7 @@ hooks:
           echo "Database imported and caches cleared."
           echo "Building Scolta/Pagefind search index..."
           mkdir -p /var/www/html/web/sites/default/private
-          drush scolta:build
+          drush ai-uni:build-search
           echo "Search index built."
         else
           echo "No database dump found. Run bootstrap procedure from README to initialize the site."
