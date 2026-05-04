@@ -1575,6 +1575,42 @@ body {
   color: #fff;
 }
 
+/* Quiz correct / wrong answer feedback */
+.form-type-radio.correct-answer,
+.form-type-boolean.correct-answer {
+  background: rgba(42, 122, 59, 0.08);
+  border-left: 3px solid #2a7a3b;
+  padding-left: 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+}
+.form-type-radio.wrong-answer,
+.form-type-boolean.wrong-answer {
+  background: rgba(180, 30, 30, 0.08);
+  border-left: 3px solid #b41e1e;
+  padding-left: 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+}
+.answer-feedback-wrapper.correct-answer {
+  color: #1a5928;
+  background: rgba(42, 122, 59, 0.06);
+  border-left: 3px solid #2a7a3b;
+  padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.answer-feedback-wrapper.wrong-answer {
+  color: #8b1a1a;
+  background: rgba(180, 30, 30, 0.06);
+  border-left: 3px solid #b41e1e;
+  padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
 /* Course listing page — grid of course cards on /learn */
 .view-id-meridian_learn .view-content {
   display: grid;
