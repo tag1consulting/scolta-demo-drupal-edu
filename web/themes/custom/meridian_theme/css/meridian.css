@@ -1565,6 +1565,16 @@ body {
   --border-radius: 8px;
 }
 
+/* Force white text on LMS action buttons regardless of Olivero link color inheritance */
+.lms-start-link a {
+  color: #fff;
+}
+.lms-start-link a:hover,
+.lms-start-link a:focus,
+.lms-start-link a:visited {
+  color: #fff;
+}
+
 /* Course listing page — grid of course cards on /learn */
 .view-id-meridian_learn .view-content {
   display: grid;

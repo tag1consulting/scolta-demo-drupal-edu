@@ -1,0 +1,7 @@
+name: 'AI Uni LMS'
+type: module
+description: 'LMS customisations for the Meridian AI demo: anonymous course access.'
+package: 'AI Uni'
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:lms

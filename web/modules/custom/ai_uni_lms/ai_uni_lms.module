@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * Allow anonymous users to start LMS courses without logging in.
+ *
+ * CourseStartLink::build() hardcodes a login redirect for anonymous visitors
+ * before checking group permissions. We configure lms_course-anonymous with
+ * 'take course', so anonymous visitors should see a Start link directly.
+ */
+function ai_uni_lms_lms_course_link($course, $currentUser, $cacheability): array {
+  if (!$currentUser->isAnonymous()) {
+    return [];
+  }
+  $url = \Drupal\Core\Url::fromRoute(
+    'lms.course.start',
+    ['group' => $course->id()],
+    ['attributes' => ['class' => ['start-link', 'start-link--start']]],
+  );
+  $link = \Drupal\Core\Link::fromTextAndUrl(t('Start'), $url)->toRenderable();
+  $cacheability->addCacheContexts(['user.roles:anonymous']);
+  return [
+    '#type' => 'component',
+    '#component' => 'lms:start_link',
+    '#props' => ['link' => $link, 'action_info' => NULL],
+  ];
+}
