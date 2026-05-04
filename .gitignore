@@ -6,7 +6,6 @@ web/vendor/
 
 # Composer
 vendor/
-composer.lock
 
 # DDEV
 .ddev/.gitignore

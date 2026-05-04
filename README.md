@@ -17,40 +17,26 @@ A Drupal 11 demonstration site for the [Scolta](https://github.com/tag1consultin
 ### Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/tag1consulting/scolta-demo-edu-ai.git
 cd scolta-demo-edu-ai
+```
 
-# Start DDEV
+Create `.ddev/config.local.yaml` with your Anthropic API key (this file is gitignored and never committed):
+
+```yaml
+web_environment:
+  - SCOLTA_API_KEY=sk-ant-...your-key-here...
+```
+
+Then start DDEV:
+
+```bash
 ddev start
-
-# Install Composer dependencies
-ddev exec composer install
-
-# If db/dump.sql.gz exists (standard demo path):
-# The DDEV post-start hook handles DB import, config import, and scolta:build automatically.
-# The site will be available at https://meridian-ai.ddev.site
-
-# If bootstrapping from scratch (no DB dump):
-# See "Bootstrap Procedure" below.
 ```
 
-### Set Your API Key
+The post-start hook handles everything automatically: `composer install`, database import, config sync, cache rebuild, and search index build. The site will be available at https://meridian-ai.ddev.site once the hook completes (typically 2–3 minutes on first start while the container image builds).
 
-```bash
-# Option 1: Set in DDEV environment
-ddev exec bash -c 'drush cset scolta.settings api_key YOUR_KEY_HERE -y'
-
-# Option 2: Use the .ddev/config.local.yaml override (not committed to git)
-# Add: environment:
-#   SCOLTA_API_KEY: "your-key-here"
-```
-
-After setting the key, rebuild the Scolta index:
-
-```bash
-ddev exec drush scolta:build
-```
+Without an API key the site loads and search works, but AI overviews and query expansion are silently disabled.
 
 ---
 
@@ -76,11 +62,11 @@ ddev exec drush php:script import/import-content.php
 # Configure blocks, menus, and theme
 ddev exec drush php:script import/setup-blocks-menus.php
 
-# Set your Scolta API key
-ddev exec drush cset scolta.settings api_key YOUR_KEY_HERE -y
+# Set your Scolta API key (or use .ddev/config.local.yaml — see Quick Start)
+# ddev exec drush cset scolta.settings api_key YOUR_KEY_HERE -y
 
-# Build the Scolta search index
-ddev exec drush scolta:build
+# Build the Scolta search index (nodes + LMS course in one pass)
+ddev exec drush ai-uni:build-search
 
 # Export config
 ddev exec drush config:export -y
@@ -107,6 +93,7 @@ After bootstrap, the DDEV post-start hook will automatically restore the site on
 | News Items | 11 |
 | Institutional Pages | 8 |
 | **Total** | **~200 nodes** |
+| **LMS Course** | 1 interactive course — 15 lessons, 63 quizzes (Group entity, separate from nodes) |
 
 ### The Six Schools
 
@@ -127,33 +114,36 @@ After bootstrap, the DDEV post-start hook will automatically restore the site on
 ai-uni/
 ├── .ddev/
 │   ├── config.yaml              # DDEV config (meridian-ai, PHP 8.3, MariaDB 10.11)
-│   └── web-build/Dockerfile    # Installs Pagefind 1.5.2
+│   ├── config.local.yaml        # Gitignored — put SCOLTA_API_KEY here
+│   └── web-build/Dockerfile     # Installs Pagefind 1.5.2 into the container
 ├── config/
-│   └── sync/
-│       └── scolta.settings.yml # Scolta scoring, model, site_description
+│   └── sync/                    # Drupal config export (all settings, blocks, views)
 ├── db/
-│   └── dump.sql.gz             # DB snapshot (gitignored; generate via bootstrap)
+│   └── dump.sql.gz              # DB snapshot — committed; restored by post-start hook
 ├── import/
-│   ├── setup-content-types.php # Creates content types, taxonomies, pathauto patterns
-│   ├── setup-blocks-menus.php  # Theme, blocks, menus, site config
-│   ├── import-content.php      # Content import runner (reads all YAML files)
-│   ├── content-programs.yaml   # 12 program nodes
-│   ├── content-courses.yaml    # ~65 course nodes
-│   ├── content-faculty.yaml    # 22 faculty nodes
-│   ├── content-research.yaml   # 18 research project nodes
-│   ├── content-articles-batch1.yaml  # SLR articles (13)
-│   ├── content-articles-batch2.yaml  # SPS articles (~15)
-│   ├── content-articles-batch3.yaml  # SDC + SFM + SSG articles
-│   ├── content-articles-batch4.yaml  # SSG + SAI articles
-│   ├── content-lectures.yaml   # 7 lecture pages with code
-│   ├── content-news.yaml       # 11 news items
-│   └── content-pages.yaml      # 8 institutional pages
+│   ├── setup-content-types.php  # Creates content types, taxonomies, pathauto patterns
+│   ├── setup-blocks-menus.php   # Theme, blocks, menus, site config
+│   ├── import-content.php       # Content import runner
+│   ├── lms-create-course.php    # Creates the LMS group, lessons, and quiz activities
+│   ├── lms-lesson-data-*.php    # Lesson content and quiz data (lessons 1–15)
+│   ├── lms-update-feedback.php  # Populates quiz feedback_if_correct/wrong fields
+│   ├── lms-shuffle-answers.php  # Shuffles answer order so correct is not always first
+│   └── content-*.yaml           # Node content (programs, courses, faculty, etc.)
 ├── web/
+│   ├── modules/custom/ai_uni_lms/
+│   │   ├── ai_uni_lms.module    # hook_lms_course_link (anonymous access) + theme hook
+│   │   ├── ai_uni_lms.services.yml
+│   │   ├── drush.services.yml
+│   │   ├── src/Commands/        # ai-uni:build-search (nodes + LMS in one Pagefind pass)
+│   │   ├── src/Plugin/Block/    # LmsCourseListBlock — course card on /learn
+│   │   ├── src/Service/         # ScoltaContentGathererDecorator (non-node entity support)
+│   │   └── templates/           # Twig template for the course list block
 │   └── themes/custom/meridian_theme/
 │       ├── meridian_theme.info.yml
 │       ├── meridian_theme.libraries.yml
 │       └── css/meridian.css
 ├── composer.json
+├── composer.lock
 ├── README.md
 ├── SOURCES.md
 └── SHOWCASE_QUERIES.md
