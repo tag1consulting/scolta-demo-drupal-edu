@@ -162,3 +162,19 @@ $alias_storage->create([
 ])->save();
 
 echo "Credits page saved at /image-credits (nid " . $node->id() . ")\n";
+
+// Add image-credits link to /about/demo (nid 161) Reuse and Attribution section
+$about_demo = \Drupal\node\Entity\Node::load(161);
+if ($about_demo) {
+  $about_body = $about_demo->get('body')->value;
+  $credits_link = '<p>The photographs used throughout this site are sourced from Unsplash. See the <a href="/image-credits">Image Credits</a> page for a full listing with links to each photographer\'s work.</p>';
+  if (!str_contains($about_body, 'image-credits')) {
+    $anchor = '<p>The technical content on this site was written to be educationally accurate.';
+    $about_body = str_replace($anchor, $credits_link . "\n" . $anchor, $about_body);
+    $about_demo->set('body', ['value' => $about_body, 'format' => 'full_html', 'summary' => '']);
+    $about_demo->save();
+    echo "Added image credits link to /about/demo\n";
+  } else {
+    echo "/about/demo already has image-credits link\n";
+  }
+}
