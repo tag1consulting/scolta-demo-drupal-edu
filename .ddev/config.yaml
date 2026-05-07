@@ -18,6 +18,7 @@ hooks:
           echo "Importing database..."
           zcat /var/www/html/db/dump.sql.gz | mysql -u root -proot db
           drush config:import --partial --source=../config/sync -y
+          drush php:script /var/www/html/import/fix-osei-mensah-summary.php
           drush cache:rebuild
           echo "Database imported and caches cleared."
           echo "Building Scolta/Pagefind search index..."
