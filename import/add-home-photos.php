@@ -12,7 +12,7 @@ if (!$node) {
 
 $body = <<<'HTML'
 <div class="home-hero">
-  <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=1400&h=520&fit=crop&q=80"
+  <img src="/sites/default/files/demo-images/photo-1562774053-701939374585.jpg"
        alt="Meridian AI campus"
        loading="eager">
   <div class="home-hero__caption">Advancing AI Research &amp; Education</div>
@@ -36,7 +36,7 @@ $body = <<<'HTML'
 <div class="card-grid">
   <div class="card">
     <div class="card__image">
-      <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=420&h=220&fit=crop&q=80"
+      <img src="/sites/default/files/demo-images/photo-1677442135703-1787eea5ce01.jpg"
            alt="Neural network visualization" loading="lazy">
     </div>
     <div class="card__label">Graduate Programs</div>
@@ -45,7 +45,7 @@ $body = <<<'HTML'
   </div>
   <div class="card">
     <div class="card__image">
-      <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=420&h=220&fit=crop&q=80"
+      <img src="/sites/default/files/demo-images/photo-1516116216624-53e697fedbea.jpg"
            alt="Camera and imaging research" loading="lazy">
     </div>
     <div class="card__label">Graduate Programs</div>
@@ -54,7 +54,7 @@ $body = <<<'HTML'
   </div>
   <div class="card">
     <div class="card__image">
-      <img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?w=420&h=220&fit=crop&q=80"
+      <img src="/sites/default/files/demo-images/photo-1573164574572-cb89e39749b4.jpg"
            alt="Students in discussion" loading="lazy">
     </div>
     <div class="card__label">Graduate Programs</div>
@@ -63,7 +63,7 @@ $body = <<<'HTML'
   </div>
   <div class="card">
     <div class="card__image">
-      <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=420&h=220&fit=crop&q=80"
+      <img src="/sites/default/files/demo-images/photo-1485827404703-89b55fcc595e.jpg"
            alt="Robotics and autonomous systems" loading="lazy">
     </div>
     <div class="card__label">Graduate Programs</div>
@@ -79,21 +79,21 @@ $body = <<<'HTML'
 <div class="home-photo-strip">
   <figure class="home-photo-strip__item">
     <a href="/learn">
-      <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=640&h=400&fit=crop&q=80"
+      <img src="/sites/default/files/demo-images/photo-1541339907198-e08756dedf3f.jpg"
            alt="Lecture hall" loading="lazy">
       <figcaption>Graduate Lectures</figcaption>
     </a>
   </figure>
   <figure class="home-photo-strip__item">
     <a href="/research">
-      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=640&h=400&fit=crop&q=80"
+      <img src="/sites/default/files/demo-images/photo-1522202176988-66273c2fd55f.jpg"
            alt="Students collaborating" loading="lazy">
       <figcaption>Collaborative Research</figcaption>
     </a>
   </figure>
   <figure class="home-photo-strip__item">
     <a href="/research">
-      <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=640&h=400&fit=crop&q=80"
+      <img src="/sites/default/files/demo-images/photo-1507413245164-6160d8298b31.jpg"
            alt="Research laboratory" loading="lazy">
       <figcaption>Research Labs</figcaption>
     </a>

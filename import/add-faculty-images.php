@@ -41,7 +41,7 @@ foreach ($images as $nid => $info) {
   }
 
   // Portrait crop with face detection for professional headshots
-  $url = 'https://images.unsplash.com/' . $photo_id . '?w=480&h=600&fit=crop&crop=faces&q=80';
+  $url = '/sites/default/files/demo-images/' . $photo_id . '.jpg';
   $img = '<div class="node-featured-image node-featured-image--portrait"><img src="' . $url . '" alt="' . htmlspecialchars($alt) . '" loading="lazy"></div>' . "\n\n";
 
   $node->set('body', ['value' => $img . $body, 'format' => 'full_html', 'summary' => '']);

@@ -24,7 +24,7 @@ foreach ($images as $nid => $info) {
     echo "Skipping (already has image): $nid\n"; continue;
   }
 
-  $img = '<div class="node-featured-image"><img src="https://images.unsplash.com/' . $photo_id . '?w=900&h=400&fit=crop&q=80" alt="' . htmlspecialchars($alt) . '" loading="lazy"></div>' . "\n\n";
+  $img = '<div class="node-featured-image"><img src="/sites/default/files/demo-images/' . $photo_id . '.jpg" alt="' . htmlspecialchars($alt) . '" loading="lazy"></div>' . "\n\n";
   $node->set('body', ['value' => $img . $body, 'format' => 'full_html', 'summary' => '']);
   $node->save();
   echo "Updated: $nid — " . $node->getTitle() . "\n";
