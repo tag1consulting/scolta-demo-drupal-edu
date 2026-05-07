@@ -906,3 +906,7 @@ $settings['config_sync_directory'] = '../config/sync';
 
 // Private file system for Scolta Pagefind build artifacts.
 $settings['file_private_path'] = '/var/www/html/web/sites/default/private';
+
+// Disable CSS/JS aggregation so theme changes are visible without cache clears.
+$config['system.performance']['css']['preprocess'] = FALSE;
+$config['system.performance']['js']['preprocess'] = FALSE;
