@@ -544,13 +544,13 @@ p { margin: 0 0 1.1em; }
   width: 240px;
   height: 300px;
   object-fit: cover;
-  object-position: center center;
+  object-position: center top;
   display: block;
 }
 
 /* In teaser the portrait still bleeds full-width like any other card image */
 .node--view-mode-teaser .node-featured-image--portrait img {
-  object-position: center center;
+  object-position: center top;
 }
 
 /* Clearfix so card footer clears the float */
