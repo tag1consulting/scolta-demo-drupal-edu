@@ -672,14 +672,6 @@ article.node--view-mode-teaser,
 .node--view-mode-teaser .node__title a:hover {
   color: var(--amber) !important;
 }
-/* Stretched link — makes the entire card clickable */
-.teaser__title a::after,
-.node--view-mode-teaser .node__title a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
 
 /* Teaser top — remove the flex side-by-side Olivero layout */
 .teaser__top {
