@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4849d64eea1b937d038d35fee9e3fad0",
+    "content-hash": "8a25996c30a195830ce709f9a969a1dd",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -13055,20 +13055,7 @@
             "time": "2026-04-11T10:33:05+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "tag1/scolta-drupal",
-            "version": "dev-main",
-            "alias": "1.0.0",
-            "alias_normalized": "1.0.0.0"
-        },
-        {
-            "package": "tag1/scolta-php",
-            "version": "dev-main",
-            "alias": "1.0.0",
-            "alias_normalized": "1.0.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "tag1/scolta-drupal": 20,
