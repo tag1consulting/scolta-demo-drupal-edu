@@ -5,3 +5,4 @@ services:
     arguments:
       - '@ai_uni_lms.scolta_content_gatherer_decorator.inner'
       - '@entity_type.manager'
+      - '@database'

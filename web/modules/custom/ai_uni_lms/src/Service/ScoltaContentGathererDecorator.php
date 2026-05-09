@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\ai_uni_lms\Service;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\scolta\Service\ScoltaContentGatherer;
 use Drupal\text\Plugin\Field\FieldType\TextItemBase;
 use Tag1\Scolta\Export\ContentItem;
+use Tag1\Scolta\Index\TimestampManifest;
 
 /**
  * Decorates ScoltaContentGatherer to support non-node entity types.
@@ -25,9 +27,10 @@ class ScoltaContentGathererDecorator extends ScoltaContentGatherer {
   public function __construct(
     private readonly ScoltaContentGatherer $inner,
     EntityTypeManagerInterface $entityTypeManager,
+    Connection $database,
   ) {
     $this->entityTypeManager = $entityTypeManager;
-    parent::__construct($entityTypeManager);
+    parent::__construct($entityTypeManager, $database);
   }
 
   /**
@@ -42,9 +45,9 @@ class ScoltaContentGathererDecorator extends ScoltaContentGatherer {
    *
    * Delegates to inner for 'node'; uses generic id sort for other types.
    */
-  public function gather(string $entityType, string $bundle, string $siteName): \Generator {
+  public function gather(string $entityType, string $bundle, string $siteName, int $startPage = 0, ?TimestampManifest $manifest = NULL, bool $force = FALSE): \Generator {
     if ($entityType === 'node') {
-      yield from $this->inner->gather($entityType, $bundle, $siteName);
+      yield from $this->inner->gather($entityType, $bundle, $siteName, $startPage, $manifest, $force);
       return;
     }
 
