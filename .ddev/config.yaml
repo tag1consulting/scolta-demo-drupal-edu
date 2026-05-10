@@ -29,7 +29,4 @@ hooks:
           echo "No database dump found. Run bootstrap procedure from README to initialize the site."
         fi
 
-web_environment:
-  - SCOLTA_API_KEY=SCOLTA_API_KEY_PLACEHOLDER
-
 additional_fqdns: []
