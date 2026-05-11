@@ -180,7 +180,7 @@ foreach ($menu_items as $item) {
     'ai_summary_max_chars'=> 4000,
   ])
   ->set('cache_ttl', 2592000)
-  ->set('indexer', 'auto')
+  ->set('indexer', 'php')
   ->set('memory_budget', ['profile' => 'conservative', 'custom_bytes' => null, 'chunk_size' => null])
   ->set('pagefind', [
     'build_dir'   => 'private://scolta-build',
