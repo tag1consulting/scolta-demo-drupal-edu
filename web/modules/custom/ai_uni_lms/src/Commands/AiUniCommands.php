@@ -7,11 +7,13 @@ namespace Drupal\ai_uni_lms\Commands;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
+use Drupal\scolta\Progress\DrushProgressReporter;
 use Drupal\scolta\Service\ScoltaContentGatherer;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
-use Tag1\Scolta\Binary\PagefindBinary;
-use Tag1\Scolta\Export\ContentExporter;
+use Tag1\Scolta\Config\MemoryBudgetConfig;
+use Tag1\Scolta\Index\BuildIntentFactory;
+use Tag1\Scolta\Index\IndexBuildOrchestrator;
 
 /**
  * Custom Drush commands for the AI Uni LMS demo.
@@ -30,89 +32,78 @@ class AiUniCommands extends DrushCommands {
   /**
    * Build the Scolta search index for all content types in one pass.
    *
-   * Exports nodes and lms_course groups to a single directory, then
-   * runs Pagefind once. This avoids the prepareOutputDir() wipe that
-   * would destroy node files if group and node exports ran separately.
+   * Uses the PHP indexer to combine nodes and lms_course groups into a single
+   * index without exporting HTML files or invoking the Pagefind binary.
    */
   #[CLI\Command(name: 'ai-uni:build-search', aliases: ['aubs'])]
-  #[CLI\Option(name: 'output-dir', description: 'Export directory for HTML files')]
-  public function buildSearch(
-    array $options = ['output-dir' => '/var/www/html/pagefind-site'],
-  ): void {
+  public function buildSearch(): void {
     $config = $this->configFactory->get('scolta.settings');
-    $outputDir = $options['output-dir'];
     $siteName = $config->get('site_name') ?: 'Meridian AI';
+    $language = $config->get('ai_languages')[0] ?? 'en';
 
-    $exporter = new ContentExporter($outputDir);
-
-    $this->logger()->notice('Preparing output directory...');
-    $exporter->prepareOutputDir();
-
-    // Export nodes.
-    $this->logger()->notice('Exporting nodes...');
-    $nodeCount = 0;
-    foreach ($this->contentGatherer->gather('node', '', $siteName) as $item) {
-      if ($exporter->export($item)) {
-        $nodeCount++;
-      }
-    }
-    $this->logger()->notice("Exported {$nodeCount} node(s).");
-
-    // Export lms_course groups.
-    $this->logger()->notice('Exporting LMS courses...');
-    $groupCount = 0;
-    foreach ($this->contentGatherer->gather('group', 'lms_course', $siteName) as $item) {
-      if ($exporter->export($item)) {
-        $groupCount++;
-      }
-    }
-    $this->logger()->notice("Exported {$groupCount} LMS course(s).");
-
-    $total = $nodeCount + $groupCount;
-    if ($total === 0) {
-      $this->logger()->warning('No content exported — skipping Pagefind build.');
-      return;
-    }
-
-    // Run Pagefind.
-    $this->logger()->notice("Running Pagefind on {$total} HTML file(s)...");
-    $resolver = new PagefindBinary(
-      configuredPath: $config->get('pagefind.binary'),
-      projectDir: defined('DRUPAL_ROOT') ? DRUPAL_ROOT : getcwd(),
+    $resolvedOutputDir = $this->resolvePath(
+      $config->get('pagefind.output_dir') ?? 'public://scolta-pagefind'
+    );
+    $resolvedStateDir = $this->resolvePath(
+      $config->get('pagefind.build_dir') ?? 'private://scolta-build'
     );
 
-    $binary = $resolver->resolve();
-    if ($binary === NULL) {
-      $status = $resolver->status();
-      $this->logger()->error($status['message']);
+    if (!is_dir($resolvedStateDir) && !mkdir($resolvedStateDir, 0755, TRUE)) {
+      $this->logger()->error('Failed to create state directory: {dir}', ['dir' => $resolvedStateDir]);
+      return;
+    }
+    if (!is_dir($resolvedOutputDir) && !mkdir($resolvedOutputDir, 0755, TRUE)) {
+      $this->logger()->error('Failed to create output directory: {dir}', ['dir' => $resolvedOutputDir]);
       return;
     }
 
-    $outputPath = $this->resolvePath(
-      $config->get('pagefind.output_dir') ?? 'public://scolta-pagefind'
-    ) . '/pagefind';
+    $nodeCount = $this->contentGatherer->gatherCount('node', '');
+    $groupCount = $this->contentGatherer->gatherCount('group', 'lms_course');
+    $totalCount = $nodeCount + $groupCount;
 
-    $cmd = $binary
-      . ' --site ' . escapeshellarg($outputDir)
-      . ' --output-path ' . escapeshellarg($outputPath)
-      . ' 2>&1';
-    $output = [];
-    $exitCode = NULL;
-    exec($cmd, $output, $exitCode);
-    foreach ($output as $line) {
-      $this->logger()->notice($line);
-    }
-
-    if ($exitCode !== 0) {
-      $this->logger()->error('Pagefind build failed.');
+    if ($totalCount === 0) {
+      $this->logger()->warning('No content found to index.');
       return;
     }
+    $this->logger()->notice('Indexing {count} entities ({nodes} nodes + {groups} courses)...', [
+      'count' => $totalCount,
+      'nodes' => $nodeCount,
+      'groups' => $groupCount,
+    ]);
 
-    $generation = $this->state->get('scolta.generation', 0);
-    $this->state->set('scolta.generation', $generation + 1);
-    \Drupal::service('cache_tags.invalidator')->invalidateTags(['scolta_search_index']);
+    $budget = MemoryBudgetConfig::fromCliAndConfig(
+      NULL,
+      NULL,
+      fn() => [
+        'profile' => $config->get('memory_budget.profile') ?? 'conservative',
+        'chunk_size' => $config->get('memory_budget.chunk_size'),
+      ],
+    );
 
-    $this->logger()->success("Search index built: {$total} documents.");
+    $intent = BuildIntentFactory::fromFlags(FALSE, FALSE, $totalCount, $budget);
+    $reporter = new DrushProgressReporter($this->output());
+    $orchestrator = new IndexBuildOrchestrator($resolvedStateDir, $resolvedOutputDir, NULL, $language);
+
+    $report = $orchestrator->build($intent, $this->combinedContent($siteName), $this->logger(), $reporter);
+
+    if ($report->success) {
+      $generation = $this->state->get('scolta.generation', 0);
+      $this->state->set('scolta.generation', $generation + 1);
+      \Drupal::service('cache_tags.invalidator')->invalidateTags(['scolta_search_index']);
+      $this->logger()->success('Index built: {pages} pages in {time}s ({mem} peak RAM).', [
+        'pages' => $report->pagesProcessed,
+        'time' => $report->durationSeconds,
+        'mem' => $report->peakMemoryMb(),
+      ]);
+    }
+    else {
+      $this->logger()->error('PHP indexer failed: {error}', ['error' => $report->error ?? 'unknown']);
+    }
+  }
+
+  private function combinedContent(string $siteName): \Generator {
+    yield from $this->contentGatherer->gather('node', '', $siteName);
+    yield from $this->contentGatherer->gather('group', 'lms_course', $siteName);
   }
 
   private function resolvePath(string $uri): string {
