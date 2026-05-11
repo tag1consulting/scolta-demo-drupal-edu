@@ -34,7 +34,7 @@ Then start DDEV:
 ddev start
 ```
 
-The post-start hook handles everything automatically: `composer install`, database import, config sync, cache rebuild, and search index build. The site will be available at https://meridian-ai.ddev.site once the hook completes (typically 2–3 minutes on first start while the container image builds).
+The post-start hook handles everything automatically: `composer install`, database import, config sync, cache rebuild, and search index build. The site will be available at https://drupal-edu.ddev.site once the hook completes (typically 2–3 minutes on first start while the container image builds).
 
 Without an API key the site loads and search works, but AI overviews and query expansion are silently disabled.
 
@@ -113,7 +113,7 @@ After bootstrap, the DDEV post-start hook will automatically restore the site on
 ```
 ai-uni/
 ├── .ddev/
-│   ├── config.yaml              # DDEV config (meridian-ai, PHP 8.3, MariaDB 10.11)
+│   ├── config.yaml              # DDEV config (drupal-edu, PHP 8.4, MariaDB 10.11)
 │   ├── config.local.yaml        # Gitignored — put SCOLTA_API_KEY here
 │   └── web-build/Dockerfile     # Installs Pagefind 1.5.2 into the container
 ├── config/

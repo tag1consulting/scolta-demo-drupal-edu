@@ -165,7 +165,7 @@ Expected: LoRA article, fine-tuning courses. Tests case/punctuation normalizatio
 
 1. Ensure `ddev start` has completed and `drush scolta:build` has run
 2. Set a real Anthropic API key in the Scolta settings
-3. Open the site at `https://meridian-ai.ddev.site`
+3. Open the site at `https://drupal-edu.ddev.site`
 4. The search bar is in the `content_above` region, prominently placed
 
 ### What to Emphasize
