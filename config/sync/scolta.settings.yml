@@ -46,3 +46,7 @@ pagefind:
   binary: pagefind
   auto_rebuild: true
   view_mode: search_index
+sortable_fields:
+  - date
+sortable_field_descriptions:
+  date: 'Course or program publication date'

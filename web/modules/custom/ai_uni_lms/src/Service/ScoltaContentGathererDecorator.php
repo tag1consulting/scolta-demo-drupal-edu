@@ -8,6 +8,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\scolta\Service\ScoltaContentGatherer;
 use Drupal\text\Plugin\Field\FieldType\TextItemBase;
 use Tag1\Scolta\Export\ContentItem;
@@ -28,9 +29,10 @@ class ScoltaContentGathererDecorator extends ScoltaContentGatherer {
     private readonly ScoltaContentGatherer $inner,
     EntityTypeManagerInterface $entityTypeManager,
     Connection $database,
+    ModuleHandlerInterface $moduleHandler,
   ) {
     $this->entityTypeManager = $entityTypeManager;
-    parent::__construct($entityTypeManager, $database);
+    parent::__construct($entityTypeManager, $database, $moduleHandler);
   }
 
   /**
