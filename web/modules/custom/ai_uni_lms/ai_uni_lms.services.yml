@@ -6,3 +6,4 @@ services:
       - '@ai_uni_lms.scolta_content_gatherer_decorator.inner'
       - '@entity_type.manager'
       - '@database'
+      - '@module_handler'
