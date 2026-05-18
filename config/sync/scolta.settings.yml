@@ -12,6 +12,10 @@ ai_languages:
 max_follow_ups: 3
 site_name: 'Meridian AI'
 site_description: 'Meridian Institute of Artificial Intelligence — 250+ pages of AI educational content including degree programs in LLM engineering, computer vision, reinforcement learning, AI ethics, mathematical foundations, and applied AI; individual course syllabi; faculty research profiles; resource articles covering transformers, diffusion models, RL, alignment, MLOps, and AI-powered search; lecture pages with code examples; and research project descriptions. Content ranges from introductory explainers to graduate-level technical material.'
+sortable_fields:
+  - date
+sortable_field_descriptions:
+  date: 'Course or program publication date'
 scoring:
   title_match_boost: 2.5
   title_all_terms_multiplier: 1.4
@@ -46,7 +50,3 @@ pagefind:
   binary: pagefind
   auto_rebuild: true
   view_mode: search_index
-sortable_fields:
-  - date
-sortable_field_descriptions:
-  date: 'Course or program publication date'
