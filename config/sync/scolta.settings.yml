@@ -24,12 +24,14 @@ filter_fields:
   - course_level
   - school
   - format
+  - content_type
 filter_field_descriptions:
   topic: "AI subject area. Map the user's query to one of these values: Transformers (attention mechanism, self-attention, encoder-decoder, BERT, GPT architecture), Reinforcement Learning (RL, reward, policy gradient, Q-learning, RLHF, agents), Computer Vision (image recognition, object detection, CNNs, image segmentation, diffusion models), Natural Language Processing (NLP, text, sentiment, translation, tokenization), Ethics & Governance (bias, fairness, alignment, responsible AI, regulation), Robotics (control systems, motion planning, manipulation), Generative AI (GANs, VAEs, diffusion, image generation, text generation), Search & Information Retrieval (ranking, embeddings, RAG, vector search), MLOps & Infrastructure (deployment, monitoring, pipelines, serving), Mathematics & Foundations (linear algebra, calculus, probability, optimization), Multimodal AI (vision-language, CLIP, image-text), Edge AI (mobile, embedded, optimization, quantization), AI History (Turing, perceptron, AI winter, deep learning revolution), Large Language Models (LLMs, GPT, Claude, scaling laws, fine-tuning), AI Safety & Alignment (alignment, safety, interpretability, red-teaming), AI Agents (autonomous agents, tool use, planning, multi-agent)"
   difficulty: 'Content difficulty level. Values: Introductory (no prerequisites, first exposure), Intermediate (requires foundational knowledge), Advanced (significant background required), Expert (research-level, cutting edge)'
   course_level: 'Academic course level. Values: Introductory (100-level), Intermediate (200-level), Advanced (300-level), Graduate (400-level), Seminar (500-level)'
   school: 'Department or school. Values: School of Language & Reasoning, School of Perception & Synthesis, School of Decision & Control, School of Foundations & Mathematics, School of Society & Governance, School of Applied Intelligence'
   format: 'Program delivery format (e.g. Online, Hybrid, In-person, Self-paced). Use when the user asks about a specific format.'
+  content_type: 'Content type: Page (general information), LMS Course (degree programs and individual courses), Resource (articles, tutorials, research), Faculty (professor profiles). Use when the user is looking for a specific kind of content.'
 scoring:
   title_match_boost: 2.5
   title_all_terms_multiplier: 1.4

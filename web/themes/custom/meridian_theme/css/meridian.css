@@ -803,45 +803,240 @@ tr:hover td { background: var(--amber-muted); }
 }
 .scolta-search-form button[type="submit"]:hover { background: var(--amber-light); }
 
-/* ----------------------------------------------------------------
-   SCOLTA RESULTS
-   ---------------------------------------------------------------- */
-.scolta-ai-overview {
-  background: linear-gradient(135deg, #eff4ff 0%, #f7f9ff 100%);
-  border: 1px solid rgba(26,39,68,0.12);
-  border-left: 4px solid var(--amber);
-  border-radius: 0 8px 8px 0;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+/* --- SCOLTA SEARCH THEMING --- */
+
+/* a) Scolta CSS variable overrides */
+#scolta-search {
+  --scolta-primary: var(--navy);
+  --scolta-primary-hover: var(--navy-dark);
+  --scolta-accent: var(--amber);
+  --scolta-bg: var(--off-white);
+  --scolta-card-bg: var(--white);
+  --scolta-text: var(--text);
+  --scolta-text-muted: var(--text-muted);
+  --scolta-text-light: var(--slate-light);
+  --scolta-border: var(--border);
+  --scolta-highlight: var(--amber-muted);
+  --scolta-summary-bg-start: #eff4ff;
+  --scolta-summary-bg-mid: #f7f9ff;
+  --scolta-summary-border: rgba(26, 39, 68, 0.15);
+  --scolta-badge-bg: rgba(201, 151, 58, 0.12);
 }
 
-.scolta-ai-overview::before {
-  content: '✦ AI Overview';
-  display: block;
+/* b) Search input styling — scolta.js uses .scolta-search-box, input[type="text"], .scolta-search-btn */
+.block-scolta-search #scolta-search .scolta-search-box input[type="text"] {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+  border-color: transparent;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  font-family: var(--font-sans);
+}
+
+.block-scolta-search #scolta-search .scolta-search-box input[type="text"]:focus {
+  box-shadow: 0 0 0 3px rgba(201, 151, 58, 0.25), 0 1px 4px rgba(0, 0, 0, 0.1);
+  border-color: transparent;
+}
+
+.block-scolta-search #scolta-search .scolta-search-btn {
+  background: var(--amber);
+  color: var(--navy-dark);
+  font-weight: 700;
+  font-family: var(--font-sans);
+}
+
+.block-scolta-search #scolta-search .scolta-search-btn:hover {
+  background: var(--amber-light);
+}
+
+/* c) Filter sidebar styling */
+#scolta-search .scolta-filters {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  font-family: var(--font-sans);
+}
+
+#scolta-search .scolta-filter-group {
+  margin-bottom: 1rem;
+}
+
+#scolta-search .scolta-filter-group:last-child {
+  margin-bottom: 0;
+}
+
+#scolta-search .scolta-filter-group-title,
+#scolta-search .scolta-filters h3,
+#scolta-search .scolta-filters h4 {
+  font-family: var(--font-sans);
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--amber);
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--navy);
+  margin: 0 0 0.5rem 0;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--amber-muted);
 }
 
-.scolta-result {
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 1.5rem;
+#scolta-search .scolta-filter-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text);
+  transition: background 0.15s;
+}
+
+#scolta-search .scolta-filter-item:hover {
+  background: var(--bg-subtle);
+}
+
+#scolta-search .scolta-filter-item.active,
+#scolta-search .scolta-filter-item[aria-selected="true"] {
+  background: var(--amber-muted);
+  font-weight: 600;
+}
+
+#scolta-search .scolta-filter-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  padding: 0.1rem 0.45rem;
+  border-radius: 10px;
+}
+
+/* d) AI Summary styling */
+#scolta-search .scolta-ai-summary {
+  border-left: 4px solid var(--amber);
+  border-radius: 0 8px 8px 0;
+  background: linear-gradient(135deg, #eff4ff 0%, #f7f9ff 100%);
+  padding: 1.25rem 1.5rem;
   margin-bottom: 1.5rem;
+  font-family: var(--font-sans);
+  color: var(--text);
+  line-height: 1.65;
 }
 
-.scolta-result__title a {
+#scolta-search .scolta-ai-summary-label,
+#scolta-search .scolta-ai-summary .scolta-summary-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+#scolta-search .scolta-ai-summary p {
+  margin: 0.4rem 0;
+  color: var(--text);
+}
+
+#scolta-search .scolta-ai-summary strong,
+#scolta-search .scolta-ai-summary b {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* e) Result card styling */
+#scolta-search .scolta-result-card {
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 1.15rem 1.35rem;
+  margin-bottom: 0.85rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+#scolta-search .scolta-result-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: rgba(201, 151, 58, 0.35);
+}
+
+#scolta-search .scolta-result-title {
   font-family: var(--font-serif);
   font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--navy);
-  text-decoration: none;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
 }
-.scolta-result__title a:hover { color: var(--amber); text-decoration: underline; }
-.scolta-result__url { font-size: 0.8rem; color: var(--text-muted); margin: 0.2rem 0; }
-.scolta-result__excerpt { font-size: 0.9rem; color: var(--slate); line-height: 1.65; margin-top: 0.4rem; }
+
+/* .scolta-result-title IS the <a> tag itself */
+#scolta-search .scolta-result-title:hover {
+  color: var(--amber);
+}
+
+#scolta-search .scolta-site-badge {
+  background: var(--amber-muted);
+  color: var(--navy);
+}
+
+#scolta-search .scolta-result-url {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--slate-light);
+  margin-bottom: 0.35rem;
+  word-break: break-all;
+}
+
+#scolta-search .scolta-result-excerpt {
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  color: var(--slate);
+  line-height: 1.6;
+}
+
+#scolta-search .scolta-result-excerpt mark,
+#scolta-search .scolta-result-card mark {
+  background: var(--amber-muted);
+  color: inherit;
+  padding: 0.05em 0.2em;
+  border-radius: 2px;
+}
+
+/* f) Expanded terms / badges */
+#scolta-search .scolta-expanded-term,
+#scolta-search .scolta-sort-badge,
+#scolta-search .scolta-filter-badge {
+  display: inline-block;
+  background: rgba(201, 151, 58, 0.12);
+  color: var(--navy);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  margin: 0.15rem 0.25rem 0.15rem 0;
+}
+
+/* g) Load more button */
+#scolta-search .scolta-load-more {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--navy);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+#scolta-search .scolta-load-more:hover {
+  border-color: var(--amber);
+  background: var(--amber-muted);
+}
+
+/* --- END SCOLTA SEARCH THEMING --- */
 
 /* ----------------------------------------------------------------
    HERO REGION (used on front page)
