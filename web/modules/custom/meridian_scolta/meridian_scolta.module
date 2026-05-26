@@ -1,0 +1,66 @@
+<?php
+
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Tag1\Scolta\Export\ContentItem;
+
+/**
+ * Implements hook_scolta_content_item_alter().
+ */
+function meridian_scolta_scolta_content_item_alter(ContentItem &$item, FieldableEntityInterface $entity): void {
+  $filters = $item->filters;
+  $sortable = $item->sortable;
+
+  // Topic taxonomy (multi-value entity reference, cardinality -1)
+  if ($entity->hasField('field_topic') && !$entity->get('field_topic')->isEmpty()) {
+    $values = [];
+    foreach ($entity->get('field_topic') as $ref) {
+      if ($ref->entity) {
+        $values[] = $ref->entity->label();
+      }
+    }
+    if (!empty($values)) {
+      $filters['topic'] = $values;
+    }
+  }
+
+  // Difficulty taxonomy (single-value entity reference, on lecture_page and resource_article)
+  if ($entity->hasField('field_difficulty') && !$entity->get('field_difficulty')->isEmpty()) {
+    $ref = $entity->get('field_difficulty')->entity;
+    if ($ref) {
+      $filters['difficulty'] = $ref->label();
+    }
+  }
+
+  // Course level taxonomy (single-value entity reference, on course)
+  if ($entity->hasField('field_course_level') && !$entity->get('field_course_level')->isEmpty()) {
+    $ref = $entity->get('field_course_level')->entity;
+    if ($ref) {
+      $filters['course_level'] = $ref->label();
+    }
+  }
+
+  // School taxonomy (single-value entity reference, on many types)
+  if ($entity->hasField('field_school') && !$entity->get('field_school')->isEmpty()) {
+    $ref = $entity->get('field_school')->entity;
+    if ($ref) {
+      $filters['school'] = $ref->label();
+    }
+  }
+
+  // Format (plain string field, on program)
+  if ($entity->hasField('field_format') && !$entity->get('field_format')->isEmpty()) {
+    $value = $entity->get('field_format')->value;
+    if ($value) {
+      $filters['format'] = $value;
+    }
+  }
+
+  // Credits (sortable, numeric, on course and program)
+  if ($entity->hasField('field_credits') && !$entity->get('field_credits')->isEmpty()) {
+    $sortable['credits'] = (int) $entity->get('field_credits')->value;
+  }
+
+  if ($filters !== $item->filters || $sortable !== $item->sortable) {
+    $item = $item->cloneWith(['filters' => $filters, 'sortable' => $sortable]);
+  }
+}
