@@ -1,0 +1,7 @@
+name: Meridian Scolta
+type: module
+description: 'Scolta filter integration for Meridian AI university'
+core_version_requirement: ^10 || ^11
+package: Custom
+dependencies:
+  - scolta:scolta
