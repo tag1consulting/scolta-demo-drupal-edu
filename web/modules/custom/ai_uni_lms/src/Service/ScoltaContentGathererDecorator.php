@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\ai_uni_lms\Service;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -30,9 +31,10 @@ class ScoltaContentGathererDecorator extends ScoltaContentGatherer {
     EntityTypeManagerInterface $entityTypeManager,
     Connection $database,
     ModuleHandlerInterface $moduleHandler,
+    ConfigFactoryInterface $configFactory,
   ) {
     $this->entityTypeManager = $entityTypeManager;
-    parent::__construct($entityTypeManager, $database, $moduleHandler);
+    parent::__construct($entityTypeManager, $database, $moduleHandler, $configFactory);
   }
 
   /**

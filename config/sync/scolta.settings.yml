@@ -16,6 +16,10 @@ sortable_fields:
   - date
 sortable_field_descriptions:
   date: 'Course or program publication date'
+filter_fields:
+  - content_type
+filter_field_descriptions:
+  content_type: 'Content type: Page (general information), LMS Course (degree programs and individual courses), Resource (articles, tutorials, research), Faculty (professor profiles). Use when the user is looking for a specific kind of content.'
 scoring:
   title_match_boost: 2.5
   title_all_terms_multiplier: 1.4

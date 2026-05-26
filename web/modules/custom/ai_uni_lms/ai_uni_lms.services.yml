@@ -7,3 +7,4 @@ services:
       - '@entity_type.manager'
       - '@database'
       - '@module_handler'
+      - '@config.factory'
