@@ -1,7 +1,52 @@
 <?php
 
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Tag1\Scolta\Export\ContentItem;
+
+/**
+ * How many badges a search result card paints.
+ *
+ * Three is what fits on one row beside the 110px thumbnail without wrapping
+ * the card taller than its image.
+ */
+const MERIDIAN_SCOLTA_CARD_BADGE_LIMIT = 3;
+
+/**
+ * Bundle to content_type facet value.
+ *
+ * The four values are the ones scolta.settings already describes to the query
+ * expander under filter_field_descriptions.content_type — "Page (general
+ * information), LMS Course (degree programs and individual courses), Resource
+ * (articles, tutorials, research), Faculty (professor profiles)". Nothing was
+ * producing them, so the facet was advertised to the AI and never delivered;
+ * this map is what makes it real, and it is also what the card's type badge
+ * reads back, so a badge's text and its facet value cannot drift apart.
+ */
+const MERIDIAN_SCOLTA_CONTENT_TYPES = [
+  'page' => 'Page',
+  'program' => 'LMS Course',
+  'course' => 'LMS Course',
+  'lms_course' => 'LMS Course',
+  'faculty' => 'Faculty',
+  'resource_article' => 'Resource',
+  'lecture_page' => 'Resource',
+  'research_project' => 'Resource',
+  'news' => 'Resource',
+];
+
+/**
+ * Implements hook_block_view_alter().
+ *
+ * Attaches the theme's rich result cards to the Scolta search block, so the
+ * renderer and its stylesheet load on exactly the pages the search UI is on
+ * and nowhere else — no route list to keep in sync with block placement.
+ */
+function meridian_scolta_block_view_alter(array &$build, BlockPluginInterface $block): void {
+  if ($block->getPluginId() === 'scolta_search') {
+    $build['#attached']['library'][] = 'meridian_theme/scolta-rich-results';
+  }
+}
 
 /**
  * Implements hook_scolta_content_item_alter().
@@ -9,6 +54,7 @@ use Tag1\Scolta\Export\ContentItem;
 function meridian_scolta_scolta_content_item_alter(ContentItem &$item, FieldableEntityInterface $entity): void {
   $filters = $item->filters;
   $sortable = $item->sortable;
+  $metadata = $item->metadata;
 
   // Topic taxonomy (multi-value entity reference, cardinality -1)
   if ($entity->hasField('field_topic') && !$entity->get('field_topic')->isEmpty()) {
@@ -60,7 +106,135 @@ function meridian_scolta_scolta_content_item_alter(ContentItem &$item, Fieldable
     $sortable['credits'] = (int) $entity->get('field_credits')->value;
   }
 
-  if ($filters !== $item->filters || $sortable !== $item->sortable) {
-    $item = $item->cloneWith(['filters' => $filters, 'sortable' => $sortable]);
+  // Content type facet, from the bundle. See MERIDIAN_SCOLTA_CONTENT_TYPES.
+  if (isset(MERIDIAN_SCOLTA_CONTENT_TYPES[$entity->bundle()])) {
+    $filters['content_type'] = MERIDIAN_SCOLTA_CONTENT_TYPES[$entity->bundle()];
   }
+
+  // Per-item data the client-side renderers paint: the lead-image thumbnail
+  // used by both the result card and the search-as-you-type suggestion row,
+  // plus the card's badges. It rides along in the fragment's meta map, so a
+  // rich card and a thumbnailed suggestion cost no per-result server call.
+  //
+  // Metadata costs only the bytes of its own keys in each fragment, unlike
+  // sortable, which writes a corpus-wide pf_meta entry. The keys "title" and
+  // "date" are deliberately avoided: they lose to the built-in values on a
+  // collision.
+  $image = _meridian_scolta_card_image($entity);
+  if ($image !== NULL) {
+    $metadata['image'] = $image['url'];
+    if ($image['alt'] !== '') {
+      $metadata['image_alt'] = $image['alt'];
+    }
+  }
+
+  // A display-only copy of three facet values, in the order the card paints
+  // them: what kind of thing this is, whose school it belongs to, and how hard
+  // it is. Read back from the resolved filters rather than from the entity, so
+  // a badge's text is character-for-character the facet value it corresponds
+  // to — click the badge's facet and this result is in the set.
+  //
+  // Topic is deliberately not badged. It is the widest facet on this corpus
+  // (16 values, multi-value per item), so it belongs in the filter panel where
+  // all of an item's topics are visible, not truncated to the one that happens
+  // to sort first.
+  //
+  // JSON rather than a delimited string: a taxonomy label is free text, so
+  // there is no separator a future label provably cannot contain. "School of
+  // Language & Reasoning" already carries an ampersand.
+  $badges = [];
+  foreach (['content_type', 'school', 'course_level', 'difficulty'] as $key) {
+    $value = $filters[$key] ?? NULL;
+    if (is_string($value) && $value !== '' && count($badges) < MERIDIAN_SCOLTA_CARD_BADGE_LIMIT) {
+      $badges[] = $value;
+    }
+  }
+  if (!empty($badges)) {
+    $encoded = json_encode($badges);
+    if (is_string($encoded)) {
+      $metadata['badges'] = $encoded;
+    }
+  }
+
+  if ($filters !== $item->filters || $sortable !== $item->sortable || $metadata !== $item->metadata) {
+    $item = $item->cloneWith([
+      'filters' => $filters,
+      'sortable' => $sortable,
+      'metadata' => $metadata,
+    ]);
+  }
+}
+
+/**
+ * Resolves an entity's lead image to a card thumbnail URL and alt text.
+ *
+ * Meridian's images are not managed files on an image field — the importers in
+ * import/ write them straight into the body as a
+ * <div class="node-featured-image"><img …></div> block. So there is no image
+ * style to build a derivative from and no itok to carry; the URL in the markup
+ * is the URL. That also means this reads $entity->get('body')->value rather
+ * than the indexed body text, which the gatherer has already flattened to
+ * plain text with every tag stripped.
+ *
+ * Only the featured-image block counts. An inline illustration further down an
+ * article is not what that article looks like, and picking one would put a
+ * detail shot on a card whose neighbours show lead images.
+ *
+ * The URLs in the dump are Unsplash CDN links, but 70 of the 72 have a byte
+ * copy committed under files/demo-images/ (the same photo id, same crop).
+ * Where that copy exists the card points at it: a result list paints up to
+ * twelve thumbnails at once, and twelve third-party requests per keystroke-fast
+ * search is a demo that stalls on someone else's CDN, or shows nothing at all
+ * on a laptop that is offline or behind a filter. The two without a local copy
+ * keep the remote URL rather than losing their image.
+ *
+ * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+ *   The entity being indexed.
+ *
+ * @return array{url: string, alt: string}|null
+ *   The thumbnail URL and alt text, or NULL when there is no usable featured
+ *   image. NULL simply means the fragment carries no "image" key, and the
+ *   renderer paints the same card without a thumbnail.
+ */
+function _meridian_scolta_card_image(FieldableEntityInterface $entity): ?array {
+  if (!$entity->hasField('body') || $entity->get('body')->isEmpty()) {
+    return NULL;
+  }
+
+  $body = (string) ($entity->get('body')->value ?? '');
+  if ($body === '') {
+    return NULL;
+  }
+
+  // The featured-image block, and the first <img> inside it. Non-greedy up to
+  // the img so a class attribute containing a ">" cannot swallow the tag.
+  if (!preg_match('#<div[^>]*\bclass="[^"]*\bnode-featured-image\b[^"]*"[^>]*>\s*<img\b([^>]*)>#i', $body, $block)) {
+    return NULL;
+  }
+
+  $attributes = $block[1];
+  if (!preg_match('#\bsrc="([^"]*)"#i', $attributes, $src)) {
+    return NULL;
+  }
+
+  $url = html_entity_decode(trim($src[1]), ENT_QUOTES | ENT_HTML5);
+  $alt = preg_match('#\balt="([^"]*)"#i', $attributes, $a)
+    ? trim(html_entity_decode($a[1], ENT_QUOTES | ENT_HTML5))
+    : '';
+
+  // Only http(s) and root-relative URLs survive. The renderer refuses anything
+  // else anyway; refusing it here too keeps it out of the index.
+  if (!str_starts_with($url, '/') && !preg_match('#^https?://#i', $url)) {
+    return NULL;
+  }
+
+  // Prefer the committed local copy of the same photo.
+  if (preg_match('~/(photo-[0-9a-zA-Z_-]+?)(?:\.jpg)?(?:[?#]|$)~', $url, $id)) {
+    $uri = 'public://demo-images/' . $id[1] . '.jpg';
+    if (is_file(\Drupal::service('file_system')->realpath($uri) ?: '')) {
+      $url = \Drupal::service('file_url_generator')->generateString($uri);
+    }
+  }
+
+  return ['url' => $url, 'alt' => $alt];
 }
